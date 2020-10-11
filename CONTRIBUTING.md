@@ -41,7 +41,7 @@ On each release published, the `publish` branch is updated from `main` and pushe
 
 Every change to the repository is committed to short-lived _topic branches_.
 New _topic branches_ are based on `main`.
-Their work in progress is status checked, reviewed and discussed through _pull requests_.
+Their work in progress is status checked, reviewed and discussed through [pull requests](#pull-requests).
 When approved, the _topic branch_ may be merged into the `main` branch while maintaining a linear history.
 After a successful merge, the topic branch should be deleted.
 
