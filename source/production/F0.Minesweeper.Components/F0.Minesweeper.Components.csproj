@@ -9,11 +9,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\F0.Minesweeper.Logic\F0.Minesweeper.Logic.csproj" />
+		<Folder Include="wwwroot\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="wwwroot\" />
+		<ProjectReference Include="..\F0.Minesweeper.Logic.Abstractions\F0.Minesweeper.Logic.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>F0.Minesweeper.Components.Tests</_Parameter1>
+		</AssemblyAttribute>
 	</ItemGroup>
 
 </Project>
