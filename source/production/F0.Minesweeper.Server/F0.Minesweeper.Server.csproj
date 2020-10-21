@@ -6,6 +6,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\F0.Minesweeper.Components\F0.Minesweeper.Components.csproj" />
+		<ProjectReference Include="..\F0.Minesweeper.Logic\F0.Minesweeper.Logic.csproj" />
 	</ItemGroup>
 
 </Project>
