@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using F0.Minesweeper.Logic.Abstractions;
 using FluentAssertions;
 using Xunit;
