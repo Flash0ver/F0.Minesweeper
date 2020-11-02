@@ -31,5 +31,14 @@ namespace F0.Minesweeper.Logic.Tests
 
 			locationUnderTest.X.Should().Be(testValue);
 		}
+
+		[Fact]
+		public void NewLocationEmptyConstructor_CreatesZeroLocation()
+		{
+			var locationUnderTest = new Location();
+
+			locationUnderTest.X.Should().Be(0);
+			locationUnderTest.Y.Should().Be(0);
+		}
 	}
 }
