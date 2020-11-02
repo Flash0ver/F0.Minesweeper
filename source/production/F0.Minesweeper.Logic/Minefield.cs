@@ -2,7 +2,7 @@ using F0.Minesweeper.Logic.Abstractions;
 
 namespace F0.Minesweeper.Logic
 {
-	public class Minefield : IMinefield
+	internal sealed class Minefield : IMinefield
 	{
 		private readonly uint width, height, mineCount;
 
@@ -11,6 +11,13 @@ namespace F0.Minesweeper.Logic
 			this.width = width;
 			this.height = height;
 			this.mineCount = mineCount;
+		}
+
+		internal Minefield(MinefieldOptions minefieldOptions)
+		{
+			width = minefieldOptions.Width;
+			height = minefieldOptions.Height;
+			mineCount = minefieldOptions.MineCount;
 		}
 
 		public IGameUpdateReport Uncover(uint x, uint y) => Uncover(new Location(x, y));

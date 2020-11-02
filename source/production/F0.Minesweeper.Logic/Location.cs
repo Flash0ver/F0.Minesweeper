@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using F0.Minesweeper.Logic.Abstractions;
 
 namespace F0.Minesweeper.Logic

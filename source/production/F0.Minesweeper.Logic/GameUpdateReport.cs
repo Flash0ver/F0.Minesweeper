@@ -1,4 +1,3 @@
-using System;
 using F0.Minesweeper.Logic.Abstractions;
 
 namespace F0.Minesweeper.Logic
