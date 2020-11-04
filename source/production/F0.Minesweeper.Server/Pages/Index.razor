@@ -3,3 +3,10 @@
 <h1>Hello, world!</h1>
 
 Welcome to Minesweeper, powered by Blazor.
+
+
+<F0.Minesweeper.Components.Minefield Size="@MinefieldSize" />
+
+@code {
+	public MinefieldSize MinefieldSize = new MinefieldSize(10, 10);
+}
