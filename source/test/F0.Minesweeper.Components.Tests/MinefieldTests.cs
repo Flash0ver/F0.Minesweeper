@@ -56,6 +56,7 @@ namespace F0.Minesweeper.Components.Tests
 			var componentUnderTest = RenderComponent<Minefield>(parameter);
 
 			// Assert
+			//componentUnderTest.Fin
 			componentUnderTest.FindComponents<Cell>().Count.Should().Be(expectedCellAmount);
 		}
 
