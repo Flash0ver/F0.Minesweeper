@@ -8,7 +8,7 @@
 			<tr>
 				@for (uint currentWidth = 0; currentWidth < @Size.Width; currentWidth++)
 				{
-					var location = new F0.Minesweeper.Components.Abstractions.Location(currentWidth, currentHeight);
+					var location = new Location(currentWidth, currentHeight);
 					<td>
 						<Cell Location="location" />
 					</td>

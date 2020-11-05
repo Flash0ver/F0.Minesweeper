@@ -1,6 +1,6 @@
 using System;
 using Bunit;
-using F0.Minesweeper.Components.Abstractions;
+using F0.Minesweeper.Logic.Abstractions;
 using FluentAssertions;
 using Xunit;
 
