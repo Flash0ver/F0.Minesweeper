@@ -1,4 +1,5 @@
 using Bunit;
+using Bunit.Rendering;
 using F0.Minesweeper.Components.Abstractions;
 using FluentAssertions;
 using Xunit;
@@ -15,7 +16,7 @@ namespace F0.Minesweeper.Components.Tests
 			string expectedMarkup = $"<h3>Minefield</h3><label>{expectedLabelText}</label>";
 
 			// Act
-			var componentUnderTest = RenderComponent<Minefield>();
+			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>();
 
 			// Assert
 			componentUnderTest.MarkupMatches(expectedMarkup);
@@ -31,10 +32,10 @@ namespace F0.Minesweeper.Components.Tests
 			const string expectedLabelText = "Minesweeper is played on a Minefield and not within a black hole! Provide a valid size!";
 			string expectedMarkup = $"<h3>Minefield</h3><label>{expectedLabelText}</label>";
 
-			var parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(height, width));
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(height, width));
 
 			// Act
-			var componentUnderTest = RenderComponent<Minefield>(parameter);
+			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
 
 			// Assert
 			componentUnderTest.MarkupMatches(expectedMarkup);
@@ -50,10 +51,10 @@ namespace F0.Minesweeper.Components.Tests
 		{
 			// Arrange
 			int expectedCellAmount = (int)(height * width);
-			var parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(height, width));
-			
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(height, width));
+
 			// Act
-			var componentUnderTest = RenderComponent<Minefield>(parameter);
+			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
 
 			// Assert
 			componentUnderTest.FindComponents<Cell>().Count.Should().Be(expectedCellAmount);
@@ -65,10 +66,10 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			const string expectedMarkup = "<h3>Minefield</h3><table><tr><td><button>Covered</button></td></tr></table>";
 
-			var parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(1, 1));
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(1, 1));
 
 			// Act
-			var componentUnderTest = RenderComponent<Minefield>(parameter);
+			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
 
 			// Assert
 			componentUnderTest.MarkupMatches(expectedMarkup);

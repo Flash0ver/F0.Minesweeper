@@ -1,5 +1,7 @@
 using System;
+using AngleSharp.Dom;
 using Bunit;
+using Bunit.Rendering;
 using F0.Minesweeper.Logic.Abstractions;
 using FluentAssertions;
 using Xunit;
@@ -7,7 +9,7 @@ using Xunit;
 namespace F0.Minesweeper.Components.Tests
 {
 	public class CellTests : TestContext
-    {
+	{
 		[Fact]
 		public void Rendering_NoLocationProvided_Throws()
 		{
@@ -25,10 +27,10 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<button>Covered</button>";
 
-			var parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(x, y));
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(x, y));
 
 			// Act
-			var componentUnderTest = RenderComponent<Cell>(parameter);
+			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
 
 			// Assert
 			componentUnderTest.MarkupMatches(expectedMarkup);
@@ -41,8 +43,8 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<button>Uncovered</button>";
 
-			var parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
-			var componentUnderTest = RenderComponent<Cell>(parameter);
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
+			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
 
 			// Act
 			componentUnderTest.Find("button").Click();
@@ -57,9 +59,9 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<button>Uncovered</button>";
 
-			var parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
-			var componentUnderTest = RenderComponent<Cell>(parameter);
-			var buttonToClick = componentUnderTest.Find("button");
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
+			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
+			IElement buttonToClick = componentUnderTest.Find("button");
 			buttonToClick.Click();
 
 			// Act
