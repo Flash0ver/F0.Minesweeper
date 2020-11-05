@@ -34,5 +34,39 @@ namespace F0.Minesweeper.Components.Tests
 			componentUnderTest.MarkupMatches(expectedMarkup);
 			componentUnderTest.Instance.Location.Should().BeEquivalentTo(new Location(x, y));
 		}
+
+		[Fact]
+		public void OnClick_TextIsCovered_ChangesTextToUnvovered()
+		{
+			// Arrange
+			string expectedMarkup = "<button>Uncovered</button>";
+
+			var parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
+			var componentUnderTest = RenderComponent<Cell>(parameter);
+
+			// Act
+			componentUnderTest.Find("button").Click();
+
+			// Assert
+			componentUnderTest.MarkupMatches(expectedMarkup);
+		}
+
+		[Fact]
+		public void OnClick_TextIsUncovered_TextStaysUnvovered()
+		{
+			// Arrange
+			string expectedMarkup = "<button>Uncovered</button>";
+
+			var parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
+			var componentUnderTest = RenderComponent<Cell>(parameter);
+			var buttonToClick = componentUnderTest.Find("button");
+			buttonToClick.Click();
+
+			// Act
+			buttonToClick.Click();
+
+			// Assert
+			componentUnderTest.MarkupMatches(expectedMarkup);
+		}
 	}
 }

@@ -9,6 +9,25 @@ namespace F0.Minesweeper.Components
 	{
 		[Parameter]
 		public Location Location { get; set; }
+		private string StatusText {
+			get => statusText;
+			set
+			{
+				if(statusText == value)
+				{
+					return;
+				}
+
+				statusText = value;
+			}
+		}
+
+		private string statusText;
+
+		public Cell()
+		{
+			StatusText = "Covered";
+		}
 
 		protected override void OnParametersSet()
 		{
@@ -20,7 +39,7 @@ namespace F0.Minesweeper.Components
 
 		private Task OnClickAsync()
 		{
-			Console.WriteLine($"X: {Location.X} Y: {Location.Y}");
+			StatusText = "Uncovered";
 			return Task.CompletedTask;
 		}
 	}
