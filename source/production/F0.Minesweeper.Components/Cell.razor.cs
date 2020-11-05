@@ -1,22 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
-using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 
 namespace F0.Minesweeper.Components
 {
 	public partial class Cell
 	{
 		[Parameter]
-		public Location Location { get; set; }
+		public Location? Location { get; set; }
 		private string StatusText
 		{
-			get => statusText;
+			get => statusText ?? string.Empty;
 			set
 			{
 				if (statusText == value)
@@ -29,7 +26,7 @@ namespace F0.Minesweeper.Components
 		}
 
 		private CellStatus status { get; set; }
-		private string statusText;
+		private string? statusText;
 
 		public Cell()
 		{
@@ -46,7 +43,7 @@ namespace F0.Minesweeper.Components
 
 		private Task OnClickAsync()
 		{
-			StatusText = "Uncovered";
+			UpdateStatus(CellStatus.Uncovered);
 			return Task.CompletedTask;
 		}
 
@@ -59,7 +56,7 @@ namespace F0.Minesweeper.Components
 		private void UpdateStatus(CellStatus covered)
 		{
 			status = covered;
-			statusText = CellStatusManager.MapToText(covered);
+			StatusText = CellStatusManager.MapToText(covered);
 		}
 
 		private static class CellStatusManager
@@ -78,7 +75,7 @@ namespace F0.Minesweeper.Components
 
 			internal static CellStatus OnRightMouseClick(CellStatus status)
 			{
-				if(status == CellStatus.Unsure)
+				if (status == CellStatus.Unsure)
 				{
 					return CellStatus.Covered;
 				}

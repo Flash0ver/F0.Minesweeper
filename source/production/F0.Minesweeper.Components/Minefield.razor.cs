@@ -6,7 +6,7 @@ namespace F0.Minesweeper.Components
 	public partial class Minefield
 	{
 		[Parameter]
-		public MinefieldSize Size { get; set; }
+		public MinefieldSize? Size { get; set; }
 
 		private bool isValidSize;
 
