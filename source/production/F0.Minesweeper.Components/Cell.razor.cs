@@ -4,6 +4,7 @@ using System.Data;
 using System.Threading.Tasks;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
+using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -13,8 +14,22 @@ namespace F0.Minesweeper.Components
 	{
 		[Parameter]
 		public Location Location { get; set; }
+		private string StatusText
+		{
+			get => statusText;
+			set
+			{
+				if (statusText == value)
+				{
+					return;
+				}
+
+				statusText = value;
+			}
+		}
+
 		private CellStatus status { get; set; }
-		private string statusText { get; set; }
+		private string statusText;
 
 		public Cell()
 		{
@@ -31,7 +46,7 @@ namespace F0.Minesweeper.Components
 
 		private Task OnClickAsync()
 		{
-			Console.WriteLine($"X: {Location.X} Y: {Location.Y}");
+			StatusText = "Uncovered";
 			return Task.CompletedTask;
 		}
 
