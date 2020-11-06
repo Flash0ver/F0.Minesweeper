@@ -16,12 +16,10 @@ namespace F0.Minesweeper.Components
 			get => statusText ?? string.Empty;
 			set
 			{
-				if (statusText == value)
+				if (statusText != value)
 				{
-					return;
+					statusText = value;
 				}
-
-				statusText = value;
 			}
 		}
 
@@ -35,7 +33,7 @@ namespace F0.Minesweeper.Components
 
 		protected override void OnParametersSet()
 		{
-			if (Location == null)
+			if (Location is null)
 			{
 				throw new ArgumentNullException(nameof(Location));
 			}
