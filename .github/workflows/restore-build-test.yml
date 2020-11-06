@@ -1,4 +1,4 @@
-name: Restore - Build - Test
+name: Restore + Build + Test
 
 on:
   push:
@@ -6,9 +6,12 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  DOTNET_NOLOGO: true
+
 jobs:
   restore_build_test:
-    name: Restore+Build+Test ${{ matrix.os }}
+    name: on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -28,6 +31,6 @@ jobs:
     - name: Restore
       run: dotnet restore ${{ env.Solution_File }} --configfile ${{ env.NuGet_Configuration_File }}
     - name: Build
-      run: dotnet build ${{ env.Solution_File }} --configuration ${{ matrix.configuration }} --no-restore
+      run: dotnet build ${{ env.Solution_File }} --configuration ${{ matrix.configuration }} --no-restore --nologo
     - name: Test
-      run: dotnet test ${{ env.Solution_File }} --configuration ${{ matrix.configuration }} --no-build
+      run: dotnet test ${{ env.Solution_File }} --configuration ${{ matrix.configuration }} --no-build --nologo
