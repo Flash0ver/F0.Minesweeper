@@ -12,7 +12,7 @@ namespace F0.Minesweeper.Components
 
 		protected override void OnParametersSet()
 		{
-			isValidSize = Size != null && Size.Height > 0 && Size.Width > 0;
+			isValidSize = Size is not null && Size.Height > 0 && Size.Width > 0;
 		}
 	}
 }
