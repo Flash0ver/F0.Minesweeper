@@ -32,7 +32,7 @@ namespace F0.Minesweeper.Components
 
 		protected override void OnParametersSet()
 		{
-			if (Location == null)
+			if (Location is null)
 			{
 				throw new ArgumentNullException(nameof(Location));
 			}
