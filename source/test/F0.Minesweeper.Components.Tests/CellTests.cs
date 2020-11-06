@@ -38,7 +38,7 @@ namespace F0.Minesweeper.Components.Tests
 		}
 
 		[Fact]
-		public void OnClick_TextIsCovered_ChangesTextToUnvovered()
+		public void OnClick_TextIsCovered_ChangesTextToUncovered()
 		{
 			// Arrange
 			string expectedMarkup = "<button>Uncovered</button>";
