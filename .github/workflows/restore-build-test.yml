@@ -1,0 +1,33 @@
+name: Restore - Build - Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  restore_build_test:
+    name: Restore+Build+Test ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [Release]
+        os: [macos-10.15, ubuntu-18.04, windows-2019]
+
+    env:
+      NuGet_Configuration_File: ./source/nuget.config
+      Solution_File: ./source/F0.Minesweeper.sln
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.4
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1.7.2
+    - name: Restore
+      run: dotnet restore ${{ env.Solution_File }} --configfile ${{ env.NuGet_Configuration_File }}
+    - name: Build
+      run: dotnet build ${{ env.Solution_File }} --configuration ${{ matrix.configuration }} --no-restore
+    - name: Test
+      run: dotnet test ${{ env.Solution_File }} --configuration ${{ matrix.configuration }} --no-build
