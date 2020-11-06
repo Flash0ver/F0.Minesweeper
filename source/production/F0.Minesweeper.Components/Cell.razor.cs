@@ -14,12 +14,10 @@ namespace F0.Minesweeper.Components
 			get => statusText;
 			set
 			{
-				if (statusText == value)
+				if (statusText != value)
 				{
-					return;
+					statusText = value;
 				}
-
-				statusText = value;
 			}
 		}
 
