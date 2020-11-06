@@ -32,7 +32,7 @@ namespace F0.Minesweeper.Components.Tests
 			const string expectedLabelText = "Minesweeper is played on a Minefield and not within a black hole! Provide a valid size!";
 			string expectedMarkup = $"<h3>Minefield</h3><label>{expectedLabelText}</label>";
 
-			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(height, width));
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(width, height));
 
 			// Act
 			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
@@ -51,7 +51,7 @@ namespace F0.Minesweeper.Components.Tests
 		{
 			// Arrange
 			int expectedCellAmount = (int)(height * width);
-			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(height, width));
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(width, height));
 
 			// Act
 			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
