@@ -5,19 +5,22 @@ namespace F0.Minesweeper.Logic
 	internal sealed class Minefield : IMinefield
 	{
 		private readonly uint width, height, mineCount;
+		private readonly MinefieldGenerationOptions generationOptions;
 
-		internal Minefield(uint width, uint height, uint mineCount)
+		internal Minefield(uint width, uint height, uint mineCount, MinefieldGenerationOptions generationOptions)
 		{
 			this.width = width;
 			this.height = height;
 			this.mineCount = mineCount;
+			this.generationOptions = generationOptions;
 		}
 
 		internal Minefield(MinefieldOptions minefieldOptions)
 		{
-			width = minefieldOptions.Width;
-			height = minefieldOptions.Height;
-			mineCount = minefieldOptions.MineCount;
+			width = minefieldOptions.Difficulty.Width;
+			height = minefieldOptions.Difficulty.Height;
+			mineCount = minefieldOptions.Difficulty.MineCount;
+			generationOptions = minefieldOptions.GenerationOption;
 		}
 
 		public IGameUpdateReport Uncover(uint x, uint y) => Uncover(new Location(x, y));

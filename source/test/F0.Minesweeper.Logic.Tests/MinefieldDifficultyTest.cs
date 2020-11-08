@@ -4,11 +4,11 @@ using Xunit;
 
 namespace F0.Minesweeper.Logic.Tests
 {
-	public class MinefieldOptionsTest
+	public class MinefieldDifficultyTest
 	{
-		private readonly MinefieldOptions easy = MinefieldOptions.Easy;
-		private readonly MinefieldOptions medium = MinefieldOptions.Medium;
-		private readonly MinefieldOptions hard = MinefieldOptions.Hard;
+		private readonly MinefieldDifficulty easy = MinefieldDifficulty.Easy;
+		private readonly MinefieldDifficulty medium = MinefieldDifficulty.Medium;
+		private readonly MinefieldDifficulty hard = MinefieldDifficulty.Hard;
 
 		[Fact]
 		public void RisingDifficultyLevel_Should_IncreaseMinefieldHeightAndWidth()
