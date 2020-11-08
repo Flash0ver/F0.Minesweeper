@@ -2,7 +2,8 @@ namespace F0.Minesweeper.Logic.Abstractions
 {
 	public enum MinefieldGenerationOptions
 	{
+		Random,
 		Safe,
-		Random
+		FirstEmpty
 	}
 }
