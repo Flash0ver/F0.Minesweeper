@@ -4,6 +4,7 @@ namespace F0.Minesweeper.Logic.Abstractions
 	{
 		Random,
 		Safe,
-		FirstEmpty
+		FirstEmpty,
+		Impossible
 	}
 }
