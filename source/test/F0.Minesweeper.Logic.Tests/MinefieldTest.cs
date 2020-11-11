@@ -1,3 +1,4 @@
+using F0.Minesweeper.Logic.Abstractions;
 using FluentAssertions;
 using Xunit;
 
@@ -14,7 +15,7 @@ namespace F0.Minesweeper.Logic.Tests
 			var result = minefieldUnderTest.Uncover(locationTestValue);
 
 			result.Cells.Should().NotBeEmpty()
-				.And.ContainSingle(cell => (Location)cell.Location == locationTestValue);
+				.And.ContainSingle(cell => cell.Location == locationTestValue);
 		}
 	}
 }
