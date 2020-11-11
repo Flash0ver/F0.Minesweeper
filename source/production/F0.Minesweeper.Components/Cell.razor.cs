@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Components;
@@ -11,6 +12,10 @@ namespace F0.Minesweeper.Components
 	{
 		[Parameter]
 		public Location? Location { get; set; }
+
+		[Inject]
+		private ICellStatusManager statusManager { get; set; }
+
 		private string StatusText
 		{
 			get => statusText ?? string.Empty;
@@ -23,12 +28,13 @@ namespace F0.Minesweeper.Components
 			}
 		}
 
-		private CellStatus status { get; set; }
-		private string? statusText;
+		private static Dictionary<CellStatusType, string> translations = InitializeTranslations();
+
+		private string statusText;
 
 		public Cell()
 		{
-			UpdateStatus(CellStatus.Covered);
+			statusText = MapToText(CellStatusType.Covered);
 		}
 
 		protected override void OnParametersSet()
@@ -39,58 +45,46 @@ namespace F0.Minesweeper.Components
 			}
 		}
 
+		private static Dictionary<CellStatusType, string> InitializeTranslations()
+		{
+			return new Dictionary<CellStatusType, string>
+				{
+					{ CellStatusType.Covered, "Covered" },
+					{ CellStatusType.Flagged, "Flagged" },
+					{ CellStatusType.Uncovered, "Uncovered" },
+					{ CellStatusType.Unsure, "?" },
+				};
+		}
+
 		private Task OnClickAsync()
 		{
-			UpdateStatus(CellStatus.Uncovered);
+			TryUpdateStatus(MouseButtonType.Left);
+
 			return Task.CompletedTask;
 		}
 
-		private void OnRightClick()
+		private void OnRightClick() => TryUpdateStatus(MouseButtonType.Right);
+
+		private bool TryUpdateStatus(MouseButtonType inputCommand)
 		{
-			CellStatus newStatus = CellStatusManager.OnRightMouseClick(status);
-			UpdateStatus(newStatus);
+			if (!statusManager.CanNext(inputCommand))
+			{
+				return false;
+			}
+
+			CellStatusType newStatus = statusManager.MoveNext(inputCommand);
+			StatusText = MapToText(newStatus);
+			return true;
 		}
 
-		private void UpdateStatus(CellStatus covered)
+		private string MapToText(CellStatusType status)
 		{
-			status = covered;
-			StatusText = CellStatusManager.MapToText(covered);
-		}
-
-		private static class CellStatusManager
-		{
-			private static Lazy<Dictionary<CellStatus, string>> translations = new Lazy<Dictionary<CellStatus, string>>(InitializeTranslations);
-
-			internal static string MapToText(CellStatus status)
+			if (!translations.TryGetValue(status, out var translation))
 			{
-				if (!translations.Value.TryGetValue(status, out var translation))
-				{
-					return $"!!{status}!!";
-				}
-
-				return translation;
+				return $"!!{status}!!";
 			}
 
-			internal static CellStatus OnRightMouseClick(CellStatus status)
-			{
-				if (status == CellStatus.Unsure)
-				{
-					return CellStatus.Covered;
-				}
-
-				return (CellStatus)((int)status + 1);
-			}
-
-			private static Dictionary<CellStatus, string> InitializeTranslations()
-			{
-				return new Dictionary<CellStatus, string>
-				{
-					{ CellStatus.Covered, "Covered" },
-					{ CellStatus.Flagged, "Flagged" },
-					{ CellStatus.Uncovered, "Uncovered" },
-					{ CellStatus.Unsure, "?" },
-				};
-			}
+			return translation;
 		}
 	}
 }

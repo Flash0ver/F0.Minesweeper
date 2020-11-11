@@ -2,12 +2,19 @@ using Bunit;
 using Bunit.Rendering;
 using F0.Minesweeper.Components.Abstractions;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Xunit;
 
 namespace F0.Minesweeper.Components.Tests
 {
 	public class MinefieldTests : TestContext
 	{
+		public MinefieldTests()
+		{
+			Services.AddSingleton(new Mock<ICellStatusManager>().Object);
+		}
+
 		[Fact]
 		public void Rendering_NoSizeProvided_ShowsErrorLabel()
 		{
@@ -51,6 +58,7 @@ namespace F0.Minesweeper.Components.Tests
 		{
 			// Arrange
 			int expectedCellAmount = (int)(height * width);
+
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(width, height));
 
 			// Act
@@ -65,10 +73,10 @@ namespace F0.Minesweeper.Components.Tests
 		public void Rendering_OneCellShown_MarkupIsCorrect()
 		{
 			// Arrange
-			const string expectedMarkup = "<h3>Minefield</h3><table><tr><td><button>Covered</button></td></tr></table>";
+			const string expectedMarkup = "<h3>Minefield</h3><table><tr><td><button diff:ignore /></td></tr></table>";
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(1, 1));
-
+			
 			// Act
 			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
 
