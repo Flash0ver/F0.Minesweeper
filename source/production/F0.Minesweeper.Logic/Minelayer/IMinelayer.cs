@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using F0.Minesweeper.Logic.Abstractions;
 
-namespace F0.Minesweeper.Logic.Mineplacer
+namespace F0.Minesweeper.Logic.Minelayer
 {
-	internal interface IMineplacer
+	internal interface IMinelayer
 	{
 		/// <summary>
 		/// A method that places mines in possible locations and

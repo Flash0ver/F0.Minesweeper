@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using F0.Minesweeper.Logic.Abstractions;
 
-namespace F0.Minesweeper.Logic.Mineplacer
+namespace F0.Minesweeper.Logic.Minelayer
 {
-	internal class SafeMineplacer : IMineplacer
+	internal class SafeMinelayer : IMinelayer
 	{
-		IEnumerable<Location> IMineplacer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
+		IEnumerable<Location> IMinelayer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
 			=> possibleLocations
 			.Where(l => l != clickedLocation)
 			.OrderBy(_ => Guid.NewGuid())

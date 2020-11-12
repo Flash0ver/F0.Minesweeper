@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using F0.Minesweeper.Logic.Abstractions;
-using F0.Minesweeper.Logic.Mineplacer;
+using F0.Minesweeper.Logic.Minelayer;
 
 namespace F0.Minesweeper.Logic
 {
+	[DebuggerDisplay("{" + nameof(DebugVisualization) + ", nq}")]
 	internal sealed class Minefield : IMinefield
 	{
 		private readonly uint width, height, mineCount;
-		private IMineplacer mineplacer;
+		private IMinelayer mineplacer;
 		private bool isFirstUncover = true;
 		private bool[,] minefield;
 		private string DebugVisualization
@@ -28,35 +30,26 @@ namespace F0.Minesweeper.Logic
 			}
 		}
 
-		internal Minefield(uint width, uint height, uint mineCount, MinefieldGenerationOptions generationOptions)
+		internal Minefield(uint width, uint height, uint mineCount, MinefieldFirstUncoverBehaviour generationOptions)
 		{
 			this.width = width;
 			this.height = height;
 			this.mineCount = mineCount;
-			switch (generationOptions)
+			mineplacer = generationOptions switch
 			{
-				case MinefieldGenerationOptions.Random:
-					mineplacer = new RandomMineplacer();
-					break;
-				case MinefieldGenerationOptions.Safe:
-					mineplacer = new SafeMineplacer();
-					break;
-				case MinefieldGenerationOptions.FirstEmpty:
-					mineplacer = new FirstEmptyMineplacer();
-					break;
-				case MinefieldGenerationOptions.Impossible:
-					mineplacer = new ImpossibleMineplacer();
-					break;
-				default:
-					throw new NotImplementedException($"Enumeration {generationOptions.GetType().Name}.{generationOptions} not implemented.");
-			}
+				MinefieldFirstUncoverBehaviour.MayYieldMine => new RandomMinelayer(),
+				MinefieldFirstUncoverBehaviour.CannotYieldMine => new SafeMinelayer(),
+				MinefieldFirstUncoverBehaviour.WithoutAdjacentMines => new FirstEmptyMinelayer(),
+				MinefieldFirstUncoverBehaviour.AlwaysYieldsMine => new ImpossibleMinelayer(),
+				_ => throw new NotImplementedException($"Enumeration {generationOptions.GetType().Name}.{generationOptions} not implemented."),
+			};
 			minefield = new bool[width, height];
 		}
 
 		internal Minefield(MinefieldOptions minefieldOptions) : this(
-			minefieldOptions.Difficulty.Width,
-			minefieldOptions.Difficulty.Height,
-			minefieldOptions.Difficulty.MineCount,
+			minefieldOptions.Width,
+			minefieldOptions.Height,
+			minefieldOptions.MineCount,
 			minefieldOptions.GenerationOption)
 		{ }
 

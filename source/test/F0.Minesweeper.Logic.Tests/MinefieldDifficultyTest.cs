@@ -6,9 +6,9 @@ namespace F0.Minesweeper.Logic.Tests
 {
 	public class MinefieldDifficultyTest
 	{
-		private readonly MinefieldDifficulty easy = MinefieldDifficulty.Easy;
-		private readonly MinefieldDifficulty medium = MinefieldDifficulty.Medium;
-		private readonly MinefieldDifficulty hard = MinefieldDifficulty.Hard;
+		private readonly MinefieldOptions easy = MinefieldOptions.Easy;
+		private readonly MinefieldOptions medium = MinefieldOptions.Medium;
+		private readonly MinefieldOptions hard = MinefieldOptions.Hard;
 
 		[Fact]
 		public void RisingDifficultyLevel_Should_IncreaseMinefieldHeightAndWidth()
