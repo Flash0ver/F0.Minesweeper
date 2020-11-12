@@ -65,7 +65,7 @@ namespace F0.Minesweeper.Logic
 		{
 			if (isFirstUncover)
 			{
-				GenerateMinefield((Location)location);
+				GenerateMinefield(location);
 				isFirstUncover = false;
 			}
 

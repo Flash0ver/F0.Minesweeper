@@ -7,14 +7,14 @@ namespace F0.Minesweeper.Logic.Mineplacer
 {
 	internal class FirstEmptyMineplacer : IMineplacer
 	{
-		IEnumerable<ILocation> IMineplacer.PlaceMines(IEnumerable<ILocation> possibleLocations, uint mineCount, ILocation clickedLocation)
+		IEnumerable<Location> IMineplacer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
 			=> RemoveLocationsAroundClickedLocation(possibleLocations.ToList(), clickedLocation)
 				.OrderBy(_ => Guid.NewGuid())
 				.Take((int)mineCount);
 
-		private static IEnumerable<ILocation> RemoveLocationsAroundClickedLocation(IList<ILocation> locations, ILocation clickLocation)
+		private static IEnumerable<Location> RemoveLocationsAroundClickedLocation(IList<Location> locations, Location clickLocation)
 		{
-			List<ILocation> locationsToDelete = GetLocationsAreaAroundLocation(locations, clickLocation);
+			List<Location> locationsToDelete = GetLocationsAreaAroundLocation(locations, clickLocation);
 			foreach (var locationToDelete in locationsToDelete)
 			{
 				locations.Remove(locationToDelete);
@@ -22,9 +22,9 @@ namespace F0.Minesweeper.Logic.Mineplacer
 			return locations;
 		}
 
-		private static List<ILocation> GetLocationsAreaAroundLocation(IList<ILocation> allLocations, ILocation location)
+		private static List<Location> GetLocationsAreaAroundLocation(IList<Location> allLocations, Location location)
 		{
-			var returnLocations = new List<ILocation>();
+			var returnLocations = new List<Location>();
 			uint x = location.X;
 			uint y = location.Y;
 
@@ -32,11 +32,11 @@ namespace F0.Minesweeper.Logic.Mineplacer
 			{
 				for (int yi = -1; yi <= 1; yi++)
 				{
-					Location locationToLookFor = new Location(
+					var locationToLookFor = new Location(
 						(uint)Math.Max(x + xi, 0),
 						(uint)Math.Max(y + yi, 0));
 
-					var locationInArea = allLocations.SingleOrDefault(l => (Location)l == locationToLookFor);
+					var locationInArea = allLocations.SingleOrDefault(l => l == locationToLookFor);
 
 					if (locationInArea != null)
 					{

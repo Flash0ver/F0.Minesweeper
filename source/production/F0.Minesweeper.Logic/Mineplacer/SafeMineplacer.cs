@@ -7,7 +7,7 @@ namespace F0.Minesweeper.Logic.Mineplacer
 {
 	internal class SafeMineplacer : IMineplacer
 	{
-		IEnumerable<ILocation> IMineplacer.PlaceMines(IEnumerable<ILocation> possibleLocations, uint mineCount, ILocation clickedLocation)
+		IEnumerable<Location> IMineplacer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
 			=> possibleLocations
 			.Where(l => l != clickedLocation)
 			.OrderBy(_ => Guid.NewGuid())

@@ -5,7 +5,7 @@ namespace F0.Minesweeper.Logic.Mineplacer
 {
 	internal class ImpossibleMineplacer : IMineplacer
 	{
-		IEnumerable<ILocation> IMineplacer.PlaceMines(IEnumerable<ILocation> possibleLocations, uint mineCount, ILocation clickedLocation)
-			=> new ILocation[] { clickedLocation };
+		IEnumerable<Location> IMineplacer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
+			=> new Location[] { clickedLocation };
 	}
 }

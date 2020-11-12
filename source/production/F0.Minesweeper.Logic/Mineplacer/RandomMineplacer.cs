@@ -7,7 +7,7 @@ namespace F0.Minesweeper.Logic.Mineplacer
 {
 	internal class RandomMineplacer : IMineplacer
 	{
-		IEnumerable<ILocation> IMineplacer.PlaceMines(IEnumerable<ILocation> possibleLocations, uint mineCount, ILocation clickedLocation)
+		IEnumerable<Location> IMineplacer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
 			=> possibleLocations
 				.OrderBy(_ => Guid.NewGuid())
 				.Take((int)mineCount);
