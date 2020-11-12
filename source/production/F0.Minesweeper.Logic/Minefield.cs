@@ -61,7 +61,7 @@ namespace F0.Minesweeper.Logic
 		{ }
 
 		public IGameUpdateReport Uncover(uint x, uint y) => Uncover(new Location(x, y));
-		public IGameUpdateReport Uncover(ILocation location)
+		public IGameUpdateReport Uncover(Location location)
 		{
 			if (isFirstUncover)
 			{

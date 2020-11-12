@@ -1,3 +1,4 @@
+using F0.Minesweeper.Logic.Abstractions;
 using FluentAssertions;
 using Xunit;
 

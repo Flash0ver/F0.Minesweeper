@@ -4,11 +4,11 @@ namespace F0.Minesweeper.Logic
 {
 	internal class UncoveredCell : IUncoveredCell
 	{
-		public ILocation Location { get; private set; }
+		public Location Location { get; private set; }
 		public bool IsMine { get; private set; }
 		public byte AdjacentMineCount { get; private set; }
 
-		internal UncoveredCell(ILocation location, bool isMine, byte adjacentMineCount)
+		internal UncoveredCell(Location location, bool isMine, byte adjacentMineCount)
 		{
 			Location = location;
 			IsMine = isMine;
