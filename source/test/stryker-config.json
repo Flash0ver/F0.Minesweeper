@@ -1,0 +1,15 @@
+{
+	"stryker-config": {
+		"reporters": [
+			"html",
+			"cleartext"
+		],
+		"threshold-high": 80,
+		"threshold-low": 60,
+		"threshold-break": 40,
+		"ignore-methods": [
+			"ToString",
+			"ConfigureAwait"
+		]
+	}
+}
