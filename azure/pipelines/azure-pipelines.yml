@@ -18,8 +18,8 @@ variables:
   Build_Configuration: 'Release'
 
 jobs:
-- job: A
-  displayName: string
+- job: code_coverage
+  displayName: Code Coverage
   pool:
     vmImage: 'ubuntu-18.04'
 
@@ -40,8 +40,10 @@ jobs:
     displayName: Restore
     inputs:
       command: 'restore'
+      restoreArguments: '$(Solution_File)'
       feedsToUse: 'config'
       nugetConfigPath: '$(NuGet_Configuration_File)'
+      verbosityRestore: 'Minimal'
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
