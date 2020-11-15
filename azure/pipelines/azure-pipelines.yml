@@ -13,7 +13,6 @@ pr:
 
 variables:
   DOTNET_NOLOGO: true
-  Solution_File: $(System.DefaultWorkingDirectory)/source/F0.Minesweeper.sln
   NuGet_Configuration_File: $(System.DefaultWorkingDirectory)/source/nuget.config
   Build_Configuration: 'Release'
 
@@ -24,7 +23,7 @@ jobs:
     vmImage: 'ubuntu-18.04'
 
   variables:
-    TODO: TODO
+    Solution_File: $(System.DefaultWorkingDirectory)/source/F0.Minesweeper.sln
 
   steps:
   - checkout: self
@@ -53,7 +52,6 @@ jobs:
     displayName: Collect code coverage metrics with Coverlet
     inputs:
       command: 'test'
-      #projects: '**/test-library/*.csproj'
       arguments: '$(Solution_File) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
       publishTestResults: true
   - task: PublishCodeCoverageResults@1
@@ -62,3 +60,40 @@ jobs:
       codeCoverageTool: 'Cobertura'
       summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
       failIfCoverageEmpty: true
+
+- job: mutation_testing
+  displayName: Mutation Testing
+  pool:
+    vmImage: 'ubuntu-18.04'
+
+  variables:
+    Test_Project_Directory: $(System.DefaultWorkingDirectory)/source/test/F0.Minesweeper.Logic.Tests
+    Stryker_Configuration_File: $(System.DefaultWorkingDirectory)/source/test/stryker-config.json
+
+  steps:
+  - checkout: self
+    displayName: Checkout
+    fetchDepth: 1
+  - task: UseDotNet@2
+    displayName: Setup .NET SDK
+    inputs:
+      packageType: 'sdk'
+      useGlobalJson: true
+      performMultiLevelLookup: true
+  - task: DotNetCoreCLI@2
+    displayName: Install .NET Tools
+    inputs:
+      command: 'custom'
+      custom: 'tool'
+      arguments: 'restore --configfile $(NuGet_Configuration_File)'
+  - task: DotNetCoreCLI@2
+    displayName: Run dotnet-stryker
+    inputs:
+      command: 'custom'
+      custom: 'stryker'
+      arguments: '--config-file-path $(Stryker_Configuration_File)'
+      workingDirectory: '$(Test_Project_Directory)'
+  - task: PublishMutationReport@0
+    displayName: Publish Mutation Test Report
+    inputs:
+      reportPattern: '**/mutation-report.html'
