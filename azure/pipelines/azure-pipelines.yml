@@ -47,13 +47,19 @@ jobs:
     displayName: Build
     inputs:
       command: 'build'
-      arguments: '$(Solution_File)'
+      arguments: '$(Solution_File) --no-restore'
   - task: DotNetCoreCLI@2
     displayName: Collect code coverage metrics with Coverlet
     inputs:
       command: 'test'
-      arguments: '$(Solution_File) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
-      publishTestResults: true
+      arguments: '$(Solution_File) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+      publishTestResults: false
+  - task: PublishTestResults@2
+    displayName: Publish Test Results
+    inputs:
+      testResultsFormat: 'XUnit'
+      testResultsFiles: '**/TEST-*.trx'
+      mergeTestResults: true
   - task: PublishCodeCoverageResults@1
     displayName: Publish code coverage report
     inputs:
