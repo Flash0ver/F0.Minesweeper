@@ -67,7 +67,7 @@ namespace F0.Minesweeper.Components
 
 		private bool TryUpdateStatus(MouseButtonType inputCommand)
 		{
-			if (!statusManager.CanMoveNext(inputCommand))
+			if (statusManager is null || !statusManager.CanMoveNext(inputCommand))
 			{
 				return false;
 			}
