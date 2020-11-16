@@ -23,10 +23,10 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		public void CanNext_UndefinedTransition_ReturnsFalse(CellStatusType currentStatus, MouseButtonType command)
 		{
 			// Arrange
-			CellStatusManager componentUnderTest = CellStatusManagerTestFactory.Get(currentStatus);
+			CellStatusManager componentUnderTest = CreateCellStatusManager(currentStatus);
 
 			// Act
-			bool result = componentUnderTest.CanNext(command);
+			bool result = componentUnderTest.CanMoveNext(command);
 
 			// Assert
 			result.Should().BeFalse();
@@ -41,10 +41,10 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		public void CanNext_DefinedTransition_ReturnsTrue(CellStatusType currentStatus, MouseButtonType command)
 		{
 			// Arrange
-			CellStatusManager componentUnderTest = CellStatusManagerTestFactory.Get(currentStatus);
+			CellStatusManager componentUnderTest = CreateCellStatusManager(currentStatus);
 
 			// Act
-			bool result = componentUnderTest.CanNext(command);
+			bool result = componentUnderTest.CanMoveNext(command);
 
 			// Assert
 			result.Should().BeTrue();
@@ -64,7 +64,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		public void MoveNext_UndefinedTransition_Throws(CellStatusType currentStatus, MouseButtonType command)
 		{
 			// Arrange
-			CellStatusManager componentUnderTest = CellStatusManagerTestFactory.Get(currentStatus);
+			CellStatusManager componentUnderTest = CreateCellStatusManager(currentStatus);
 
 			// Act && Assert
 			Action testAction = () => componentUnderTest.MoveNext(command);
@@ -80,7 +80,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		public void MoveNext_DefinedTransition_ReturnsNextStatus(CellStatusType currentStatus, MouseButtonType command, CellStatusType expectedNextStatus)
 		{
 			// Arrange
-			CellStatusManager componentUnderTest = CellStatusManagerTestFactory.Get(currentStatus);
+			CellStatusManager componentUnderTest = CreateCellStatusManager(currentStatus);
 
 			// Act
 			CellStatusType result = componentUnderTest.MoveNext(command);
@@ -89,17 +89,14 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			result.Should().Be(expectedNextStatus);
 		}
 
-		private static class CellStatusManagerTestFactory
+		private static CellStatusManager CreateCellStatusManager(CellStatusType currentStatus)
 		{
-			internal static CellStatusManager Get(CellStatusType currentStatus)
-			{
-				var componentForTest = new CellStatusManager();
+			var componentForTest = new CellStatusManager();
 
-				FieldInfo? currentStatusField = typeof(CellStatusManager).GetField("currentStatus", BindingFlags.NonPublic | BindingFlags.Instance);
-				currentStatusField?.SetValue(componentForTest, currentStatus);
+			FieldInfo? currentStatusField = typeof(CellStatusManager).GetField("currentStatus", BindingFlags.NonPublic | BindingFlags.Instance);
+			currentStatusField?.SetValue(componentForTest, currentStatus);
 
-				return componentForTest;
-			}
+			return componentForTest;
 		}
 	}
 }

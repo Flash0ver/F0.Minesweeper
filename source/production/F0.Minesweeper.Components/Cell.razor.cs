@@ -14,11 +14,11 @@ namespace F0.Minesweeper.Components
 		public Location? Location { get; set; }
 
 		[Inject]
-		private ICellStatusManager statusManager { get; set; }
+		private ICellStatusManager? statusManager { get; set; }
 
 		private string StatusText
 		{
-			get => statusText ?? string.Empty;
+			get => statusText;
 			set
 			{
 				if (statusText != value)
@@ -67,7 +67,7 @@ namespace F0.Minesweeper.Components
 
 		private bool TryUpdateStatus(MouseButtonType inputCommand)
 		{
-			if (!statusManager.CanNext(inputCommand))
+			if (!statusManager.CanMoveNext(inputCommand))
 			{
 				return false;
 			}
@@ -78,13 +78,6 @@ namespace F0.Minesweeper.Components
 		}
 
 		private string MapToText(CellStatusType status)
-		{
-			if (!translations.TryGetValue(status, out var translation))
-			{
-				return $"!!{status}!!";
-			}
-
-			return translation;
-		}
+			=> translations.TryGetValue(status, out string? translation) ? translation : $"!!{status}!!";
 	}
 }

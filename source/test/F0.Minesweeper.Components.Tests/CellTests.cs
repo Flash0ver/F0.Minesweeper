@@ -13,12 +13,19 @@ namespace F0.Minesweeper.Components.Tests
 {
 	public class CellTests : TestContext
 	{
-		Mock<ICellStatusManager> cellStatusManagerMock;
+		private readonly Mock<ICellStatusManager> cellStatusManagerMock;
 
 		public CellTests()
 		{
-			cellStatusManagerMock = new Mock<ICellStatusManager>();
+			// todo: Make strict
+			cellStatusManagerMock = new Mock<ICellStatusManager>(MockBehavior.Strict);
 			Services.AddSingleton(cellStatusManagerMock.Object);
+		}
+
+		public override void Dispose()
+		{
+			Mock.VerifyAll(cellStatusManagerMock);
+			base.Dispose();
 		}
 
 		[Fact]
@@ -54,7 +61,7 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<button>Uncovered</button>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanNext(MouseButtonType.Left)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left)).Returns(CellStatusType.Uncovered);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
@@ -73,7 +80,7 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<button>!!Undefined!!</button>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanNext(MouseButtonType.Left)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left)).Returns(CellStatusType.Undefined);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
@@ -92,7 +99,7 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<button>Flagged</button>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanNext(MouseButtonType.Right)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right)).Returns(CellStatusType.Flagged);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
@@ -111,7 +118,7 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<button>?</button>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanNext(MouseButtonType.Right)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right)).Returns(CellStatusType.Unsure);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
@@ -130,7 +137,7 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<button>!!Undefined!!</button>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanNext(MouseButtonType.Right)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right)).Returns(CellStatusType.Undefined);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));

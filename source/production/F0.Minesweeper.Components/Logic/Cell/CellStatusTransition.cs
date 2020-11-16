@@ -1,8 +1,9 @@
+using System;
 using F0.Minesweeper.Components.Abstractions.Enums;
 
 namespace F0.Minesweeper.Components.Logic.Cell
 {
-	internal class CellStatusTransition
+	internal class CellStatusTransition : IEquatable<CellStatusTransition>
 	{
 		private readonly CellStatusType processState;
 		private readonly MouseButtonType command;
@@ -13,19 +14,31 @@ namespace F0.Minesweeper.Components.Logic.Cell
 			this.command = command;
 		}
 
-		public override int GetHashCode()
+		public static bool operator ==(CellStatusTransition left, CellStatusTransition right)
 		{
-			unchecked
+			if (left is null)
 			{
-				return 23 + 19 * processState.GetHashCode() + 19 * processState.GetHashCode();
+				return right is null;
 			}
+			return left.Equals(right);
 		}
+
+		public static bool operator !=(CellStatusTransition left, CellStatusTransition right)
+		{
+			return !(left == right);
+		}
+
+		public override int GetHashCode() => HashCode.Combine(processState, command);
 
 		public override bool Equals(object? obj)
 		{
-			var other = obj as CellStatusTransition;
+			return obj is CellStatusTransition
+				&& Equals(obj as CellStatusTransition);
+		}
 
-			return other != null
+		public bool Equals(CellStatusTransition? other)
+		{
+			return other is not null
 				&& processState == other.processState
 				&& command == other.command;
 		}

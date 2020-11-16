@@ -1,5 +1,4 @@
 using Bunit;
-using Bunit.Rendering;
 using F0.Minesweeper.Components.Abstractions;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -73,7 +72,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void Rendering_OneCellShown_MarkupIsCorrect()
 		{
 			// Arrange
-			const string expectedMarkup = "<h3>Minefield</h3><table><tr><td><button diff:ignore /></td></tr></table>";
+			const string expectedMarkup = "<h3>Minefield</h3><table><tr><td diff:ignore></td></tr></table>";
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(1, 1));
 			

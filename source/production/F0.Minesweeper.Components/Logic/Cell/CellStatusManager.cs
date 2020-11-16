@@ -23,7 +23,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 			};
 		}
 
-		public bool CanNext(MouseButtonType command)
+		public bool CanMoveNext(MouseButtonType command)
 		{
 			return GetNext(command).CanMoveNext;
 		}
@@ -45,12 +45,11 @@ namespace F0.Minesweeper.Components.Logic.Cell
 		{
 			var transition = new CellStatusTransition(currentStatus, command);
 
-			if (!transitions.TryGetValue(transition, out CellStatusType nextStatus))
+			if (transitions.TryGetValue(transition, out CellStatusType nextStatus))
 			{
-				return (false, CellStatusType.Undefined);
+				return (true, nextStatus);
 			}
-
-			return (true, nextStatus);
+			return (false, CellStatusType.Undefined);
 		}
 	}
 }
