@@ -75,7 +75,7 @@ namespace F0.Minesweeper.Components.Tests
 			const string expectedMarkup = "<h3>Minefield</h3><table><tr><td diff:ignore></td></tr></table>";
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(1, 1));
-			
+
 			// Act
 			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
 

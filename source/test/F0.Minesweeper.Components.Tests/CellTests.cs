@@ -1,6 +1,5 @@
 using System;
 using Bunit;
-using Bunit.Rendering;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Logic.Abstractions;
