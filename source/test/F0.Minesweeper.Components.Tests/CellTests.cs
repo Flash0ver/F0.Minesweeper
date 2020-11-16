@@ -42,7 +42,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void Rendering_LocationProvided_ShowsCell(uint x, uint y)
 		{
 			// Arrange
-			string expectedMarkup = "<button>Covered</button>";
+			string expectedMarkup = "<div><button>Covered</button></div>";
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(x, y));
 
@@ -58,7 +58,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnClick_StatusManagerReturnsUncovered_ChangesTextToUncovered()
 		{
 			// Arrange
-			string expectedMarkup = "<button>Uncovered</button>";
+			string expectedMarkup = "<div><button>Uncovered</button></div>";
 
 			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left)).Returns(CellStatusType.Uncovered);
@@ -77,7 +77,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnClick_StatusManagerReturnsUndefined_ChangesTextToSpecialUndefinedValue()
 		{
 			// Arrange
-			string expectedMarkup = "<button>!!Undefined!!</button>";
+			string expectedMarkup = "<div><button>!!Undefined!!</button></div>";
 
 			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left)).Returns(CellStatusType.Undefined);
@@ -96,7 +96,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnRightClick_StatusManagerReturnsFlagged_ChangesTextToFlagged()
 		{
 			// Arrange
-			string expectedMarkup = "<button>Flagged</button>";
+			string expectedMarkup = "<div><button>Flagged</button></div>";
 
 			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right)).Returns(CellStatusType.Flagged);
@@ -115,7 +115,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnRightClick_StatusManagerReturnsUnsure_ChangesTextToQuestionMark()
 		{
 			// Arrange
-			string expectedMarkup = "<button>?</button>";
+			string expectedMarkup = "<div><button>?</button></div>";
 
 			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right)).Returns(CellStatusType.Unsure);
@@ -134,7 +134,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnRightClick_StatusManagerReturnsUndefined_ChangesTextToSpecialUndefinedValue()
 		{
 			// Arrange
-			string expectedMarkup = "<button>!!Undefined!!</button>";
+			string expectedMarkup = "<div><button>!!Undefined!!</button></div>";
 
 			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right)).Returns(CellStatusType.Undefined);

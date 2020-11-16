@@ -19,7 +19,7 @@ namespace F0.Minesweeper.Components.Tests
 		{
 			// Arrange
 			const string expectedLabelText = "Minesweeper is played on a Minefield and not within a black hole! Provide a valid size!";
-			string expectedMarkup = $"<h3>Minefield</h3><label>{expectedLabelText}</label>";
+			string expectedMarkup = $"<div><h3>Minefield</h3><label>{expectedLabelText}</label></div>";
 
 			// Act
 			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>();
@@ -36,7 +36,7 @@ namespace F0.Minesweeper.Components.Tests
 		{
 			// Arrange
 			const string expectedLabelText = "Minesweeper is played on a Minefield and not within a black hole! Provide a valid size!";
-			string expectedMarkup = $"<h3>Minefield</h3><label>{expectedLabelText}</label>";
+			string expectedMarkup = $"<div><h3>Minefield</h3><label>{expectedLabelText}</label></div>";
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(width, height));
 
@@ -72,7 +72,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void Rendering_OneCellShown_MarkupIsCorrect()
 		{
 			// Arrange
-			const string expectedMarkup = "<h3>Minefield</h3><table><tr><td diff:ignore></td></tr></table>";
+			const string expectedMarkup = "<div><h3>Minefield</h3><table><tr><td><div diff:ignore /></td></tr></table></div>";
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Size), new MinefieldSize(1, 1));
 
