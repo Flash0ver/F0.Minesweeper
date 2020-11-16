@@ -52,7 +52,7 @@ jobs:
     displayName: Collect code coverage metrics with Coverlet
     inputs:
       command: 'test'
-      arguments: '$(Solution_File) --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+      arguments: '$(Solution_File) --no-build --logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/'
       publishTestResults: false
   - task: PublishTestResults@2
     displayName: Publish Test Results
