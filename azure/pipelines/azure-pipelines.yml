@@ -57,7 +57,7 @@ jobs:
   - task: PublishTestResults@2
     displayName: Publish Test Results
     inputs:
-      testResultsFormat: 'XUnit'
+      testResultsFormat: 'VSTest'
       testResultsFiles: '**/*.trx'
       mergeTestResults: true
   - task: PublishCodeCoverageResults@1
