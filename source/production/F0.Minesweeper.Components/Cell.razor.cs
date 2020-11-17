@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using F0.Minesweeper.Components.Abstractions;
@@ -16,7 +16,7 @@ namespace F0.Minesweeper.Components
 		[Inject]
 		private ICellStatusManager? statusManager { get; set; }
 
-		private string StatusText
+		private char StatusText
 		{
 			get => statusText;
 			set
@@ -28,9 +28,9 @@ namespace F0.Minesweeper.Components
 			}
 		}
 
-		private static Dictionary<CellStatusType, string> translations = InitializeTranslations();
+		private static Dictionary<CellStatusType, char> translations = InitializeTranslations();
 
-		private string statusText;
+		private char statusText;
 
 		public Cell()
 		{
@@ -45,14 +45,14 @@ namespace F0.Minesweeper.Components
 			}
 		}
 
-		private static Dictionary<CellStatusType, string> InitializeTranslations()
+		private static Dictionary<CellStatusType, char> InitializeTranslations()
 		{
-			return new Dictionary<CellStatusType, string>
+			return new Dictionary<CellStatusType, char>
 				{
-					{ CellStatusType.Covered, "Covered" },
-					{ CellStatusType.Flagged, "Flagged" },
-					{ CellStatusType.Uncovered, "Uncovered" },
-					{ CellStatusType.Unsure, "?" },
+					{ CellStatusType.Covered, 'C' },
+					{ CellStatusType.Flagged, '⚐' },
+					{ CellStatusType.Uncovered, 'U' },
+					{ CellStatusType.Unsure, '?' },
 				};
 		}
 
@@ -77,7 +77,7 @@ namespace F0.Minesweeper.Components
 			return true;
 		}
 
-		private string MapToText(CellStatusType status)
-			=> translations.TryGetValue(status, out string? translation) ? translation : $"!!{status}!!";
+		private char MapToText(CellStatusType status)
+			=> translations.TryGetValue(status, out char translation) ? translation : '!';
 	}
 }
