@@ -32,8 +32,8 @@ namespace F0.Minesweeper.Components.Logic.Cell
 
 		public override bool Equals(object? obj)
 		{
-			return obj is CellStatusTransition
-				&& Equals(obj as CellStatusTransition);
+			return obj is CellStatusTransition transition
+				&& Equals(transition);
 		}
 
 		public bool Equals(CellStatusTransition? other)
