@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.Minelayer;
 
@@ -10,14 +11,14 @@ namespace F0.Minesweeper.Logic
 	internal sealed class Minefield : IMinefield
 	{
 		private readonly uint width, height, mineCount;
-		private IMinelayer mineplacer;
+		private readonly IMinelayer mineplacer;
 		private bool isFirstUncover = true;
-		private bool[,] minefield;
+		private readonly bool[,] minefield;
 		private string DebugVisualization
 		{
 			get
 			{
-				System.Text.StringBuilder sb = new System.Text.StringBuilder();
+				var sb = new StringBuilder();
 				for (int j = 0; j < height; j++)
 				{
 					for (int i = 0; i < width; i++)
@@ -30,17 +31,17 @@ namespace F0.Minesweeper.Logic
 			}
 		}
 
-		internal Minefield(uint width, uint height, uint mineCount, MinefieldFirstUncoverBehaviour generationOptions)
+		internal Minefield(uint width, uint height, uint mineCount, MinefieldFirstUncoverBehavior generationOptions)
 		{
 			this.width = width;
 			this.height = height;
 			this.mineCount = mineCount;
 			mineplacer = generationOptions switch
 			{
-				MinefieldFirstUncoverBehaviour.MayYieldMine => new RandomMinelayer(),
-				MinefieldFirstUncoverBehaviour.CannotYieldMine => new SafeMinelayer(),
-				MinefieldFirstUncoverBehaviour.WithoutAdjacentMines => new FirstEmptyMinelayer(),
-				MinefieldFirstUncoverBehaviour.AlwaysYieldsMine => new ImpossibleMinelayer(),
+				MinefieldFirstUncoverBehavior.MayYieldMine => new RandomMinelayer(),
+				MinefieldFirstUncoverBehavior.CannotYieldMine => new SafeMinelayer(),
+				MinefieldFirstUncoverBehavior.WithoutAdjacentMines => new FirstEmptyMinelayer(),
+				MinefieldFirstUncoverBehavior.AlwaysYieldsMine => new ImpossibleMinelayer(),
 				_ => throw new NotImplementedException($"Enumeration {generationOptions.GetType().Name}.{generationOptions} not implemented."),
 			};
 			minefield = new bool[width, height];

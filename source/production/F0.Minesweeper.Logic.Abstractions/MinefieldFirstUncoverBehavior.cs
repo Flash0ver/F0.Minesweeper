@@ -1,6 +1,6 @@
 namespace F0.Minesweeper.Logic.Abstractions
 {
-	public enum MinefieldFirstUncoverBehaviour
+	public enum MinefieldFirstUncoverBehavior
 	{
 		MayYieldMine,
 		CannotYieldMine,

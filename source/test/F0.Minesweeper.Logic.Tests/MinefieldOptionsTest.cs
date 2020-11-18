@@ -4,7 +4,7 @@ using Xunit;
 
 namespace F0.Minesweeper.Logic.Tests
 {
-	public class MinefieldDifficultyTest
+	public class MinefieldOptionsTest
 	{
 		private readonly MinefieldOptions easy = MinefieldOptions.Easy;
 		private readonly MinefieldOptions medium = MinefieldOptions.Medium;

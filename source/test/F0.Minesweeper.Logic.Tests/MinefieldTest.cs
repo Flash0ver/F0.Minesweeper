@@ -9,7 +9,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[Fact]
 		public void MinefieldUncover_Should_ReturnAtLeastTheClickedLocation()
 		{
-			var minefieldUnderTest = new Minefield(5, 7, 11, Abstractions.MinefieldFirstUncoverBehaviour.MayYieldMine);
+			var minefieldUnderTest = new Minefield(5, 7, 11, Abstractions.MinefieldFirstUncoverBehavior.MayYieldMine);
 			var locationTestValue = new Location(3, 4);
 
 			var result = minefieldUnderTest.Uncover(locationTestValue);
