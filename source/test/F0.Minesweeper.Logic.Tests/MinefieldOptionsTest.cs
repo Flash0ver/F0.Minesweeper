@@ -26,5 +26,21 @@ namespace F0.Minesweeper.Logic.Tests
 			medium.MineCount.Should().BeGreaterThan(easy.MineCount);
 			hard.MineCount.Should().BeGreaterThan(medium.MineCount);
 		}
+
+		[Fact]
+		public void EasyDifficultyLevel_Should_HaveTheCorrectMinefieldFirstUncoverBehavior()
+		{
+			MinefieldOptions.Easy.GenerationOption.Should().Be(MinefieldFirstUncoverBehavior.WithoutAdjacentMines);
+		}
+		[Fact]
+		public void MediumDifficultyLevel_Should_HaveTheCorrectMinefieldFirstUncoverBehavior()
+		{
+			MinefieldOptions.Medium.GenerationOption.Should().Be(MinefieldFirstUncoverBehavior.CannotYieldMine);
+		}
+		[Fact]
+		public void HardDifficultyLevel_Should_HaveTheCorrectMinefieldFirstUncoverBehavior()
+		{
+			MinefieldOptions.Hard.GenerationOption.Should().Be(MinefieldFirstUncoverBehavior.MayYieldMine);
+		}
 	}
 }
