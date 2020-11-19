@@ -1,23 +1,25 @@
-<h3>Minefield</h3>
+<div>
+	<h3>Minefield</h3>
 
-@if (isValidSize)
-{
-<table>
-	@for (uint currentWidth = 0; currentWidth < @Size.Width; currentWidth++)
+	@if (isValidSize)
 	{
-		<tr>
-			@for (uint currentHeight = 0; currentHeight < @Size.Height; currentHeight++)
+		<table>
+			@for (uint currentWidth = 0; currentWidth < @Size.Width; currentWidth++)
 			{
-				var location = new Location(currentWidth, currentHeight);
-				<td>
-					<Cell Location="location" />
-				</td>
+				<tr>
+					@for (uint currentHeight = 0; currentHeight < @Size.Height; currentHeight++)
+					{
+						var location = new Location(currentWidth, currentHeight);
+						<td>
+							<Cell Location="location" />
+						</td>
+					}
+				</tr>
 			}
-		</tr>
+		</table>
 	}
-</table>
-}
-else
-{
-	<label>Minesweeper is played on a Minefield and not within a black hole! Provide a valid size!</label>
-}
+	else
+	{
+		<label>Minesweeper is played on a Minefield and not within a black hole! Provide a valid size!</label>
+	}
+</div>
