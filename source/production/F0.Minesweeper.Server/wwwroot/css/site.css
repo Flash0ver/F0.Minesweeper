@@ -6,6 +6,10 @@ a {
 	color: #0366d6;
 }
 
+.content {
+	padding-top: 1.1rem;
+}
+
 #blazor-error-ui {
 	background: lightyellow;
 	bottom: 0;
@@ -18,12 +22,12 @@ a {
 	z-index: 1000;
 }
 
-#blazor-error-ui .dismiss {
-	cursor: pointer;
-	position: absolute;
-	right: 0.75rem;
-	top: 0.5rem;
-}
+	#blazor-error-ui .dismiss {
+		cursor: pointer;
+		position: absolute;
+		right: 0.75rem;
+		top: 0.5rem;
+	}
 
 .text-info {
 	color: #17a2b8 !important
