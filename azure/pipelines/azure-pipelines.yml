@@ -13,7 +13,7 @@ pr:
 
 variables:
   DOTNET_NOLOGO: true
-  NuGet_Configuration_File: $(System.DefaultWorkingDirectory)/source/nuget.config
+  NuGet_Configuration_File: $(System.DefaultWorkingDirectory)/nuget.config
   Build_Configuration: 'Release'
 
 jobs:

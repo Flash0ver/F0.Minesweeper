@@ -20,7 +20,7 @@ jobs:
         os: [macos-10.15, ubuntu-18.04, windows-2019]
 
     env:
-      NuGet_Configuration_File: ./source/nuget.config
+      NuGet_Configuration_File: ./nuget.config
       Solution_File: ./source/F0.Minesweeper.sln
 
     steps:
