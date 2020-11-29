@@ -6,7 +6,7 @@
 		],
 		"threshold-high": 80,
 		"threshold-low": 60,
-		"threshold-break": 40,
+		"threshold-break": 0,
 		"ignore-methods": [
 			"ToString",
 			"ConfigureAwait"
