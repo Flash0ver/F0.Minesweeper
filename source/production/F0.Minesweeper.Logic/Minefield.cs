@@ -1,35 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.Minelayer;
 
 namespace F0.Minesweeper.Logic
 {
-	[DebuggerDisplay("{" + nameof(DebugVisualization) + ", nq}")]
 	internal sealed class Minefield : IMinefield
 	{
 		private readonly uint width, height, mineCount;
 		private readonly IMinelayer mineplacer;
 		private bool isFirstUncover = true;
-		private readonly bool[,] minefield;
-		private string DebugVisualization
-		{
-			get
-			{
-				var sb = new StringBuilder();
-				for (int j = 0; j < height; j++)
-				{
-					for (int i = 0; i < width; i++)
-					{
-						sb.Append(minefield[i, j] ? "☒" : "☐");
-					}
-					sb.AppendLine();
-				}
-				return sb.ToString();
-			}
-		}
+		private readonly List<Cell> minefield;
+		private IEnumerable<Location> AllLocations => minefield.Select(m => m.Location);
 
 		internal Minefield(uint width, uint height, uint mineCount, MinefieldFirstUncoverBehavior generationOptions)
 		{
@@ -44,7 +30,7 @@ namespace F0.Minesweeper.Logic
 				MinefieldFirstUncoverBehavior.AlwaysYieldsMine => new ImpossibleMinelayer(),
 				_ => throw new NotImplementedException($"Enumeration {generationOptions.GetType().Name}.{generationOptions} not implemented."),
 			};
-			minefield = new bool[width, height];
+			minefield = new List<Cell>();
 		}
 
 		internal Minefield(MinefieldOptions minefieldOptions) : this(
@@ -63,11 +49,47 @@ namespace F0.Minesweeper.Logic
 				isFirstUncover = false;
 			}
 
-			// TODO: implement real logic
-			return new GameUpdateReport(GameStatus.InProgress,
-				new IUncoveredCell[] {
-					new UncoveredCell(new Location(location.X, location.Y), false, 1)
-				});
+			var allUncoveredCells = UncoverCells(location);
+
+			var gameStatus = GetGameStatus();
+
+			return new GameUpdateReport(gameStatus, allUncoveredCells.ToArray());
+		}
+
+		private GameStatus GetGameStatus()
+		{
+			if (minefield.Any(cell => cell.IsMine && cell.Uncovered))
+			{
+				return GameStatus.IsLost;
+			}
+			if (minefield.All(cell => !cell.IsMine && cell.Uncovered))
+			{
+				return GameStatus.IsWon;
+			}
+			return GameStatus.InProgress;
+		}
+
+		private List<Cell> UncoverCells(Location location)
+		{
+			var returnCellList = new List<Cell>();
+			var uncoveredCell = minefield.Single(cell => cell.Location == location);
+			uncoveredCell.Uncovered = true;
+			returnCellList.Add(uncoveredCell);
+
+			if (uncoveredCell.IsMine || uncoveredCell.AdjacentMineCount > 0)
+			{
+				return returnCellList;
+			}
+
+			var locationsAroundCell = Utilities.GetLocationsAreaAroundLocation(AllLocations, location)
+				.Where(l => l != uncoveredCell.Location);
+
+			foreach (var l in locationsAroundCell)
+			{
+				returnCellList.AddRange(UncoverCells(l));
+			}
+
+			return returnCellList;
 		}
 
 		private void GenerateMinefield(Location clickedLocation)
@@ -78,14 +100,30 @@ namespace F0.Minesweeper.Logic
 				for (uint y = 0; y < height; y++)
 				{
 					allLocations.Add(new Location(x, y));
+					minefield.Add(new Cell(new Location(x, y), false, 0, false));
 				}
 			}
 
 			var mineLocations = mineplacer.PlaceMines(allLocations, mineCount, clickedLocation);
 
-			foreach (var mineLocation in mineLocations)
+			foreach (var minefieldCell in minefield)
 			{
-				minefield[mineLocation.X, mineLocation.Y] = true;
+				if (mineLocations.Any(l => l == minefieldCell.Location))
+				{
+					minefieldCell.IsMine = true;
+					continue;
+				}
+
+				var locationsArea = Utilities.GetLocationsAreaAroundLocation(allLocations, minefieldCell.Location);
+
+				byte countAdjactentMines = (byte)mineLocations
+					.Join(locationsArea,
+						mineLoc => mineLoc,
+						areaLoc => areaLoc,
+						(mineLoc, areaLoc) => mineLoc)
+					.Count();
+
+				minefieldCell.AdjacentMineCount = countAdjactentMines;
 			}
 		}
 	}
