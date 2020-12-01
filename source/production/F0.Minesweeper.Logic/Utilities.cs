@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using F0.Minesweeper.Logic.Abstractions;
 
 namespace F0.Minesweeper.Logic
 {
 	static class Utilities
 	{
-		internal static List<Location> GetLocationsAreaAroundLocation(IEnumerable<Location> allLocations, Location location)
+		internal static IEnumerable<Location> GetLocationsAreaAroundLocation(IEnumerable<Location> allLocations, Location location, bool exludeGivenLocation)
 		{
 			var returnLocations = new List<Location>();
 			uint x = location.X;
@@ -19,6 +17,12 @@ namespace F0.Minesweeper.Logic
 			{
 				for (int yi = -1; yi <= 1; yi++)
 				{
+					if (exludeGivenLocation
+						&& xi == 0 && yi == 0)
+					{
+						continue;
+					}
+
 					var locationToLookFor = new Location(
 						(uint)Math.Max(x + xi, 0),
 						(uint)Math.Max(y + yi, 0));
@@ -32,7 +36,7 @@ namespace F0.Minesweeper.Logic
 				}
 			}
 
-			return returnLocations;
+			return returnLocations.Distinct();
 		}
 	}
 }

@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.Minelayer;
 
@@ -49,9 +46,9 @@ namespace F0.Minesweeper.Logic
 				isFirstUncover = false;
 			}
 
-			var allUncoveredCells = UncoverCells(location);
+			List<Cell> allUncoveredCells = UncoverCells(location);
 
-			var gameStatus = GetGameStatus();
+			GameStatus gameStatus = GetGameStatus();
 
 			return new GameUpdateReport(gameStatus, allUncoveredCells.ToArray());
 		}
@@ -81,8 +78,7 @@ namespace F0.Minesweeper.Logic
 				return returnCellList;
 			}
 
-			var locationsAroundCell = Utilities.GetLocationsAreaAroundLocation(AllLocations, location)
-				.Where(l => l != uncoveredCell.Location);
+			IEnumerable<Location> locationsAroundCell = Utilities.GetLocationsAreaAroundLocation(AllLocations, location, true);
 
 			foreach (var l in locationsAroundCell)
 			{
@@ -114,7 +110,7 @@ namespace F0.Minesweeper.Logic
 					continue;
 				}
 
-				var locationsArea = Utilities.GetLocationsAreaAroundLocation(allLocations, minefieldCell.Location);
+				var locationsArea = Utilities.GetLocationsAreaAroundLocation(allLocations, minefieldCell.Location, false);
 
 				byte countAdjactentMines = (byte)mineLocations
 					.Join(locationsArea,

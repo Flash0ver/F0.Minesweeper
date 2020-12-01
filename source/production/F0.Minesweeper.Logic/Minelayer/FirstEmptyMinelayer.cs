@@ -14,7 +14,7 @@ namespace F0.Minesweeper.Logic.Minelayer
 
 		private static IEnumerable<Location> RemoveLocationsAroundClickedLocation(IList<Location> locations, Location clickLocation)
 		{
-			List<Location> locationsToDelete = Utilities.GetLocationsAreaAroundLocation(locations, clickLocation);
+			IEnumerable<Location> locationsToDelete = Utilities.GetLocationsAreaAroundLocation(locations, clickLocation, false);
 			foreach (var locationToDelete in locationsToDelete)
 			{
 				locations.Remove(locationToDelete);
