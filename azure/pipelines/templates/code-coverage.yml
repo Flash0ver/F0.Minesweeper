@@ -36,12 +36,12 @@ jobs:
     displayName: Build
     inputs:
       command: 'build'
-      arguments: '$(Solution_File) --no-restore'
+      arguments: '$(Solution_File) --no-restore --nologo'
   - task: DotNetCoreCLI@2
     displayName: Collect code coverage metrics with Coverlet
     inputs:
       command: 'test'
-      arguments: '$(Solution_File) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/'
+      arguments: '$(Solution_File) --no-build --nologo /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/'
       publishTestResults: false
   - task: PublishCodeCoverageResults@1
     displayName: Publish code coverage report

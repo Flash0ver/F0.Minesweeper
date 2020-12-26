@@ -36,12 +36,12 @@ jobs:
     displayName: Build
     inputs:
       command: 'build'
-      arguments: '$(Solution_File) --no-restore'
+      arguments: '$(Solution_File) --no-restore --nologo'
   - task: DotNetCoreCLI@2
-    displayName: Collect code coverage metrics with Coverlet
+    displayName: Generate Test Results
     inputs:
       command: 'test'
-      arguments: '$(Solution_File) --no-build --logger trx'
+      arguments: '$(Solution_File) --no-build --nologo --logger trx'
       publishTestResults: false
   - task: PublishTestResults@2
     displayName: Publish Test Results

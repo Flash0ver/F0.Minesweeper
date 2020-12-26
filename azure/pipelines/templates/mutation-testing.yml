@@ -12,6 +12,7 @@ jobs:
 
   variables:
     NuGet_Configuration_File: $(System.DefaultWorkingDirectory)/nuget.config
+    Tool_Manifest_File: $(System.DefaultWorkingDirectory)/.config/dotnet-tools.json
     Test_Project_Directory: $(System.DefaultWorkingDirectory)/source/test/F0.Minesweeper.Logic.Tests
     Stryker_Configuration_File: $(System.DefaultWorkingDirectory)/source/test/stryker-config.json
 
@@ -30,7 +31,7 @@ jobs:
     inputs:
       command: 'custom'
       custom: 'tool'
-      arguments: 'restore --configfile $(NuGet_Configuration_File)'
+      arguments: 'restore --configfile $(NuGet_Configuration_File) --tool-manifest $(Tool_Manifest_File) --no-cache'
   - task: DotNetCoreCLI@2
     displayName: Run dotnet-stryker
     inputs:
