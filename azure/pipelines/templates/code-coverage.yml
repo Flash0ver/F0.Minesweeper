@@ -1,0 +1,51 @@
+parameters:
+- name: vmImage
+  displayName: 'Agent'
+  type: string
+  default: 'windows-latest'
+
+jobs:
+- job: code_coverage
+  displayName: Code Coverage
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+
+  variables:
+    Solution_File: $(System.DefaultWorkingDirectory)/source/F0.Minesweeper.sln
+    NuGet_Configuration_File: $(System.DefaultWorkingDirectory)/nuget.config
+
+  steps:
+  - checkout: self
+    displayName: Checkout
+    fetchDepth: 1
+  - task: UseDotNet@2
+    displayName: Setup .NET SDK
+    inputs:
+      packageType: 'sdk'
+      useGlobalJson: true
+      performMultiLevelLookup: true
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: 'restore'
+      restoreArguments: '$(Solution_File)'
+      feedsToUse: 'config'
+      nugetConfigPath: '$(NuGet_Configuration_File)'
+      verbosityRestore: 'Minimal'
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      command: 'build'
+      arguments: '$(Solution_File) --no-restore'
+  - task: DotNetCoreCLI@2
+    displayName: Collect code coverage metrics with Coverlet
+    inputs:
+      command: 'test'
+      arguments: '$(Solution_File) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/'
+      publishTestResults: false
+  - task: PublishCodeCoverageResults@1
+    displayName: Publish code coverage report
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+      failIfCoverageEmpty: true

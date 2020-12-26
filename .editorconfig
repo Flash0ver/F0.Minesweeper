@@ -9,6 +9,10 @@ tab_width = 4
 trim_trailing_whitespace = true
 insert_final_newline = true
 
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
 [*.{cs,csx,vb,vbx}]
 max_line_length = 130
 
