@@ -1,7 +1,7 @@
 name: 'Azure Pipelines'
 
 trigger:
-  batch: true
+  batch: false
   branches:
     include:
     - main
