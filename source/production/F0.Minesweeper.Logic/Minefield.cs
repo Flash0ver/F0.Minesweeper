@@ -14,21 +14,19 @@ namespace F0.Minesweeper.Logic
 		private readonly List<Cell> minefield;
 		private IEnumerable<Location> AllLocations => minefield.Select(m => m.Location);
 
-		internal Minefield(uint width, uint height, uint mineCount, MinefieldFirstUncoverBehavior generationOptions)
-		{
-			this.width = width;
-			this.height = height;
-			this.mineCount = mineCount;
-			mineplacer = generationOptions switch
+		internal Minefield(uint width, uint height, uint mineCount, MinefieldFirstUncoverBehavior generationOptions) : this(
+			width,
+			height,
+			mineCount,
+			generationOptions switch
 			{
 				MinefieldFirstUncoverBehavior.MayYieldMine => new RandomMinelayer(),
 				MinefieldFirstUncoverBehavior.CannotYieldMine => new SafeMinelayer(),
 				MinefieldFirstUncoverBehavior.WithoutAdjacentMines => new FirstEmptyMinelayer(),
 				MinefieldFirstUncoverBehavior.AlwaysYieldsMine => new ImpossibleMinelayer(),
 				_ => throw new NotImplementedException($"Enumeration {generationOptions.GetType().Name}.{generationOptions} not implemented."),
-			};
-			minefield = new List<Cell>();
-		}
+			})
+		{ }
 
 		internal Minefield(MinefieldOptions minefieldOptions) : this(
 			minefieldOptions.Width,
@@ -36,6 +34,15 @@ namespace F0.Minesweeper.Logic
 			minefieldOptions.MineCount,
 			minefieldOptions.GenerationOption)
 		{ }
+
+		internal Minefield(uint width, uint height, uint mineCount, IMinelayer mineplacer)
+		{
+			this.width = width;
+			this.height = height;
+			this.mineCount = mineCount;
+			this.mineplacer = mineplacer;
+			minefield = new List<Cell>();
+		}
 
 		public IGameUpdateReport Uncover(uint x, uint y) => Uncover(new Location(x, y));
 		public IGameUpdateReport Uncover(Location location)
