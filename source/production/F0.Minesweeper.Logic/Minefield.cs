@@ -66,7 +66,9 @@ namespace F0.Minesweeper.Logic
 			{
 				return GameStatus.IsLost;
 			}
-			if (minefield.All(cell => !cell.IsMine && cell.Uncovered))
+			if (minefield
+				.Where(cell => !cell.IsMine)
+				.All(nonMineCell => nonMineCell.Uncovered))
 			{
 				return GameStatus.IsWon;
 			}
@@ -77,6 +79,12 @@ namespace F0.Minesweeper.Logic
 		{
 			var returnCellList = new List<Cell>();
 			var uncoveredCell = minefield.Single(cell => cell.Location == location);
+
+			if (uncoveredCell.Uncovered)
+			{
+				return returnCellList;
+			}
+
 			uncoveredCell.Uncovered = true;
 			returnCellList.Add(uncoveredCell);
 

@@ -24,9 +24,9 @@ namespace F0.Minesweeper.Logic.Tests
 			get
 			{
 				return new List<Location>{
-					new Location(0, 0),new Location(1, 0), new Location(2, 0),
-					new Location(0, 1),new Location(1, 1), new Location(2, 1),
-					new Location(0, 2),new Location(1, 2), new Location(2, 2)
+					new Location(0, 0), new Location(1, 0), new Location(2, 0),
+					new Location(0, 1), new Location(1, 1), new Location(2, 1),
+					new Location(0, 2), new Location(1, 2), new Location(2, 2)
 				};
 			}
 		}
@@ -39,8 +39,8 @@ namespace F0.Minesweeper.Logic.Tests
 				ClickedLocation = new Location(0, 0),
 				ExcludeSelf = false,
 				ExpectedResult = new List<Location>{
-					new Location(0,0), new Location(1,0),
-					new Location(0,1), new Location(1,1),
+					new Location(0, 0), new Location(1, 0),
+					new Location(0, 1), new Location(1, 1),
 				}
 			},
 			new GetLocationsAreaAroundLocationTestData{
@@ -48,8 +48,8 @@ namespace F0.Minesweeper.Logic.Tests
 				ClickedLocation = new Location(1, 0),
 				ExcludeSelf = false,
 				ExpectedResult = new List<Location>{
-					new Location(0,0), new Location(1,0),new Location(2, 0),
-					new Location(0,1), new Location(1,1),new Location(2, 1)
+					new Location(0, 0), new Location(1, 0), new Location(2, 0),
+					new Location(0, 1), new Location(1, 1), new Location(2, 1)
 				}
 			},
 			new GetLocationsAreaAroundLocationTestData{
@@ -57,8 +57,8 @@ namespace F0.Minesweeper.Logic.Tests
 				ClickedLocation = new Location(2, 0),
 				ExcludeSelf = false,
 				ExpectedResult = new List<Location>{
-					new Location(1,0),new Location(2, 0),
-					new Location(1,1),new Location(2, 1)
+					new Location(1, 0), new Location(2, 0),
+					new Location(1, 1), new Location(2, 1)
 				}
 			},
 			new GetLocationsAreaAroundLocationTestData{
@@ -66,9 +66,9 @@ namespace F0.Minesweeper.Logic.Tests
 				ClickedLocation = new Location(0, 1),
 				ExcludeSelf = false,
 				ExpectedResult = new List<Location>{
-					new Location(0, 0),new Location(1, 0),
-					new Location(0, 1),new Location(1, 1),
-					new Location(0, 2),new Location(1, 2)
+					new Location(0, 0), new Location(1, 0),
+					new Location(0, 1), new Location(1, 1),
+					new Location(0, 2), new Location(1, 2)
 				}
 			},
 			new GetLocationsAreaAroundLocationTestData{
@@ -76,9 +76,9 @@ namespace F0.Minesweeper.Logic.Tests
 				ClickedLocation = new Location(1, 1),
 				ExcludeSelf = false,
 				ExpectedResult = new List<Location>{
-					new Location(0, 0),new Location(1, 0), new Location(2, 0),
-					new Location(0, 1),new Location(1, 1), new Location(2, 1),
-					new Location(0, 2),new Location(1, 2), new Location(2, 2)
+					new Location(0, 0), new Location(1, 0), new Location(2, 0),
+					new Location(0, 1), new Location(1, 1), new Location(2, 1),
+					new Location(0, 2), new Location(1, 2), new Location(2, 2)
 				}
 			},
 			new GetLocationsAreaAroundLocationTestData{
@@ -96,8 +96,8 @@ namespace F0.Minesweeper.Logic.Tests
 				ClickedLocation = new Location(0, 2),
 				ExcludeSelf = false,
 					ExpectedResult = new List<Location>{
-					new Location(0, 1),new Location(1, 1),
-					new Location(0, 2),new Location(1, 2)
+					new Location(0, 1), new Location(1, 1),
+					new Location(0, 2), new Location(1, 2)
 				}
 			},
 			new GetLocationsAreaAroundLocationTestData{
@@ -105,8 +105,8 @@ namespace F0.Minesweeper.Logic.Tests
 				ClickedLocation = new Location(1, 2),
 				ExcludeSelf = false,
 				ExpectedResult = new List<Location>{
-					new Location(0, 1),new Location(1, 1), new Location(2, 1),
-					new Location(0, 2),new Location(1, 2), new Location(2, 2)
+					new Location(0, 1), new Location(1, 1), new Location(2, 1),
+					new Location(0, 2), new Location(1, 2), new Location(2, 2)
 				}
 			},
 			new GetLocationsAreaAroundLocationTestData{
@@ -120,14 +120,89 @@ namespace F0.Minesweeper.Logic.Tests
 			},
 			new GetLocationsAreaAroundLocationTestData{
 				AllLocations = TestField,
+				ClickedLocation = new Location(0, 0),
+				ExcludeSelf = true,
+				ExpectedResult = new List<Location>{
+					new Location(1, 0),
+					new Location(0, 1), new Location(1, 1),
+				}
+			},
+			new GetLocationsAreaAroundLocationTestData{
+				AllLocations = TestField,
+				ClickedLocation = new Location(1, 0),
+				ExcludeSelf = true,
+				ExpectedResult = new List<Location>{
+					new Location(0, 0), new Location(2, 0),
+					new Location(0, 1), new Location(1, 1), new Location(2, 1)
+				}
+			},
+			new GetLocationsAreaAroundLocationTestData{
+				AllLocations = TestField,
+				ClickedLocation = new Location(2, 0),
+				ExcludeSelf = true,
+				ExpectedResult = new List<Location>{
+					new Location(1, 0),
+					new Location(1, 1), new Location(2, 1)
+				}
+			},
+			new GetLocationsAreaAroundLocationTestData{
+				AllLocations = TestField,
+				ClickedLocation = new Location(0, 1),
+				ExcludeSelf = true,
+				ExpectedResult = new List<Location>{
+					new Location(0, 0), new Location(1, 0),
+					new Location(1, 1),
+					new Location(0, 2), new Location(1, 2)
+				}
+			},
+			new GetLocationsAreaAroundLocationTestData{
+				AllLocations = TestField,
 				ClickedLocation = new Location(1, 1),
 				ExcludeSelf = true,
 				ExpectedResult = new List<Location>{
-					new Location(0, 0),new Location(1, 0), new Location(2, 0),
-					new Location(0, 1),new Location(2, 1),
-					new Location(0, 2),new Location(1, 2), new Location(2, 2)
+					new Location(0, 0), new Location(1, 0), new Location(2, 0),
+					new Location(0, 1), new Location(2, 1),
+					new Location(0, 2), new Location(1, 2), new Location(2, 2)
+				}
+			},
+			new GetLocationsAreaAroundLocationTestData{
+				AllLocations = TestField,
+				ClickedLocation = new Location(2, 1),
+				ExcludeSelf = true,
+				ExpectedResult = new List<Location>{
+					new Location(1, 0), new Location(2, 0),
+					new Location(1, 1),
+					new Location(1, 2), new Location(2, 2)
+				}
+			},
+			new GetLocationsAreaAroundLocationTestData{
+				AllLocations = TestField,
+				ClickedLocation = new Location(0, 2),
+				ExcludeSelf = true,
+					ExpectedResult = new List<Location>{
+					new Location(0, 1), new Location(1, 1),
+					new Location(1, 2)
+				}
+			},
+			new GetLocationsAreaAroundLocationTestData{
+				AllLocations = TestField,
+				ClickedLocation = new Location(1, 2),
+				ExcludeSelf = true,
+				ExpectedResult = new List<Location>{
+					new Location(0, 1), new Location(1, 1), new Location(2, 1),
+					new Location(0, 2), new Location(2, 2)
+				}
+			},
+			new GetLocationsAreaAroundLocationTestData{
+				AllLocations = TestField,
+				ClickedLocation = new Location(2, 2),
+				ExcludeSelf = true,
+				ExpectedResult = new List<Location>{
+					new Location(1, 1), new Location(2, 1),
+					new Location(1, 2)
 				}
 			}
+
 		};
 	}
 

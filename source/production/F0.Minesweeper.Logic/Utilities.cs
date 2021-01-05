@@ -17,15 +17,15 @@ namespace F0.Minesweeper.Logic
 			{
 				for (int yi = -1; yi <= 1; yi++)
 				{
-					if (exludeGivenLocation
-						&& xi == 0 && yi == 0)
-					{
-						continue;
-					}
-
 					var locationToLookFor = new Location(
 						(uint)Math.Max(x + xi, 0),
 						(uint)Math.Max(y + yi, 0));
+
+					if (exludeGivenLocation
+						&& locationToLookFor == location)
+					{
+						continue;
+					}
 
 					var locationInArea = allLocations.SingleOrDefault(l => l == locationToLookFor);
 
