@@ -4,14 +4,14 @@
 	@if (isValidSize)
 	{
 		<table>
-			@for (uint currentWidth = 0; currentWidth < @Size.Width; currentWidth++)
+			@for (uint currentWidth = 0; currentWidth < Options.Width; currentWidth++)
 			{
 				<tr>
-					@for (uint currentHeight = 0; currentHeight < @Size.Height; currentHeight++)
+					@for (uint currentHeight = 0; currentHeight < Options.Height; currentHeight++)
 					{
 						var location = new Location(currentWidth, currentHeight);
 						<td>
-							<Cell Location="location" />
+							<Cell Location="location" @ref="cell" />
 						</td>
 					}
 				</tr>

@@ -7,43 +7,54 @@ namespace F0.Minesweeper.Components.Logic.Cell
 {
 	internal class CellStatusManager : ICellStatusManager
 	{
-		private readonly Dictionary<CellStatusTransition, CellStatusType> transitions;
-		private CellStatusType currentStatus;
+		public CellStatusType CurrentStatus { get; private set; }
 
+		private readonly Dictionary<CellStatusTransition, CellStatusType> transitions;
+		
 		internal CellStatusManager()
 		{
-			currentStatus = CellStatusType.Covered;
+			CurrentStatus = CellStatusType.Covered;
 			transitions = new Dictionary<CellStatusTransition, CellStatusType>
 			{
-				{ new CellStatusTransition(CellStatusType.Covered, MouseButtonType.Left), CellStatusType.Uncovered },
-				{ new CellStatusTransition(CellStatusType.Covered, MouseButtonType.Right), CellStatusType.Flagged },
-				{ new CellStatusTransition(CellStatusType.Flagged, MouseButtonType.Right), CellStatusType.Unsure },
-				{ new CellStatusTransition(CellStatusType.Unsure, MouseButtonType.Left), CellStatusType.Uncovered },
-				{ new CellStatusTransition(CellStatusType.Unsure, MouseButtonType.Right), CellStatusType.Covered }
+				{ new CellStatusTransition(CellStatusType.Covered, new (MouseButtonType.Left, false)), CellStatusType.Uncovered },
+				{ new CellStatusTransition(CellStatusType.Covered, new (MouseButtonType.Left, true)), CellStatusType.Mine },
+				{ new CellStatusTransition(CellStatusType.Covered, new (MouseButtonType.Left)), CellStatusType.Undefined },
+				{ new CellStatusTransition(CellStatusType.Covered, new (MouseButtonType.Right)), CellStatusType.Flagged },
+				{ new CellStatusTransition(CellStatusType.Flagged, new (MouseButtonType.Right)), CellStatusType.Unsure },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (MouseButtonType.Left, false)), CellStatusType.Uncovered },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (MouseButtonType.Left, true)), CellStatusType.Mine },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (MouseButtonType.Left)), CellStatusType.Undefined },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (MouseButtonType.Right)), CellStatusType.Covered }
 			};
 		}
 
-		public bool CanMoveNext(MouseButtonType command)
+		public bool CanMoveNext(MouseButtonType command, bool? isMine)
 		{
-			return GetNext(command).CanMoveNext;
+			return GetNext(command, isMine).CanMoveNext;
 		}
 
-		public CellStatusType MoveNext(MouseButtonType command)
+		public CellStatusType MoveNext(MouseButtonType command, bool? isMine)
 		{
-			var getNextResult = GetNext(command);
+			var getNextResult = GetNext(command, isMine);
 
 			if(!getNextResult.CanMoveNext)
 			{
-				throw new InvalidOperationException($"No transition from cell status '{currentStatus}' registered for command '{command}'.");
+				throw new InvalidOperationException($"No transition from cell status '{CurrentStatus}' registered for command '{command}'.");
 			}
 
-			currentStatus = getNextResult.NextStatus;
-			return currentStatus;
+			if(getNextResult.NextStatus == CellStatusType.Undefined)
+			{
+				throw new InvalidOperationException($"The transition from cell status '{CurrentStatus}' is not allowed for {nameof(isMine)} value '{isMine}'.");
+			}
+
+			CurrentStatus = getNextResult.NextStatus;
+			return CurrentStatus;
 		}
 
-		private (bool CanMoveNext, CellStatusType NextStatus) GetNext(MouseButtonType command)
+		private (bool CanMoveNext, CellStatusType NextStatus) GetNext(MouseButtonType mouseInput, bool? isMine)
 		{
-			var transition = new CellStatusTransition(currentStatus, command);
+			var command = new CellStatusTransitionCommand(mouseInput, isMine);
+			var transition = new CellStatusTransition(CurrentStatus, command);
 
 			if (transitions.TryGetValue(transition, out CellStatusType nextStatus))
 			{

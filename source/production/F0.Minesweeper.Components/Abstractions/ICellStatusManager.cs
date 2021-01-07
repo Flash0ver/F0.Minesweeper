@@ -4,7 +4,8 @@ namespace F0.Minesweeper.Components.Abstractions
 {
 	public interface ICellStatusManager
 	{
-		bool CanMoveNext(MouseButtonType command);
-		CellStatusType MoveNext(MouseButtonType command);
+		bool CanMoveNext(MouseButtonType command, bool? isMine);
+		CellStatusType MoveNext(MouseButtonType command, bool? isMine);
+		CellStatusType CurrentStatus { get; }
 	}
 }

@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
+using F0.Minesweeper.Components.Logic.Cell;
 using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Components;
 
@@ -13,8 +15,10 @@ namespace F0.Minesweeper.Components
 		[Parameter]
 		public Location? Location { get; set; }
 
+		public Func<Location, Task>? UncoveredAsync { get; set; }
+
 		[Inject]
-		private ICellStatusManager? statusManager { get; set; }
+		private ICellStatusManager statusManager { get; set; }
 
 		private char StatusText
 		{
@@ -28,13 +32,13 @@ namespace F0.Minesweeper.Components
 			}
 		}
 
-		private static Dictionary<CellStatusType, char> translations = InitializeTranslations();
-
+		private static Dictionary<CellStatusType, CellStatusTranslation> translations = InitializeTranslations();
 		private char statusText;
 
 		public Cell()
 		{
 			statusText = MapToText(CellStatusType.Covered);
+			statusManager = new DefaultCellStatusManager();
 		}
 
 		protected override void OnParametersSet()
@@ -45,39 +49,63 @@ namespace F0.Minesweeper.Components
 			}
 		}
 
-		private static Dictionary<CellStatusType, char> InitializeTranslations()
+		internal void SetUncoveredStatus(bool isMine, byte adjacentMineCount)
 		{
-			return new Dictionary<CellStatusType, char>
+			if(!TryUpdateStatus(MouseButtonType.Left, isMine, adjacentMineCount))
+			{
+				throw new InvalidOperationException($"Uncover is not allowed from the status '{statusManager.CurrentStatus}'.");
+			}
+
+		}
+
+		private static Dictionary<CellStatusType, CellStatusTranslation> InitializeTranslations()
+		{
+			return new Dictionary<CellStatusType, CellStatusTranslation>
 				{
-					{ CellStatusType.Covered, 'C' },
-					{ CellStatusType.Flagged, '⚐' },
-					{ CellStatusType.Uncovered, 'U' },
-					{ CellStatusType.Unsure, '?' },
+					{ CellStatusType.Covered, new CellStatusTranslation('C') },
+					{ CellStatusType.Flagged, new CellStatusTranslation('⚐') },
+					{ CellStatusType.Uncovered, new CellStatusTranslation() },
+					{ CellStatusType.Unsure, new CellStatusTranslation('?') },
+					{ CellStatusType.Mine, new CellStatusTranslation('☢') },
 				};
 		}
 
-		private Task OnClickAsync()
+		private async Task OnClickAsync()
 		{
-			TryUpdateStatus(MouseButtonType.Left);
-
-			return Task.CompletedTask;
+			if (UncoveredAsync != null && Location != null && statusManager.CanMoveNext(MouseButtonType.Left, null))
+			{
+				await UncoveredAsync(Location);
+			}
 		}
 
-		private void OnRightClick() => TryUpdateStatus(MouseButtonType.Right);
-
-		private bool TryUpdateStatus(MouseButtonType inputCommand)
+		private void OnRightClick()
 		{
-			if (statusManager is null || !statusManager.CanMoveNext(inputCommand))
+			TryUpdateStatus(MouseButtonType.Right);
+		}
+
+		private bool TryUpdateStatus(MouseButtonType inputCommand, bool? isMine = null, byte? adjacentMineCount = null)
+		{
+			if (!statusManager.CanMoveNext(inputCommand, isMine))
 			{
 				return false;
 			}
 
-			CellStatusType newStatus = statusManager.MoveNext(inputCommand);
-			StatusText = MapToText(newStatus);
+			if (adjacentMineCount is not null && adjacentMineCount > 8)
+			{
+				return false;
+			}
+
+			CellStatusType newStatus = statusManager.MoveNext(inputCommand, isMine);
+			StatusText = MapToText(newStatus, adjacentMineCount);
+
 			return true;
 		}
 
-		private char MapToText(CellStatusType status)
-			=> translations.TryGetValue(status, out char translation) ? translation : '!';
+		private char MapToText(CellStatusType status, byte? adjacentMineCount = null)
+		{
+			return !translations.TryGetValue(status, out CellStatusTranslation? translation)
+				? '!'
+				: translation.GetDisplayValue(adjacentMineCount);
+		}
 	}
 }
