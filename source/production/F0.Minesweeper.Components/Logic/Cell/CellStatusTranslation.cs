@@ -20,9 +20,17 @@ namespace F0.Minesweeper.Components.Logic.Cell
 				throw new ArgumentNullException(nameof(adjacentMineCount));
 			}
 
-			return activeTranslation is not null ?
-					activeTranslation.Value :
-					adjacentMineCount.Value.ToString()[0];
+			if(activeTranslation.HasValue)
+			{
+				return activeTranslation.Value;
+			}
+
+			if (adjacentMineCount.HasValue)
+			{
+				return adjacentMineCount.Value.ToString()[0];
+			}
+
+			throw new InvalidOperationException($"Can not attain the display value with {nameof(activeTranslation)} value '{activeTranslation}' and {nameof(adjacentMineCount)} value '{adjacentMineCount}'");
 		}
 	}
 }
