@@ -78,10 +78,7 @@ namespace F0.Minesweeper.Components
 			}
 		}
 
-		private void OnRightClick()
-		{
-			TryUpdateStatus(MouseButtonType.Right);
-		}
+		private void OnRightClick() => TryUpdateStatus(MouseButtonType.Right);
 
 		private bool TryUpdateStatus(MouseButtonType inputCommand, bool? isMine = null, byte? adjacentMineCount = null)
 		{

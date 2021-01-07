@@ -5,6 +5,6 @@ namespace F0.Minesweeper.Server.Pages
 {
 	public partial class Index
 	{
-		public MinefieldOptions MinefieldOptions = new MinefieldOptions(10, 10, 2);
+		public MinefieldOptions MinefieldOptions = new MinefieldOptions(10, 10, 2, MinefieldFirstUncoverBehavior.MayYieldMine);
 	}
 }

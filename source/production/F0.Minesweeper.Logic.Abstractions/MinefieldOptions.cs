@@ -1,16 +1,14 @@
-using System;
-
 namespace F0.Minesweeper.Logic.Abstractions
 {
-	public sealed record MinefieldOptions(uint Width, uint Height, uint MineCount)
+	public sealed record MinefieldOptions(uint Width, uint Height, uint MineCount, MinefieldFirstUncoverBehavior GenerationOption)
 	{
 		public static MinefieldOptions Easy
-			=> new MinefieldOptions(10, 8, 10);
+			=> new(10, 8, 10, MinefieldFirstUncoverBehavior.WithoutAdjacentMines);
 
 		public static MinefieldOptions Medium
-			=> new MinefieldOptions(18, 14, 40);
+			=> new(18, 14, 40, MinefieldFirstUncoverBehavior.CannotYieldMine);
 
 		public static MinefieldOptions Hard
-			=> new MinefieldOptions(24, 20, 99);
+			=> new(24, 20, 99, MinefieldFirstUncoverBehavior.MayYieldMine);
 	}
 }

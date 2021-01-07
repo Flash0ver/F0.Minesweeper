@@ -25,7 +25,7 @@ namespace F0.Minesweeper.Components
 
 		public Minefield()
 		{
-			Options = new MinefieldOptions(0, 0, 0);
+			Options = new MinefieldOptions(0, 0, 0, MinefieldFirstUncoverBehavior.MayYieldMine);
 			cells = new List<Cell>();
 		}
 

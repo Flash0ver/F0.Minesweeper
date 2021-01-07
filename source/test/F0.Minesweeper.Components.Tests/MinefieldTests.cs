@@ -53,7 +53,7 @@ namespace F0.Minesweeper.Components.Tests
 			const string expectedLabelText = "Minesweeper is played on a Minefield and not within a black hole! Provide a valid size!";
 			string expectedMarkup = $"<div><h3>Minefield</h3><label>{expectedLabelText}</label></div>";
 
-			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), new MinefieldOptions(width, height, 2));
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), new MinefieldOptions(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine));
 
 			// Act
 			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
@@ -71,7 +71,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void Rendering_SupportedSizeProvided_ShowsCorrectAmountOfCells(uint width, uint height)
 		{
 			// Arrange
-			var options = new MinefieldOptions(width, height, 2);
+			var options = new MinefieldOptions(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine);
 			int expectedCellAmount = (int)(width * height);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
@@ -92,7 +92,7 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			const string expectedMarkup = "<div><h3>Minefield</h3><table><tr><td><div diff:ignore /></td></tr></table></div>";
 
-			var options = new MinefieldOptions(1, 1, 2);
+			var options = new MinefieldOptions(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
 
@@ -109,7 +109,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnCellUncoveredAsync_MinefieldWasNotCreated_Throws()
 		{
 			// Arrange
-			var options = new MinefieldOptions(1, 1, 2);
+			var options = new MinefieldOptions(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns<IMinefield>(null);
 
@@ -127,7 +127,7 @@ namespace F0.Minesweeper.Components.Tests
 		private void OnCellUncoveredAsync_ReportVariations_DoesNotThrow(GameUpdateReportForTests report)
 		{
 			// Arrange
-			var options = new MinefieldOptions(1, 1, 2);
+			var options = new MinefieldOptions(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
 			minefieldMock.Setup(field => field.Uncover(It.Is<Location>(s => s == new Location(0, 0)))).Returns(report);

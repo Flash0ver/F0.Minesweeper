@@ -10,7 +10,8 @@ namespace F0.Minesweeper.Components.Logic.Cell
 		public CellStatusType CurrentStatus { get; private set; }
 
 		private readonly Dictionary<CellStatusTransition, CellStatusType> transitions;
-		
+		private CellStatusType currentStatus;
+
 		internal CellStatusManager()
 		{
 			CurrentStatus = CellStatusType.Covered;
