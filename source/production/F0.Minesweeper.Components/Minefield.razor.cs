@@ -62,7 +62,6 @@ namespace F0.Minesweeper.Components
 
 				if(uncoveredCell != null)
 				{
-					// todo: pass adjacent mine count as well for uncover
 					cell.SetUncoveredStatus(uncoveredCell.IsMine, uncoveredCell.AdjacentMineCount);
 				}
 			}
