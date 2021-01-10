@@ -8,11 +8,11 @@ using F0.Minesweeper.Logic.Minelayer;
 
 namespace F0.Minesweeper.Logic.Tests
 {
-	public class TestMinelayer : IMinelayer
+	public class MinelayerToTest : IMinelayer
 	{
 		private readonly IEnumerable<Location> locationsToPutMines;
 
-		public TestMinelayer(List<Location> locationsToPutMines)
+		public MinelayerToTest(params Location[] locationsToPutMines)
 		{
 			this.locationsToPutMines = locationsToPutMines;
 		}

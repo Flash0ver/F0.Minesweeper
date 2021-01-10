@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.Minelayer;
@@ -12,7 +13,8 @@ namespace F0.Minesweeper.Logic
 		private readonly IMinelayer mineplacer;
 		private bool isFirstUncover = true;
 		private readonly List<Cell> minefield;
-		private IEnumerable<Location> AllLocations => minefield.Select(m => m.Location);
+
+		private IEnumerable<Location> GetAllLocations() => minefield.Select(m => m.Location);
 
 		internal Minefield(uint width, uint height, uint mineCount, MinefieldFirstUncoverBehavior generationOptions) : this(
 			width,
@@ -24,7 +26,7 @@ namespace F0.Minesweeper.Logic
 				MinefieldFirstUncoverBehavior.CannotYieldMine => new SafeMinelayer(),
 				MinefieldFirstUncoverBehavior.WithoutAdjacentMines => new FirstEmptyMinelayer(),
 				MinefieldFirstUncoverBehavior.AlwaysYieldsMine => new ImpossibleMinelayer(),
-				_ => throw new NotImplementedException($"Enumeration {generationOptions.GetType().Name}.{generationOptions} not implemented."),
+				_ => throw new InvalidEnumArgumentException($"Enumeration {generationOptions.GetType().Name}.{generationOptions} not implemented."),
 			})
 		{ }
 
@@ -53,6 +55,11 @@ namespace F0.Minesweeper.Logic
 				isFirstUncover = false;
 			}
 
+			if(!GetAllLocations().Contains(location))
+			{
+				throw new ArgumentException("Invalid Location for minefield.");
+			}
+
 			List<Cell> allUncoveredCells = UncoverCells(location);
 
 			GameStatus gameStatus = GetGameStatus();
@@ -77,8 +84,8 @@ namespace F0.Minesweeper.Logic
 
 		private List<Cell> UncoverCells(Location location)
 		{
-			var returnCellList = new List<Cell>();
-			var uncoveredCell = minefield.Single(cell => cell.Location == location);
+			List<Cell> returnCellList = new();
+			Cell uncoveredCell = minefield.Single(cell => cell.Location == location);
 
 			if (uncoveredCell.Uncovered)
 			{
@@ -93,9 +100,9 @@ namespace F0.Minesweeper.Logic
 				return returnCellList;
 			}
 
-			IEnumerable<Location> locationsAroundCell = Utilities.GetLocationsAreaAroundLocation(AllLocations, location, true);
+			IEnumerable<Location> locationsAroundCell = Utilities.GetLocationsAreaAroundLocation(GetAllLocations(), location, true);
 
-			foreach (var l in locationsAroundCell)
+			foreach (Location l in locationsAroundCell)
 			{
 				returnCellList.AddRange(UncoverCells(l));
 			}
@@ -105,7 +112,7 @@ namespace F0.Minesweeper.Logic
 
 		private void GenerateMinefield(Location clickedLocation)
 		{
-			var allLocations = new List<Location>();
+			List<Location> allLocations = new();
 			for (uint x = 0; x < width; x++)
 			{
 				for (uint y = 0; y < height; y++)
@@ -119,19 +126,16 @@ namespace F0.Minesweeper.Logic
 
 			foreach (var minefieldCell in minefield)
 			{
-				if (mineLocations.Any(l => l == minefieldCell.Location))
+				if (mineLocations.Contains(minefieldCell.Location))
 				{
 					minefieldCell.IsMine = true;
 					continue;
 				}
 
-				var locationsArea = Utilities.GetLocationsAreaAroundLocation(allLocations, minefieldCell.Location, false);
+				var locationsArea = Utilities.GetLocationsAreaAroundLocation(allLocations, minefieldCell.Location, true);
 
 				byte countAdjactentMines = (byte)mineLocations
-					.Join(locationsArea,
-						mineLoc => mineLoc,
-						areaLoc => areaLoc,
-						(mineLoc, areaLoc) => mineLoc)
+					.Intersect(locationsArea)
 					.Count();
 
 				minefieldCell.AdjacentMineCount = countAdjactentMines;

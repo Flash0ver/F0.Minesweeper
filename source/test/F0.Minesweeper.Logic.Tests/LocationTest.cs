@@ -10,7 +10,7 @@ namespace F0.Minesweeper.Logic.Tests
 		public void NewLocation_XParameterEqualsX()
 		{
 			uint testValue = 5;
-			var locationUnderTest = new Location(testValue, 7);
+			Location locationUnderTest = new(testValue, 7);
 
 			locationUnderTest.X.Should().Be(testValue);
 		}
@@ -19,7 +19,7 @@ namespace F0.Minesweeper.Logic.Tests
 		public void NewLocation_YParameterEqualsY()
 		{
 			uint testValue = 7;
-			var locationUnderTest = new Location(5, testValue);
+			Location locationUnderTest = new(5, testValue);
 
 			locationUnderTest.Y.Should().Be(testValue);
 		}
@@ -28,7 +28,7 @@ namespace F0.Minesweeper.Logic.Tests
 		public void NewLocation_MaxIntParameterOnX()
 		{
 			uint testValue = int.MaxValue;
-			var locationUnderTest = new Location(testValue, 7);
+			Location locationUnderTest = new(testValue, 7);
 
 			locationUnderTest.X.Should().Be(testValue);
 		}
@@ -37,7 +37,7 @@ namespace F0.Minesweeper.Logic.Tests
 		public void NewLocation_MaxIntParameterOnY()
 		{
 			uint testValue = int.MaxValue;
-			var locationUnderTest = new Location(5, testValue);
+			Location locationUnderTest = new(5, testValue);
 
 			locationUnderTest.Y.Should().Be(testValue);
 		}
@@ -45,7 +45,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[Fact]
 		public void NewLocationEmptyConstructor_CreatesZeroLocation()
 		{
-			var locationUnderTest = new Location();
+			Location locationUnderTest = new();
 
 			locationUnderTest.X.Should().Be(0);
 			locationUnderTest.Y.Should().Be(0);

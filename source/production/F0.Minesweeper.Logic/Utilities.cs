@@ -5,11 +5,11 @@ using F0.Minesweeper.Logic.Abstractions;
 
 namespace F0.Minesweeper.Logic
 {
-	static class Utilities
+	internal static class Utilities
 	{
 		internal static IEnumerable<Location> GetLocationsAreaAroundLocation(IEnumerable<Location> allLocations, Location location, bool exludeGivenLocation)
 		{
-			var returnLocations = new List<Location>();
+			var locationArea = new HashSet<Location>();
 			uint x = location.X;
 			uint y = location.Y;
 
@@ -17,9 +17,10 @@ namespace F0.Minesweeper.Logic
 			{
 				for (int yi = -1; yi <= 1; yi++)
 				{
-					var locationToLookFor = new Location(
+					Location locationToLookFor = new(
 						(uint)Math.Max(x + xi, 0),
-						(uint)Math.Max(y + yi, 0));
+						(uint)Math.Max(y + yi, 0)
+					);
 
 					if (exludeGivenLocation
 						&& locationToLookFor == location)
@@ -27,16 +28,16 @@ namespace F0.Minesweeper.Logic
 						continue;
 					}
 
-					var locationInArea = allLocations.SingleOrDefault(l => l == locationToLookFor);
+					Location? locationInArea = allLocations.SingleOrDefault(l => l == locationToLookFor);
 
-					if (locationInArea != null)
+					if (locationInArea is not null)
 					{
-						returnLocations.Add(locationInArea);
+						locationArea.Add(locationInArea);
 					}
 				}
 			}
 
-			return returnLocations.Distinct();
+			return locationArea;
 		}
 	}
 }
