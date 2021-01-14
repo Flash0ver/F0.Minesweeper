@@ -83,7 +83,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[Fact]
 		public void Uncover_OnEmptyArea_PropagatedThroughWholeMinefield()
 		{
-			var mineLocations = new Location[]{ new(0, 2), new(1, 2), new(2, 2) };
+			Location[] mineLocations = { new(0, 2), new(1, 2), new(2, 2) };
 			Minefield minefieldUnderTest = new(5, 5, 3, new MinelayerToTest(mineLocations));
 
 			IGameUpdateReport result = minefieldUnderTest.Uncover(0, 0);
@@ -103,7 +103,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[Fact]
 		public void Uncover_OnEmptyArea_PropagatedThroughWholeMinefieldAndThenWin()
 		{
-			var mineLocations = new Location[]{ new(0, 3), new(1, 3), new(1, 4) };
+			Location[] mineLocations = { new(0, 3), new(1, 3), new(1, 4) };
 			Minefield minefieldUnderTest = new(5, 5, 3, new MinelayerToTest(mineLocations));
 
 			IGameUpdateReport result = minefieldUnderTest.Uncover(2, 1);
