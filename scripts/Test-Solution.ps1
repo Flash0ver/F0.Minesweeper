@@ -40,7 +40,7 @@ dotnet test $SolutionFile --configuration $Configuration --no-build --nologo --r
 dotnet tool run reportgenerator "-reports:$RepositoryRootPath/**/coverage.cobertura.xml" "-targetdir:$CoverageReportTargetDirectory" -reporttypes:HtmlInline_AzurePipelines
 
 $TestProjectFile = $($TestProjectFile.Replace('\', '/'))
-dotnet tool run dotnet-stryker --solution-path $SolutionFile --test-projects "['$TestProjectFile']" --config-file-path $StrykerConfigurationFile
+dotnet tool run dotnet-stryker --solution-path $SolutionFile --test-projects "['$TestProjectFile']" --config-file-path $StrykerConfigurationFile --language-version preview
 
 if ($OpenReports) {
     Invoke-Item $CoverageReportTargetFile
