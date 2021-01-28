@@ -8,6 +8,8 @@ on:
 
 env:
   DOTNET_NOLOGO: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
   restore_build_test:
@@ -20,7 +22,7 @@ jobs:
         os: [macos-10.15, ubuntu-18.04, windows-2019]
 
     env:
-      NuGet_Configuration_File: ./source/nuget.config
+      NuGet_Configuration_File: ./nuget.config
       Solution_File: ./source/F0.Minesweeper.sln
 
     steps:
