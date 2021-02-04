@@ -4,5 +4,6 @@
 
 Welcome to Minesweeper, powered by Blazor.
 
+<Difficulty OnChange="OnDifficultyChange" />
 
-<Minefield Size="@MinefieldSize" />
+<Minefield @ref="Minefield1" Size="@MinefieldSize" />

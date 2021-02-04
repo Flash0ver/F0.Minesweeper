@@ -1,4 +1,5 @@
 using F0.Minesweeper.Components.Abstractions;
+using F0.Minesweeper.Components.Abstractions.Enums;
 using Microsoft.AspNetCore.Components;
 
 namespace F0.Minesweeper.Components
@@ -7,6 +8,8 @@ namespace F0.Minesweeper.Components
 	{
 		[Parameter]
 		public MinefieldSize Size { get; set; }
+
+		public DifficultyLevel Difficulty { get; set; }
 
 		private bool isValidSize;
 

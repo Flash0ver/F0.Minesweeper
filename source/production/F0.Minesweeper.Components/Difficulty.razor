@@ -1,0 +1,9 @@
+<div>
+	<label for="difficulty">Difficulty</label>
+	<select @bind="Selected" name="difficulty">
+		@foreach (var value in Enum.GetNames(typeof(F0.Minesweeper.Components.Abstractions.Enums.DifficultyLevel)))
+		{
+			<option>@value</option>
+		}
+	</select>
+</div>
