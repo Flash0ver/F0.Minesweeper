@@ -37,7 +37,7 @@ jobs:
     inputs:
       command: 'custom'
       custom: 'stryker'
-      arguments: '--config-file-path $(Stryker_Configuration_File)'
+      arguments: '--config-file-path $(Stryker_Configuration_File) --language-version preview'
       workingDirectory: '$(Test_Project_Directory)'
   - task: PublishMutationReport@0
     displayName: Publish Mutation Test Report
