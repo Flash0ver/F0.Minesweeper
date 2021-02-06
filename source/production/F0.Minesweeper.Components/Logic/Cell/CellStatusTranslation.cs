@@ -4,7 +4,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 {
 	internal class CellStatusTranslation
 	{
-		private char? activeTranslation;
+		private readonly char? activeTranslation;
 
 		internal CellStatusTranslation() { }
 

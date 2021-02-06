@@ -15,9 +15,9 @@ namespace F0.Minesweeper.Components
 		[Inject]
 		internal IMinefieldFactory? MinefieldFactory { get; set; }
 
-		private Cell cell { set => cells.Add(value); }
+		private readonly List<Cell> cells;
 
-		private List<Cell> cells;
+		private Cell Cell { set => cells.Add(value); }
 
 		private IMinefield? minefield;
 

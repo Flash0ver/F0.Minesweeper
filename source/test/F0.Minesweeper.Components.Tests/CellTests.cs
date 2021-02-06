@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Bunit;
 using F0.Minesweeper.Components.Abstractions;
@@ -59,7 +60,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnClick_StatusManagerCanMoveNext_CallsUncoveredAsync()
 		{
 			// Arrange
-			var expectedLocation = new Location(1, 1);
+			Location expectedLocation = new (1, 1);
 
 			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, null)).Returns(true);
 
@@ -96,10 +97,11 @@ namespace F0.Minesweeper.Components.Tests
 		}
 
 		[Fact]
+		[SuppressMessage("Usage", "BL0005:Component parameter should not be set outside of its component.", Justification = "Setting it for unit tests is nice and keeps tests simple and developers happy.")]
 		public void OnClick_LocationIsNull_UncoveredAsyncIsNotCalled()
 		{
 			// Arrange
-			var expectedLocation = new Location(1, 1);
+			Location expectedLocation = new (1, 1);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocation);
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
@@ -107,9 +109,7 @@ namespace F0.Minesweeper.Components.Tests
 			Location? uncoveredLocation = null;
 			componentUnderTest.Instance.UncoveredAsync += (location) => { uncoveredLocation = location; return Task.CompletedTask; };
 
-#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
 			componentUnderTest.Instance.Location = null;
-#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
 
 			// Act
 			componentUnderTest.Find("button").Click();
@@ -122,7 +122,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnClick_UncoveredAsyncIsNull_UncoveredAsyncIsNotCalled()
 		{
 			// Arrange
-			var expectedLocation = new Location(1, 1);
+			Location expectedLocation = new (1, 1);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocation);
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);

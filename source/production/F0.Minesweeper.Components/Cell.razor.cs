@@ -38,7 +38,7 @@ namespace F0.Minesweeper.Components
 		public Cell()
 		{
 			statusText = MapToText(CellStatusType.Covered);
-			statusManager = new DefaultCellStatusManager();
+			statusManager = DefaultCellStatusManager.Instance;
 		}
 
 		protected override void OnParametersSet()
@@ -62,17 +62,17 @@ namespace F0.Minesweeper.Components
 		{
 			return new Dictionary<CellStatusType, CellStatusTranslation>
 				{
-					{ CellStatusType.Covered, new CellStatusTranslation('C') },
-					{ CellStatusType.Flagged, new CellStatusTranslation('⚐') },
-					{ CellStatusType.Uncovered, new CellStatusTranslation() },
-					{ CellStatusType.Unsure, new CellStatusTranslation('?') },
-					{ CellStatusType.Mine, new CellStatusTranslation('☢') },
+					{ CellStatusType.Covered, new ('C') },
+					{ CellStatusType.Flagged, new ('⚐') },
+					{ CellStatusType.Uncovered, new () },
+					{ CellStatusType.Unsure, new ('?') },
+					{ CellStatusType.Mine, new ('☢') },
 				};
 		}
 
 		private async Task OnClickAsync()
 		{
-			if (UncoveredAsync != null && Location != null && statusManager.CanMoveNext(MouseButtonType.Left, null))
+			if (UncoveredAsync != null && Location is not null && statusManager.CanMoveNext(MouseButtonType.Left, null))
 			{
 				await UncoveredAsync(Location);
 			}
@@ -98,11 +98,11 @@ namespace F0.Minesweeper.Components
 			return true;
 		}
 
-		private char MapToText(CellStatusType status, byte? adjacentMineCount = null)
+		private static char MapToText(CellStatusType status, byte? adjacentMineCount = null)
 		{
-			return !translations.TryGetValue(status, out CellStatusTranslation? translation)
-				? '!'
-				: translation.GetDisplayValue(adjacentMineCount);
+			return translations.TryGetValue(status, out CellStatusTranslation? translation)
+				? translation.GetDisplayValue(adjacentMineCount)
+				: '!';
 		}
 	}
 }

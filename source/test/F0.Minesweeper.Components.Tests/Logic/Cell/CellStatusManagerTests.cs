@@ -46,7 +46,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		[InlineData(CellStatusType.Undefined, MouseButtonType.Right, null)]
 		[InlineData(CellStatusType.Undefined, MouseButtonType.Right, true)]
 		[InlineData(CellStatusType.Undefined, MouseButtonType.Right, false)]
-		public void CanNext_UndefinedTransition_ReturnsFalse(CellStatusType currentStatus, MouseButtonType command, bool? isMine)
+		public void CanMoveNext_UndefinedTransition_ReturnsFalse(CellStatusType currentStatus, MouseButtonType command, bool? isMine)
 		{
 			// Arrange
 			CellStatusManager componentUnderTest = CreateCellStatusManager(currentStatus);
@@ -68,7 +68,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		[InlineData(CellStatusType.Unsure, MouseButtonType.Left, true)]
 		[InlineData(CellStatusType.Unsure, MouseButtonType.Left, false)]
 		[InlineData(CellStatusType.Unsure, MouseButtonType.Right, null)]
-		public void CanNext_DefinedTransition_ReturnsTrue(CellStatusType currentStatus, MouseButtonType command, bool? isMine)
+		public void CanMoveNext_DefinedTransition_ReturnsTrue(CellStatusType currentStatus, MouseButtonType command, bool? isMine)
 		{
 			// Arrange
 			CellStatusManager componentUnderTest = CreateCellStatusManager(currentStatus);
@@ -162,10 +162,10 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 
 		private static CellStatusManager CreateCellStatusManager(CellStatusType currentStatus)
 		{
-			var componentForTest = new CellStatusManager();
+			CellStatusManager componentForTest = new ();
 
 			PropertyInfo? currentStatusProperty = typeof(CellStatusManager).GetProperty(nameof(CellStatusManager.CurrentStatus));
-			currentStatusProperty?.SetValue(componentForTest, currentStatus, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
+			currentStatusProperty!.SetValue(componentForTest, currentStatus, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
 
 			return componentForTest;
 		}

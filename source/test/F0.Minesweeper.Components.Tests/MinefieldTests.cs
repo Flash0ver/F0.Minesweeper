@@ -27,6 +27,7 @@ namespace F0.Minesweeper.Components.Tests
 		public override void Dispose()
 		{
 			Mock.VerifyAll(minefieldFactoryMock);
+			base.Dispose();
 		}
 
 		[Fact]
@@ -141,69 +142,70 @@ namespace F0.Minesweeper.Components.Tests
 			actionToTest.Should().NotThrow();
 		}
 
-		private static IEnumerable<object[]> GetReportVariations()
-		{
-			// with no cells
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.InProgress, new UncoveredCellForTests[0]) };
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.IsLost, new UncoveredCellForTests[0]) };
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.IsWon, new UncoveredCellForTests[0]) };
+		private static TheoryData<GameUpdateReportForTests> GetReportVariations() =>
+			new()
+			{
+				// with no cells
+				new GameUpdateReportForTests(GameStatus.InProgress, new UncoveredCellForTests[0]),
+				new GameUpdateReportForTests(GameStatus.IsLost, new UncoveredCellForTests[0]),
+				new GameUpdateReportForTests(GameStatus.IsWon, new UncoveredCellForTests[0]),
 
-			// with one valid mine cell 
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.InProgress, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(0,0),true,0)
-			})};
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.IsLost, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(0,0),true,0)
-			})};
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.IsWon, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(0,0),true,0)
-			})};
+				// with one valid mine cell 
+				new GameUpdateReportForTests(GameStatus.InProgress, new []
+				{
+					new UncoveredCellForTests(new (0,0),true,0)
+				}),
+				new GameUpdateReportForTests(GameStatus.IsLost, new []
+				{
+					new UncoveredCellForTests(new (0,0),true,0)
+				}),
+				new GameUpdateReportForTests(GameStatus.IsWon, new []
+				{
+					new UncoveredCellForTests(new (0,0),true,0)
+				}),
 
-			// with one mine cell outside of field
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.InProgress, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(500,400),true,0)
-			})};
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.IsLost, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(500,400),true,0)
-			})};
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.IsWon, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(500,400),true,0)
-			})};
+				// with one mine cell outside of field
+				new GameUpdateReportForTests(GameStatus.InProgress, new []
+				{
+					new UncoveredCellForTests(new (500,400),true,0)
+				}),
+				new GameUpdateReportForTests(GameStatus.IsLost, new []
+				{
+					new UncoveredCellForTests(new (500,400),true,0)
+				}),
+				new GameUpdateReportForTests(GameStatus.IsWon, new []
+				{
+					new UncoveredCellForTests(new (500,400),true,0)
+				}),
 
-			// with one valid none mine cell
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.InProgress, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(0,0),false,1)
-			})};
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.IsLost, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(0,0),false,1)
-			})};
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.IsWon, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(0,0),false,1)
-			})};
+				// with one valid none mine cell
+				new GameUpdateReportForTests(GameStatus.InProgress, new []
+				{
+					new UncoveredCellForTests(new (0,0),false,1)
+				}),
+				new GameUpdateReportForTests(GameStatus.IsLost, new []
+				{
+					new UncoveredCellForTests(new (0,0),false,1)
+				}),
+				new GameUpdateReportForTests(GameStatus.IsWon, new []
+				{
+					new UncoveredCellForTests(new (0,0),false,1)
+				}),
 
-			// with one non mine cell outside of field
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.InProgress, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(500,400),false,3)
-			})};
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.IsLost, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(500,400),false,3)
-			})};
-			yield return new object[] { new GameUpdateReportForTests(GameStatus.IsWon, new UncoveredCellForTests[]
-			{
-				new UncoveredCellForTests(new Location(500,400),false,3)
-			})};
-		}
+					// with one non mine cell outside of field
+				new GameUpdateReportForTests(GameStatus.InProgress, new []
+				{
+					new UncoveredCellForTests(new (500,400),false,3)
+				}),
+				new GameUpdateReportForTests(GameStatus.IsLost, new []
+				{
+					new UncoveredCellForTests(new (500,400),false,3)
+				}),
+				new GameUpdateReportForTests(GameStatus.IsWon, new []
+				{
+					new UncoveredCellForTests(new (500,400),false,3)
+				})
+			};
 
 		private class GameUpdateReportForTests : IGameUpdateReport
 		{

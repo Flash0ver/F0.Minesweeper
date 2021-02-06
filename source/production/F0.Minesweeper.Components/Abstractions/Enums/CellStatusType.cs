@@ -7,6 +7,6 @@ namespace F0.Minesweeper.Components.Abstractions.Enums
 		Flagged = 2,
 		Unsure = 3,
 		Uncovered = 4,
-		Mine = 5
+		Mine = 5,
 	}
 }
