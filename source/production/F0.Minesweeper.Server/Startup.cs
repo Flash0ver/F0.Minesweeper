@@ -1,4 +1,6 @@
 using F0.Minesweeper.Components.Logic.Cell;
+using F0.Minesweeper.Logic;
+using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +21,7 @@ namespace F0.Minesweeper.Server
 			services.AddRazorPages();
 			services.AddServerSideBlazor();
 			services.AddTransient(CellStatusManagerFactory.GetManager);
+			services.AddSingleton<IMinefieldFactory>(new MinefieldFactory());
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

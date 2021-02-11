@@ -10,6 +10,6 @@ namespace F0.Minesweeper.Components.Abstractions.Enums
 	{
 		Left = 0,
 		Middle = 1,
-		Right = 2
+		Right = 2,
 	}
 }
