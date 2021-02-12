@@ -1,0 +1,15 @@
+#F0-navigationmenu {
+	overflow: hidden;
+	background-color: limegreen;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin: auto;
+	text-align: center;
+}
+
+.F0-navigationmenuitem {
+	display: inline;
+	text-align: center;
+	margin-left: 10px;
+	margin-right: 10px;
+}
