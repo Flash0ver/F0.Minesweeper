@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using F0.Minesweeper.Logic.Abstractions;
+using F0.Minesweeper.Logic.LocationShuffler;
 using F0.Minesweeper.Logic.Minelayer;
 
 namespace F0.Minesweeper.Logic
@@ -13,6 +14,7 @@ namespace F0.Minesweeper.Logic
 		private readonly IMinelayer mineplacer;
 		private bool isFirstUncover = true;
 		private readonly List<Cell> minefield;
+		private static readonly DefaultLocationShuffler defaultLocationShuffler = new DefaultLocationShuffler();
 
 		private IEnumerable<Location> GetAllLocations() => minefield.Select(m => m.Location);
 
@@ -22,9 +24,9 @@ namespace F0.Minesweeper.Logic
 			mineCount,
 			generationOptions switch
 			{
-				MinefieldFirstUncoverBehavior.MayYieldMine => new RandomMinelayer(),
-				MinefieldFirstUncoverBehavior.CannotYieldMine => new SafeMinelayer(),
-				MinefieldFirstUncoverBehavior.WithoutAdjacentMines => new FirstEmptyMinelayer(),
+				MinefieldFirstUncoverBehavior.MayYieldMine => new RandomMinelayer(defaultLocationShuffler),
+				MinefieldFirstUncoverBehavior.CannotYieldMine => new SafeMinelayer(defaultLocationShuffler),
+				MinefieldFirstUncoverBehavior.WithoutAdjacentMines => new FirstEmptyMinelayer(defaultLocationShuffler),
 				MinefieldFirstUncoverBehavior.AlwaysYieldsMine => new ImpossibleMinelayer(),
 				_ => throw new InvalidEnumArgumentException($"Enumeration {generationOptions.GetType().Name}.{generationOptions} not implemented."),
 			})
