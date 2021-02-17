@@ -1,0 +1,15 @@
+@inherits TestComponentBase
+
+<SnapshotTest Description="Verifies the correct Markup of the Help component."
+					Timeout="TimeSpan.FromSeconds(2)">
+	<TestInput>
+		<Help />
+	</TestInput>
+	<ExpectedOutput>
+		<div>
+			<h3>Help!</h3>
+			<p>Wait what? You thought I'd help you how to play the game?</p>
+			<p>Noooooo!!!!! I need your help to get some helpful content!</p>
+		</div>
+	</ExpectedOutput>
+</SnapshotTest>
