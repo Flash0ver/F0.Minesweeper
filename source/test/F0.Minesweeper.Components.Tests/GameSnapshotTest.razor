@@ -1,0 +1,30 @@
+@inherits TestComponentBase
+
+<SnapshotTest Description="Verifies the correct Markup of the Help component."
+			  Timeout="TimeSpan.FromSeconds(2)"
+			  Setup="Setup">
+	<TestInput>
+		<Game />
+	</TestInput>
+	<ExpectedOutput>
+		<div id="F0-game">
+			<Minefield Options="@MinefieldOptions" />
+		</div>
+	</ExpectedOutput>
+
+	@code {
+		private MinefieldOptions MinefieldOptions = new (10, 10, 2, MinefieldFirstUncoverBehavior.MayYieldMine);
+
+		private void Setup(SnapshotTest test)
+		{
+			Mock<IMinefieldFactory> minefieldFactory = new (MockBehavior.Strict);
+			Mock<IMinefield> minefield = new (MockBehavior.Strict);
+			Mock<ICellStatusManager> statusManager = new (MockBehavior.Strict);
+
+			minefieldFactory.Setup(factory => factory.Create(It.IsAny<MinefieldOptions>())).Returns(minefield.Object);
+
+			test.Services.AddSingleton(minefieldFactory.Object);
+			test.Services.AddSingleton(statusManager.Object);
+		}
+	}
+</SnapshotTest>
