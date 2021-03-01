@@ -1,18 +1,23 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
+using F0.Minesweeper.Components.Logic.Cell;
+using F0.Minesweeper.Logic;
+using F0.Minesweeper.Logic.Abstractions;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace F0.Minesweeper.App
 {
 	internal static class Program
 	{
-		private static void Main(string[] args)
-			=> CreateHostBuilder(args).Build().Run();
+		private static async Task Main(string[] args)
+		{
+			var builder = WebAssemblyHostBuilder.CreateDefault(args);
+			builder.RootComponents.Add<App>("#app");
 
-		private static IHostBuilder CreateHostBuilder(string[] args)
-			=> Host.CreateDefaultBuilder(args)
-				.ConfigureWebHostDefaults(webBuilder =>
-				{
-					webBuilder.UseStartup<Startup>();
-				});
+			builder.Services.AddTransient(CellStatusManagerFactory.GetManager);
+			builder.Services.AddSingleton<IMinefieldFactory>(new MinefieldFactory());
+
+			await builder.Build().RunAsync();
+		}
 	}
 }
