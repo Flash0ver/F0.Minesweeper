@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F0.Minesweeper.Logic.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F0.Minesweeper.Components.Tests", "test\F0.Minesweeper.Components.Tests\F0.Minesweeper.Components.Tests.csproj", "{35856ECC-B418-4877-BE85-B099F84DB99D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F0.Minesweeper.Server", "production\F0.Minesweeper.Server\F0.Minesweeper.Server.csproj", "{D2861056-AE5E-409E-9C9B-A964F4E4A31A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F0.Minesweeper.App", "production\F0.Minesweeper.App\F0.Minesweeper.App.csproj", "{D2861056-AE5E-409E-9C9B-A964F4E4A31A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F0.Minesweeper.Logic.Abstractions", "production\F0.Minesweeper.Logic.Abstractions\F0.Minesweeper.Logic.Abstractions.csproj", "{0F2AE4D4-5814-4915-A337-A3B78CC24108}"
 EndProject

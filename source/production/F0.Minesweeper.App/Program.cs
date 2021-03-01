@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace F0.Minesweeper.Server
+namespace F0.Minesweeper.App
 {
 	internal static class Program
 	{

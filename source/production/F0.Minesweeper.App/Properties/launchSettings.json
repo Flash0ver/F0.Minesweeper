@@ -15,7 +15,7 @@
 				"ASPNETCORE_ENVIRONMENT": "Development"
 			}
 		},
-		"F0.Minesweeper.Server": {
+		"F0.Minesweeper.App": {
 			"commandName": "Project",
 			"dotnetRunMessages": "true",
 			"launchBrowser": true,
