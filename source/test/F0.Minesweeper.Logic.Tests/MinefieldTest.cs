@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using F0.Minesweeper.Logic.Abstractions;
+using F0.Minesweeper.Logic.Minelayer;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace F0.Minesweeper.Logic.Tests
@@ -118,6 +120,51 @@ namespace F0.Minesweeper.Logic.Tests
 				.And.HaveCount(1)
 				.And.Contain(cell => !cell.IsMine);
 			result.Status.Should().Be(GameStatus.IsWon);
+		}
+
+		[Fact]
+		public void Uncover_ForTheFirstTime_PlacesMinesOnlyOnce()
+		{
+			Mock<IMinelayer> minelayerMock = new Mock<IMinelayer>(MockBehavior.Strict);
+			minelayerMock
+				.Setup(ml => ml.PlaceMines(It.IsAny<IEnumerable<Location>>(), It.IsAny<uint>(), It.IsAny<Location>()))
+				.Returns(new List<Location> { new(0, 0), new(1, 0) });
+
+			Minefield minefieldUnderTest = new(3, 3, 2, minelayerMock.Object);
+
+			minefieldUnderTest.Uncover(new Location(2, 2));
+
+			minelayerMock
+				.Verify(ml => ml.PlaceMines(It.IsAny<IEnumerable<Location>>(), It.IsAny<uint>(), It.IsAny<Location>()),
+				 Times.Once);
+		}
+
+		[Fact(Skip = "WIP - Can't figure out how to mock/test the behaviour.")]
+		public void Uncover_ForTheFirstTime_ShufflesMinesOnlyOnce()
+		{
+			Mock<IEnumerable<Location>> shuffledMineLocations = new(MockBehavior.Strict);
+			shuffledMineLocations
+				.As<IEnumerable<Location>>()
+				.Setup(sml => sml.GetEnumerator()).Returns(ShuffledMines().GetEnumerator());
+
+			Mock<IMinelayer> minelayerMock = new(MockBehavior.Strict);
+			minelayerMock
+				.Setup(ml => ml.PlaceMines(It.IsAny<IEnumerable<Location>>(), It.IsAny<uint>(), It.IsAny<Location>()))
+				.Returns(shuffledMineLocations.Object);
+
+			Minefield minefieldUnderTest = new(3, 3, 2, new RandomMinelayer());
+
+			minefieldUnderTest.Uncover(new Location(2, 2));
+
+			shuffledMineLocations
+				.Verify(sml => sml.GetEnumerator(),
+				 Times.Once);
+		}
+
+		private static IEnumerable<Location> ShuffledMines()
+		{
+			yield return new Location(0, 0);
+			yield return new Location(1, 0);
 		}
 	}
 

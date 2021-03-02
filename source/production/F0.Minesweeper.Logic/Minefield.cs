@@ -122,7 +122,9 @@ namespace F0.Minesweeper.Logic
 				}
 			}
 
-			var mineLocations = mineplacer.PlaceMines(allLocations, mineCount, clickedLocation);
+			var mineLocations = mineplacer
+				.PlaceMines(allLocations, mineCount, clickedLocation)
+				.ToList();
 
 			foreach (var minefieldCell in minefield)
 			{
