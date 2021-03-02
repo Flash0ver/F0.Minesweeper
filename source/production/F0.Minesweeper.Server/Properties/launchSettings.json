@@ -23,6 +23,18 @@
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Development"
 			}
+		},
+		"Watch Minesweeper": {
+			"commandName": "Executable",
+			"executablePath": "dotnet",
+			"commandLineArgs": "watch run",
+			"workingDirectory": "$(ProjectDir)",
+			"dotnetRunMessages": "true",
+			"launchBrowser": true,
+			"applicationUrl": "http://localhost:5000",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			}
 		}
 	}
 }

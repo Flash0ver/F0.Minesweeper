@@ -5,7 +5,6 @@
 	margin-right: 10px;
 }
 
-#F0-navigationmenuitem ::deep a.active
-{
+::deep .F0-navigationmenuitem-active {
 	background-color: yellow;
 }

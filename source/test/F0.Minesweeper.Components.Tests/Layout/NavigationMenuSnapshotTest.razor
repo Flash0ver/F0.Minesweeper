@@ -1,0 +1,14 @@
+@inherits TestComponentBase
+
+<SnapshotTest Description="Verifies the correct Markup of the NavigationMenu component."
+					Timeout="TimeSpan.FromSeconds(2)">
+	<TestInput>
+		<NavigationMenu />
+	</TestInput>
+	<ExpectedOutput>
+		<div id="F0-navigationmenu">
+	        <NavigationMenuItem href="game">Game</NavigationMenuItem>
+	        <NavigationMenuItem href="help">Help</NavigationMenuItem>
+        </div>
+	</ExpectedOutput>
+</SnapshotTest>
