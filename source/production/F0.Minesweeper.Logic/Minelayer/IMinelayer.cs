@@ -12,7 +12,7 @@ namespace F0.Minesweeper.Logic.Minelayer
 		/// <param name="possibleLocations">All possible locations where mines can be placed.</param>
 		/// <param name="mineCount">The amount of mines to be placed.</param>
 		/// <param name="clickedLocation">The location where the user clicked.</param>
-		/// <returns>A List of locations where mines are.</returns>
-		internal IEnumerable<Location> PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation);
+		/// <returns>A collection of locations where mines are.</returns>
+		internal IReadOnlyCollection<Location> PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation);
 	}
 }

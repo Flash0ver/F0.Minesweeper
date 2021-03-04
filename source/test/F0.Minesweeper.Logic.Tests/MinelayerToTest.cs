@@ -10,14 +10,12 @@ namespace F0.Minesweeper.Logic.Tests
 {
 	public class MinelayerToTest : IMinelayer
 	{
-		private readonly IEnumerable<Location> locationsToPutMines;
+		private readonly IReadOnlyCollection<Location> locationsToPutMines;
 
 		public MinelayerToTest(params Location[] locationsToPutMines)
-		{
-			this.locationsToPutMines = locationsToPutMines;
-		}
+			=> this.locationsToPutMines = locationsToPutMines;
 
-		IEnumerable<Location> IMinelayer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
+		IReadOnlyCollection<Location> IMinelayer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
 			=> locationsToPutMines;
 	}
 }
