@@ -122,9 +122,7 @@ namespace F0.Minesweeper.Logic
 				}
 			}
 
-			var mineLocations = mineplacer
-				.PlaceMines(allLocations, mineCount, clickedLocation)
-				.ToList();
+			IReadOnlyCollection<Location> mineLocations = mineplacer.PlaceMines(allLocations, mineCount, clickedLocation);
 
 			foreach (var minefieldCell in minefield)
 			{
