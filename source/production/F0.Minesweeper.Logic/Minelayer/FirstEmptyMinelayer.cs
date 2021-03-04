@@ -11,7 +11,7 @@ namespace F0.Minesweeper.Logic.Minelayer
 			=> RemoveClickedLocationArea(possibleLocations.ToList(), clickedLocation)
 				.OrderBy(_ => Guid.NewGuid())
 				.Take((int)mineCount)
-				.ToList();
+				.ToArray();
 
 		private static IEnumerable<Location> RemoveClickedLocationArea(IList<Location> locations, Location clickLocation)
 		{

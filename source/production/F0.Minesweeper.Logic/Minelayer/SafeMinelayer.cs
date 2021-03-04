@@ -12,6 +12,6 @@ namespace F0.Minesweeper.Logic.Minelayer
 				.Where(l => l != clickedLocation)
 				.OrderBy(_ => Guid.NewGuid())
 				.Take((int)mineCount)
-				.ToList();
+				.ToArray();
 	}
 }
