@@ -7,10 +7,11 @@ namespace F0.Minesweeper.Logic.Minelayer
 {
 	internal class SafeMinelayer : IMinelayer
 	{
-		IEnumerable<Location> IMinelayer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
+		IReadOnlyCollection<Location> IMinelayer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
 			=> possibleLocations
-			.Where(l => l != clickedLocation)
-			.OrderBy(_ => Guid.NewGuid())
-			.Take((int)mineCount);
+				.Where(l => l != clickedLocation)
+				.OrderBy(_ => Guid.NewGuid())
+				.Take((int)mineCount)
+				.ToArray();
 	}
 }

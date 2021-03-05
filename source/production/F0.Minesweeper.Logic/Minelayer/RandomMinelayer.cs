@@ -7,9 +7,10 @@ namespace F0.Minesweeper.Logic.Minelayer
 {
 	internal class RandomMinelayer : IMinelayer
 	{
-		IEnumerable<Location> IMinelayer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
+		IReadOnlyCollection<Location> IMinelayer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
 			=> possibleLocations
 				.OrderBy(_ => Guid.NewGuid())
-				.Take((int)mineCount);
+				.Take((int)mineCount)
+				.ToArray();
 	}
 }

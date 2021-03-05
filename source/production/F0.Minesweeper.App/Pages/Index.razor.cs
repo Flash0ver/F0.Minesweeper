@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace F0.Minesweeper.Server.Pages
+namespace F0.Minesweeper.App.Pages
 {
 	public partial class Index
 	{
