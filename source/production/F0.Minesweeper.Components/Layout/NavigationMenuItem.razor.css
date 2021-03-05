@@ -1,10 +1,10 @@
-#F0-navigationmenuitem {
+#f0-navigationmenuitem {
 	display: inline;
 	text-align: center;
 	margin-left: 10px;
 	margin-right: 10px;
 }
 
-::deep .F0-navigationmenuitem-active {
+::deep .f0-navigationmenuitem-active {
 	background-color: yellow;
 }

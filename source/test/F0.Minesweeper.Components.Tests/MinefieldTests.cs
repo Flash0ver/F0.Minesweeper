@@ -33,7 +33,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void Rendering_NoSizeProvided_ShowsErrorLabel()
 		{
 			// Arrange
-			string expectedMarkup = $"<div id='F0-minefield'><label diff:ignore /></div>";
+			string expectedMarkup = $"<div id='f0-minefield'><label diff:ignore /></div>";
 
 			// Act
 			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>();
@@ -49,7 +49,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void Rendering_UnsupportedSizeProvided_ShowsErrorLabel(uint height, uint width)
 		{
 			// Arrange
-			string expectedMarkup = $"<div id='F0-minefield'><label diff:ignore /></div>";
+			string expectedMarkup = $"<div id='f0-minefield'><label diff:ignore /></div>";
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), new MinefieldOptions(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine));
 
@@ -87,7 +87,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void Rendering_OneCellShown_MarkupIsCorrect()
 		{
 			// Arrange
-			const string expectedMarkup = "<div id='F0-minefield'><table><tr><td><div diff:ignore /></td></tr></table></div>";
+			const string expectedMarkup = "<div id='f0-minefield'><table><tr><td><div diff:ignore /></td></tr></table></div>";
 
 			var options = new MinefieldOptions(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine);
 
