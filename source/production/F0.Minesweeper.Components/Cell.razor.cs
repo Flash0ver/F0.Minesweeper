@@ -94,6 +94,7 @@ namespace F0.Minesweeper.Components
 
 			CellStatusType newStatus = statusManager.MoveNext(inputCommand, isMine);
 			StatusText = MapToText(newStatus, adjacentMineCount);
+			StateHasChanged();
 
 			return true;
 		}

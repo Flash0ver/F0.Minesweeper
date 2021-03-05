@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Bunit;
@@ -253,6 +255,77 @@ namespace F0.Minesweeper.Components.Tests
 			// Act && Assert
 			Action methodUnderTest = ()=> componentUnderTest.Instance.SetUncoveredStatus(isMine, 2);
 			methodUnderTest.Should().Throw<InvalidOperationException>();
+		}
+
+		[Fact]
+		public void OnClick_HasAdjacentMinesToUncover_UncoversAllCells()
+		{
+			// Arrange
+			string expectedMarkup = "<div><button>0</button></div>";
+			Location expectedLocationClickedCell = new(1, 1);
+
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, null)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, false)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left, false)).Returns(CellStatusType.Uncovered);
+
+			ComponentParameter parameterClickedCell = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocationClickedCell);
+			IRenderedComponent<Cell> clickedComponentUnderTest = RenderComponent<Cell>(parameterClickedCell);
+
+			Location expectedLocationAutoUncoveredCell = new(1, 2);
+
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, false)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left, false)).Returns(CellStatusType.Uncovered);
+
+			ComponentParameter parameterAutoUncoveredCell = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocationAutoUncoveredCell);
+			IRenderedComponent<Cell> autoUncoveredComponentUnderTest = RenderComponent<Cell>(parameterAutoUncoveredCell);
+
+			Cell[] cells = { clickedComponentUnderTest.Instance, autoUncoveredComponentUnderTest.Instance };
+			MinefieldForCellTests minefield = new(cells, null);
+			minefield.SetupUncoveredAsync();
+
+			// Act
+			clickedComponentUnderTest.Find("button").Click();
+
+			// Assert
+			clickedComponentUnderTest.MarkupMatches(expectedMarkup, "Clicked cell does not match expected markup");
+			autoUncoveredComponentUnderTest.MarkupMatches(expectedMarkup, "Automatically uncovered cell does not match expected markup");
+		}
+
+		private class MinefieldForCellTests
+		{
+			private readonly IEnumerable<Cell> cells;
+			private readonly bool expectsMine;
+			private readonly byte expectedAdjacentMineCount;
+
+			public MinefieldForCellTests(IEnumerable<Cell> cells, byte? expectedAdjacentMineCount = null)
+			{
+				if(expectedAdjacentMineCount <= 0)
+				{
+					throw new ArgumentException("Test only accepts mine count values > 0.");
+				}
+
+				this.cells = cells;
+				expectsMine = expectedAdjacentMineCount is not null;
+				this.expectedAdjacentMineCount = expectedAdjacentMineCount ?? 0;
+			}
+
+			internal void SetupUncoveredAsync()
+			{
+				foreach (Cell cell in cells)
+				{
+					cell.UncoveredAsync += OnCellUncoveredAsync;
+				}
+			}
+
+			private Task OnCellUncoveredAsync(Location location)
+			{
+				foreach(Cell cell in cells)
+				{
+					cell.SetUncoveredStatus(expectsMine, expectedAdjacentMineCount);
+				}
+
+				return Task.CompletedTask;
+			}
 		}
 	}
 }
