@@ -1,7 +1,7 @@
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Logic.Abstractions;
 
-namespace F0.Minesweeper.Server.Pages
+namespace F0.Minesweeper.App.Pages
 {
 	public partial class Index
 	{

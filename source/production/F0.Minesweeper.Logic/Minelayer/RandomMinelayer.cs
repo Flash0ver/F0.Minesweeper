@@ -13,7 +13,7 @@ namespace F0.Minesweeper.Logic.Minelayer
 		public RandomMinelayer(ILocationShuffler locationShuffler)
 			=> LocationShuffler = locationShuffler;
 
-		IEnumerable<Location> IMinelayer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
+		IReadOnlyCollection<Location> IMinelayer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
 			=> LocationShuffler.ShuffleAndTake(
 				possibleLocations,
 				(int)mineCount);
