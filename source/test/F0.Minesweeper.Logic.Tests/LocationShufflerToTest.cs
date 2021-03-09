@@ -15,6 +15,9 @@ namespace F0.Minesweeper.Logic.Tests
 		public LocationShufflerToTest(params (uint, uint)[] locations)
 			=> Locations = locations.Select(l => new Location(l.Item1, l.Item2));
 
+		public LocationShufflerToTest(Location[] locations)
+			=> Locations = locations;
+
 		IEnumerable<Location> ILocationShuffler.ShuffleAndTake(IEnumerable<Location> allLocations, int count)
 			=> Locations
 				.Intersect(allLocations)
