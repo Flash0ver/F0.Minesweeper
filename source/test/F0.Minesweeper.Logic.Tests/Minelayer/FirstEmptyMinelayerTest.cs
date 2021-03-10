@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.Minelayer;
 using FluentAssertions;
@@ -7,7 +6,7 @@ using Xunit;
 
 namespace F0.Minesweeper.Logic.Tests.Minelayer
 {
-	public class SafeMinelayerTest
+	public class FirstEmptyMinelayerTest
 	{
 		[Theory]
 		[InlineData(0, 0)]
@@ -21,33 +20,32 @@ namespace F0.Minesweeper.Logic.Tests.Minelayer
 		{
 			Location clickedLocation = new(clickedLocationX, clickedLocationY);
 			LocationShufflerToTest locationShuffler = new(mineLocations);
-			SafeMinelayer minelayerUnderTest = new(locationShuffler);
+			FirstEmptyMinelayer minelayerUnderTest = new(locationShuffler);
 			IEnumerable<Location> placedMines = ((IMinelayer)minelayerUnderTest).PlaceMines(field, (uint)mineLocations.Length, clickedLocation);
 
 			placedMines.Should().NotContain(clickedLocation);
 		}
 
 		[Theory]
-		[InlineData(0, 0, -1)]
-		[InlineData(1, 1, -1)]
-		[InlineData(2, 2, 0)]
-		[InlineData(3, 3, 0)]
-		[InlineData(4, 4, 0)]
-		[InlineData(2, 4, 0)]
-		[InlineData(4, 3, -1)]
-		[InlineData(3, 1, -1)]
-		[InlineData(4, 0, 0)]
-		[InlineData(2, 0, 0)]
-		[InlineData(0, 3, 0)]
-		public void PlaceMines_RemovesClickedLocation(uint clickedLocationX, uint clickedLocationY, int mineCountChange)
+		[InlineData(0, 0, -3)]
+		[InlineData(1, 1, -4)]
+		[InlineData(2, 2, -5)]
+		[InlineData(3, 3, -3)]
+		[InlineData(4, 4, -2)]
+		[InlineData(2, 4, -3)]
+		[InlineData(4, 3, -3)]
+		[InlineData(3, 1, -3)]
+		[InlineData(4, 0, -1)]
+		[InlineData(2, 0, -3)]
+		[InlineData(0, 3, -2)]
+		public void PlaceMines_RemovesClickedLocationAndAreaAround(uint clickedLocationX, uint clickedLocationY, int mineCountChange)
 		{
 			Location clickedLocation = new(clickedLocationX, clickedLocationY);
 			LocationShufflerToTest locationShuffler = new(mineLocations);
-			SafeMinelayer minelayerUnderTest = new(locationShuffler);
+			FirstEmptyMinelayer minelayerUnderTest = new(locationShuffler);
 			IEnumerable<Location> placedMines = ((IMinelayer)minelayerUnderTest).PlaceMines(field, (uint)mineLocations.Length, clickedLocation);
 
 			placedMines.Should().HaveCount(mineLocations.Length + mineCountChange);
-			placedMines.Should().BeEquivalentTo(mineLocations.Except(new[] { clickedLocation }));
 		}
 
 		private readonly Location[] field = {
