@@ -6,9 +6,9 @@ namespace F0.Minesweeper.Components.Logic.Cell
 	internal class CellStatusTransition : IEquatable<CellStatusTransition>
 	{
 		private readonly CellStatusType processState;
-		private readonly MouseButtonType command;
+		private readonly CellStatusTransitionCommand command;
 
-		public CellStatusTransition(CellStatusType processState, MouseButtonType command) 
+		public CellStatusTransition(CellStatusType processState, CellStatusTransitionCommand command) 
 		{
 			this.processState = processState;
 			this.command = command;

@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Bunit;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
@@ -21,10 +23,10 @@ namespace F0.Minesweeper.Components.Tests
 			Services.AddSingleton(cellStatusManagerMock.Object);
 		}
 
-		public override void Dispose()
+		protected override void Dispose(bool disposing)
 		{
 			Mock.VerifyAll(cellStatusManagerMock);
-			base.Dispose();
+			base.Dispose(disposing);
 		}
 
 		[Fact]
@@ -55,41 +57,78 @@ namespace F0.Minesweeper.Components.Tests
 		}
 
 		[Fact]
-		public void OnClick_StatusManagerReturnsUncovered_ChangesTextToUncovered()
+		public void OnClick_StatusManagerCanMoveNext_CallsUncoveredAsync()
 		{
 			// Arrange
-			string expectedMarkup = "<div><button>U</button></div>";
+			Location expectedLocation = new (1, 1);
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left)).Returns(CellStatusType.Uncovered);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, null)).Returns(true);
 
-			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocation);
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
+
+			Location? uncoveredLocation = null;
+			componentUnderTest.Instance.UncoveredAsync += (location) => { uncoveredLocation = location; return Task.CompletedTask; };
 
 			// Act
 			componentUnderTest.Find("button").Click();
 
 			// Assert
-			componentUnderTest.MarkupMatches(expectedMarkup);
+			uncoveredLocation.Should().NotBeNull().And.Be(expectedLocation);
 		}
 
 		[Fact]
-		public void OnClick_StatusManagerReturnsUndefined_ChangesTextToSpecialUndefinedValue()
+		public void OnClick_StatusManagerCanNotMoveNext_UncoveredAsyncIsNotCalled()
 		{
 			// Arrange
-			string expectedMarkup = "<div><button>!</button></div>";
-
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left)).Returns(CellStatusType.Undefined);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, null)).Returns(false);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
+
+			Location? uncoveredLocation = null;
+			componentUnderTest.Instance.UncoveredAsync += (location) => { uncoveredLocation = location; return Task.CompletedTask; };
 
 			// Act
 			componentUnderTest.Find("button").Click();
 
 			// Assert
-			componentUnderTest.MarkupMatches(expectedMarkup);
+			uncoveredLocation.Should().BeNull();
+		}
+
+		[Fact]
+		[SuppressMessage("Usage", "BL0005:Component parameter should not be set outside of its component.", Justification = "Setting it for unit tests is nice and keeps tests simple and developers happy.")]
+		public void OnClick_LocationIsNull_UncoveredAsyncIsNotCalled()
+		{
+			// Arrange
+			Location expectedLocation = new (1, 1);
+
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocation);
+			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
+
+			Location? uncoveredLocation = null;
+			componentUnderTest.Instance.UncoveredAsync += (location) => { uncoveredLocation = location; return Task.CompletedTask; };
+
+			componentUnderTest.Instance.Location = null;
+
+			// Act
+			componentUnderTest.Find("button").Click();
+
+			// Assert
+			uncoveredLocation.Should().BeNull();
+		}
+
+		[Fact]
+		public void OnClick_UncoveredAsyncIsNull_UncoveredAsyncIsNotCalled()
+		{
+			// Arrange
+			Location expectedLocation = new (1, 1);
+
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocation);
+			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
+
+			// Act && Assert (via not called canmovenext on strict mock)
+			componentUnderTest.Find("button").Click();
 		}
 
 		[Fact]
@@ -98,8 +137,8 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<div><button>⚐</button></div>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right)).Returns(CellStatusType.Flagged);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right, null)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right, null)).Returns(CellStatusType.Flagged);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
@@ -117,8 +156,8 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<div><button>?</button></div>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right)).Returns(CellStatusType.Unsure);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right, null)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right, null)).Returns(CellStatusType.Unsure);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
@@ -136,8 +175,8 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<div><button>!</button></div>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right)).Returns(CellStatusType.Undefined);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right, null)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right, null)).Returns(CellStatusType.Undefined);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
@@ -147,6 +186,73 @@ namespace F0.Minesweeper.Components.Tests
 
 			// Assert
 			componentUnderTest.MarkupMatches(expectedMarkup);
+		}
+
+		[Theory]
+		[InlineData(true, CellStatusType.Mine, 3, '☢')]
+		[InlineData(false, CellStatusType.Uncovered, 0, '0')]
+		[InlineData(false, CellStatusType.Uncovered, 1, '1')]
+		[InlineData(false, CellStatusType.Uncovered, 2, '2')]
+		[InlineData(false, CellStatusType.Uncovered, 3, '3')]
+		[InlineData(false, CellStatusType.Uncovered, 4, '4')]
+		[InlineData(false, CellStatusType.Uncovered, 5, '5')]
+		[InlineData(false, CellStatusType.Uncovered, 6, '6')]
+		[InlineData(false, CellStatusType.Uncovered, 7, '7')]
+		[InlineData(false, CellStatusType.Uncovered, 8, '8')]
+		public void SetUncoveredStatus_StatusManagerCanMoveNext_ChangesTextToCorrectTranslation(bool isMine, CellStatusType newStatus, byte adjacentMineCount, char expectedStatusChar)
+		{
+			// Arrange
+			string expectedMarkup = $"<div><button>{expectedStatusChar}</button></div>";
+
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, isMine)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left, isMine)).Returns(newStatus);
+
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
+			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
+
+			// Act
+			componentUnderTest.Instance.SetUncoveredStatus(isMine, adjacentMineCount);
+			componentUnderTest.Render();
+
+			// Assert
+			componentUnderTest.MarkupMatches(expectedMarkup);
+		}
+
+		[Theory]
+		[InlineData(9)]
+		[InlineData(10)]
+		[InlineData(100)]
+		public void SetUncoveredStatus_StatusManagerCanMoveNextWithUnsupportedAdjacentMineCount_Throws(byte adjacentMineCount)
+		{
+			// Arrange
+			bool isMine = true;
+
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, isMine)).Returns(false);
+			cellStatusManagerMock.Setup((manager) => manager.CurrentStatus).Returns(CellStatusType.Mine);
+
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
+			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
+
+			// Act && Assert
+			Action methodUnderTest = () => componentUnderTest.Instance.SetUncoveredStatus(isMine, adjacentMineCount);
+			methodUnderTest.Should().Throw<InvalidOperationException>();
+		}
+
+		[Theory]
+		[InlineData(true)]
+		[InlineData(false)]
+		public void SetUncoveredStatus_StatusManagerCanNotMoveNext_Throws(bool isMine)
+		{
+			// Arrange
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, isMine)).Returns(false);
+			cellStatusManagerMock.Setup((manager) => manager.CurrentStatus).Returns(CellStatusType.Mine);
+
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
+			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
+
+			// Act && Assert
+			Action methodUnderTest = ()=> componentUnderTest.Instance.SetUncoveredStatus(isMine, 2);
+			methodUnderTest.Should().Throw<InvalidOperationException>();
 		}
 	}
 }
