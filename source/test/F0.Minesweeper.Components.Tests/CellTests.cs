@@ -64,7 +64,7 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			Location expectedLocation = new (1, 1);
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, null)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.LeftClick, null)).Returns(true);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocation);
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
@@ -83,7 +83,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnClick_StatusManagerCanNotMoveNext_UncoveredAsyncIsNotCalled()
 		{
 			// Arrange
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, null)).Returns(false);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.LeftClick, null)).Returns(false);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
@@ -139,8 +139,8 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<div><button>⚐</button></div>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right, null)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right, null)).Returns(CellStatusType.Flagged);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.RightClick, null)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.RightClick, null)).Returns(CellStatusType.Flagged);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
@@ -158,8 +158,8 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<div><button>?</button></div>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right, null)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right, null)).Returns(CellStatusType.Unsure);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.RightClick, null)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.RightClick, null)).Returns(CellStatusType.Unsure);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
@@ -177,8 +177,8 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			string expectedMarkup = "<div><button>!</button></div>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Right, null)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Right, null)).Returns(CellStatusType.Undefined);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.RightClick, null)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.RightClick, null)).Returns(CellStatusType.Undefined);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
@@ -191,30 +191,38 @@ namespace F0.Minesweeper.Components.Tests
 		}
 
 		[Theory]
-		[InlineData(true, CellStatusType.Mine, 3, '☢')]
-		[InlineData(false, CellStatusType.Uncovered, 0, '0')]
-		[InlineData(false, CellStatusType.Uncovered, 1, '1')]
-		[InlineData(false, CellStatusType.Uncovered, 2, '2')]
-		[InlineData(false, CellStatusType.Uncovered, 3, '3')]
-		[InlineData(false, CellStatusType.Uncovered, 4, '4')]
-		[InlineData(false, CellStatusType.Uncovered, 5, '5')]
-		[InlineData(false, CellStatusType.Uncovered, 6, '6')]
-		[InlineData(false, CellStatusType.Uncovered, 7, '7')]
-		[InlineData(false, CellStatusType.Uncovered, 8, '8')]
-		public void SetUncoveredStatus_StatusManagerCanMoveNext_ChangesTextToCorrectTranslation(bool isMine, CellStatusType newStatus, byte adjacentMineCount, char expectedStatusChar)
+		[InlineData(CellInteractionType.LeftClick, true, CellStatusType.Mine, 3, '☢')]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 0, '0')]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 1, '1')]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 2, '2')]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 3, '3')]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 4, '4')]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 5, '5')]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 6, '6')]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 7, '7')]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 8, '8')]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 0, '0')]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 1, '1')]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 2, '2')]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 3, '3')]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 4, '4')]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 5, '5')]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 6, '6')]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 7, '7')]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 8, '8')]
+		public void SetUncoveredStatus_StatusManagerCanMoveNext_ChangesTextToCorrectTranslation(CellInteractionType cellInteraction, bool isMine, CellStatusType newStatus, byte adjacentMineCount, char expectedStatusChar)
 		{
 			// Arrange
 			string expectedMarkup = $"<div><button>{expectedStatusChar}</button></div>";
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, isMine)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left, isMine)).Returns(newStatus);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(cellInteraction, isMine)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(cellInteraction, isMine)).Returns(newStatus);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
 
 			// Act
-			componentUnderTest.Instance.SetUncoveredStatus(isMine, adjacentMineCount);
-			componentUnderTest.Render();
+			componentUnderTest.InvokeAsync(() => componentUnderTest.Instance.SetUncoveredStatus(cellInteraction, isMine, adjacentMineCount));
 
 			// Assert
 			componentUnderTest.MarkupMatches(expectedMarkup);
@@ -229,32 +237,48 @@ namespace F0.Minesweeper.Components.Tests
 			// Arrange
 			bool isMine = true;
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, isMine)).Returns(false);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.LeftClick, isMine)).Returns(false);
 			cellStatusManagerMock.Setup((manager) => manager.CurrentStatus).Returns(CellStatusType.Mine);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
 
 			// Act && Assert
-			Action methodUnderTest = () => componentUnderTest.Instance.SetUncoveredStatus(isMine, adjacentMineCount);
+			Action methodUnderTest = () => componentUnderTest.Instance.SetUncoveredStatus(CellInteractionType.LeftClick, isMine, adjacentMineCount);
 			methodUnderTest.Should().Throw<InvalidOperationException>();
 		}
 
 		[Theory]
 		[InlineData(true)]
 		[InlineData(false)]
-		public void SetUncoveredStatus_StatusManagerCanNotMoveNext_Throws(bool isMine)
+		public void SetUncoveredStatus_StatusManagerCanNotMoveNextOnLeftClick_Throws(bool isMine)
 		{
 			// Arrange
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, isMine)).Returns(false);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.LeftClick, isMine)).Returns(false);
 			cellStatusManagerMock.Setup((manager) => manager.CurrentStatus).Returns(CellStatusType.Mine);
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
 
 			// Act && Assert
-			Action methodUnderTest = ()=> componentUnderTest.Instance.SetUncoveredStatus(isMine, 2);
+			Action methodUnderTest = ()=> componentUnderTest.Instance.SetUncoveredStatus(CellInteractionType.LeftClick, isMine, 2);
 			methodUnderTest.Should().Throw<InvalidOperationException>();
+		}
+
+		[Theory]
+		[InlineData(true)]
+		[InlineData(false)]
+		public void SetUncoveredStatus_StatusManagerCanNotMoveNextOnAutomaticUncover_DoesNotThrow(bool isMine)
+		{
+			// Arrange
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.Automatic, isMine)).Returns(false);
+
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
+			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
+
+			// Act && Assert
+			Action methodUnderTest = () => componentUnderTest.Instance.SetUncoveredStatus(CellInteractionType.Automatic, isMine, 2);
+			methodUnderTest.Should().NotThrow("Automatic uncover should depend on the logic library that inacceptable auto uncover does not happen.");
 		}
 
 		[Fact]
@@ -264,17 +288,17 @@ namespace F0.Minesweeper.Components.Tests
 			string expectedMarkup = "<div><button>0</button></div>";
 			Location expectedLocationClickedCell = new(1, 1);
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, null)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, false)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left, false)).Returns(CellStatusType.Uncovered);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.LeftClick, null)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.LeftClick, false)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.LeftClick, false)).Returns(CellStatusType.Uncovered);
 
 			ComponentParameter parameterClickedCell = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocationClickedCell);
 			IRenderedComponent<Cell> clickedComponentUnderTest = RenderComponent<Cell>(parameterClickedCell);
 
 			Location expectedLocationAutoUncoveredCell = new(1, 2);
 
-			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(MouseButtonType.Left, false)).Returns(true);
-			cellStatusManagerMock.Setup((manager) => manager.MoveNext(MouseButtonType.Left, false)).Returns(CellStatusType.Uncovered);
+			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.Automatic, false)).Returns(true);
+			cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.Automatic, false)).Returns(CellStatusType.Uncovered);
 
 			ComponentParameter parameterAutoUncoveredCell = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocationAutoUncoveredCell);
 			IRenderedComponent<Cell> autoUncoveredComponentUnderTest = RenderComponent<Cell>(parameterAutoUncoveredCell);
@@ -321,7 +345,12 @@ namespace F0.Minesweeper.Components.Tests
 			{
 				foreach(Cell cell in cells)
 				{
-					cell.SetUncoveredStatus(expectsMine, expectedAdjacentMineCount);
+					CellInteractionType cellInteraction =
+						cell.Location == location
+							? CellInteractionType.LeftClick
+							: CellInteractionType.Automatic;
+
+					cell.SetUncoveredStatus(cellInteraction, expectsMine, expectedAdjacentMineCount);
 				}
 
 				return Task.CompletedTask;

@@ -16,24 +16,26 @@ namespace F0.Minesweeper.Components.Logic.Cell
 			CurrentStatus = CellStatusType.Covered;
 			transitions = new Dictionary<CellStatusTransition, CellStatusType>
 			{
-				{ new CellStatusTransition(CellStatusType.Covered, new (MouseButtonType.Left, false)), CellStatusType.Uncovered },
-				{ new CellStatusTransition(CellStatusType.Covered, new (MouseButtonType.Left, true)), CellStatusType.Mine },
-				{ new CellStatusTransition(CellStatusType.Covered, new (MouseButtonType.Left)), CellStatusType.Undefined },
-				{ new CellStatusTransition(CellStatusType.Covered, new (MouseButtonType.Right)), CellStatusType.Flagged },
-				{ new CellStatusTransition(CellStatusType.Flagged, new (MouseButtonType.Right)), CellStatusType.Unsure },
-				{ new CellStatusTransition(CellStatusType.Unsure, new (MouseButtonType.Left, false)), CellStatusType.Uncovered },
-				{ new CellStatusTransition(CellStatusType.Unsure, new (MouseButtonType.Left, true)), CellStatusType.Mine },
-				{ new CellStatusTransition(CellStatusType.Unsure, new (MouseButtonType.Left)), CellStatusType.Undefined },
-				{ new CellStatusTransition(CellStatusType.Unsure, new (MouseButtonType.Right)), CellStatusType.Covered }
+				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.LeftClick, false)), CellStatusType.Uncovered },
+				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.LeftClick, true)), CellStatusType.Mine },
+				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.LeftClick)), CellStatusType.Undefined },
+				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.Automatic, false)), CellStatusType.Uncovered },
+				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.Automatic, true)), CellStatusType.Mine },
+				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.RightClick)), CellStatusType.Flagged },
+				{ new CellStatusTransition(CellStatusType.Flagged, new (CellInteractionType.RightClick)), CellStatusType.Unsure },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.LeftClick, false)), CellStatusType.Uncovered },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.LeftClick, true)), CellStatusType.Mine },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.LeftClick)), CellStatusType.Undefined },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.RightClick)), CellStatusType.Covered }
 			};
 		}
 
-		public bool CanMoveNext(MouseButtonType command, bool? isMine)
+		public bool CanMoveNext(CellInteractionType command, bool? isMine)
 		{
 			return GetNext(command, isMine).CanMoveNext;
 		}
 
-		public CellStatusType MoveNext(MouseButtonType command, bool? isMine)
+		public CellStatusType MoveNext(CellInteractionType command, bool? isMine)
 		{
 			var getNextResult = GetNext(command, isMine);
 
@@ -51,7 +53,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 			return CurrentStatus;
 		}
 
-		private (bool CanMoveNext, CellStatusType NextStatus) GetNext(MouseButtonType mouseInput, bool? isMine)
+		private (bool CanMoveNext, CellStatusType NextStatus) GetNext(CellInteractionType mouseInput, bool? isMine)
 		{
 			var command = new CellStatusTransitionCommand(mouseInput, isMine);
 			var transition = new CellStatusTransition(CurrentStatus, command);
