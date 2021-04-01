@@ -1,10 +1,17 @@
-using F0.Minesweeper.Components.Abstractions;
-using F0.Minesweeper.Logic.Abstractions;
+using Microsoft.AspNetCore.Components;
 
 namespace F0.Minesweeper.App.Pages
 {
 	public partial class Index
 	{
-		public MinefieldOptions MinefieldOptions = new MinefieldOptions(10, 10, 2, MinefieldFirstUncoverBehavior.MayYieldMine);
+		[Inject]
+		private NavigationManager? NavigationManager { get; set; }
+
+		protected override void OnInitialized()
+		{
+			base.OnInitialized();
+
+			NavigationManager?.NavigateTo("game");
+		}
 	}
 }

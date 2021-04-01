@@ -25,10 +25,10 @@ namespace F0.Minesweeper.Components.Tests
 			Services.AddSingleton(cellStatusManagerMock.Object);
 		}
 
-		public override void Dispose()
+		protected override void Dispose(bool disposing)
 		{
 			Mock.VerifyAll(cellStatusManagerMock);
-			base.Dispose();
+			base.Dispose(disposing);
 		}
 
 		[Fact]

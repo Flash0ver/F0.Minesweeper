@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Bunit;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Logic.Cell;
@@ -24,18 +23,17 @@ namespace F0.Minesweeper.Components.Tests
 			Services.AddSingleton<ICellStatusManager>(new CellStatusManager());
 		}
 
-		public override void Dispose()
+		protected override void Dispose(bool disposing)
 		{
 			Mock.VerifyAll(minefieldFactoryMock);
-			base.Dispose();
+			base.Dispose(disposing);
 		}
 
 		[Fact]
 		public void Rendering_NoSizeProvided_ShowsErrorLabel()
 		{
 			// Arrange
-			const string expectedLabelText = "Minesweeper is played on a Minefield and not within a black hole! Provide a valid size!";
-			string expectedMarkup = $"<div><h3>Minefield</h3><label>{expectedLabelText}</label></div>";
+			string expectedMarkup = $"<div id='f0-minefield'><label diff:ignore /></div>";
 
 			// Act
 			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>();
@@ -51,8 +49,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void Rendering_UnsupportedSizeProvided_ShowsErrorLabel(uint height, uint width)
 		{
 			// Arrange
-			const string expectedLabelText = "Minesweeper is played on a Minefield and not within a black hole! Provide a valid size!";
-			string expectedMarkup = $"<div><h3>Minefield</h3><label>{expectedLabelText}</label></div>";
+			string expectedMarkup = $"<div id='f0-minefield'><label diff:ignore /></div>";
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), new MinefieldOptions(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine));
 
@@ -83,7 +80,6 @@ namespace F0.Minesweeper.Components.Tests
 			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
 
 			// Assert
-			//componentUnderTest.Fin
 			componentUnderTest.FindComponents<Cell>().Count.Should().Be(expectedCellAmount);
 		}
 
@@ -91,7 +87,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void Rendering_OneCellShown_MarkupIsCorrect()
 		{
 			// Arrange
-			const string expectedMarkup = "<div><h3>Minefield</h3><table><tr><td><div diff:ignore /></td></tr></table></div>";
+			const string expectedMarkup = "<div id='f0-minefield'><table><tr><td><div diff:ignore /></td></tr></table></div>";
 
 			var options = new MinefieldOptions(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine);
 
