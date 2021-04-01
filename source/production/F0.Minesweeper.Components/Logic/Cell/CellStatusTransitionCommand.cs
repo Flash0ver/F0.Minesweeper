@@ -4,10 +4,10 @@ namespace F0.Minesweeper.Components.Logic.Cell
 {
 	internal record CellStatusTransitionCommand
 	{
-		internal MouseButtonType MouseButtonType { get; }
+		internal CellInteractionType MouseButtonType { get; }
 		internal bool? IsMine { get; }
 
-		public CellStatusTransitionCommand(MouseButtonType mouseButtonType, bool? isMine = null)
+		public CellStatusTransitionCommand(CellInteractionType mouseButtonType, bool? isMine = null)
 		{
 			MouseButtonType = mouseButtonType;
 			IsMine = isMine;

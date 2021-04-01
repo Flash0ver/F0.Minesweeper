@@ -49,11 +49,14 @@ namespace F0.Minesweeper.Components
 			}
 		}
 
-		internal void SetUncoveredStatus(bool isMine, byte adjacentMineCount)
+		internal void SetUncoveredStatus(CellInteractionType cellInteraction, bool isMine, byte adjacentMineCount)
 		{
-			if(!TryUpdateStatus(MouseButtonType.Left, isMine, adjacentMineCount))
+			if(!TryUpdateStatus(cellInteraction, isMine, adjacentMineCount))
 			{
-				throw new InvalidOperationException($"Uncover is not allowed from the status '{statusManager.CurrentStatus}'.");
+				if(cellInteraction != CellInteractionType.Automatic)
+				{
+					throw new InvalidOperationException($"Uncover is not allowed from the status '{statusManager.CurrentStatus}'.");
+				}
 			}
 
 		}
@@ -72,15 +75,15 @@ namespace F0.Minesweeper.Components
 
 		private async Task OnClickAsync()
 		{
-			if (UncoveredAsync != null && Location is not null && statusManager.CanMoveNext(MouseButtonType.Left, null))
+			if (UncoveredAsync != null && Location is not null && statusManager.CanMoveNext(CellInteractionType.LeftClick, null))
 			{
 				await UncoveredAsync(Location);
 			}
 		}
 
-		private void OnRightClick() => TryUpdateStatus(MouseButtonType.Right);
+		private void OnRightClick() => TryUpdateStatus(CellInteractionType.RightClick);
 
-		private bool TryUpdateStatus(MouseButtonType inputCommand, bool? isMine = null, byte? adjacentMineCount = null)
+		private bool TryUpdateStatus(CellInteractionType inputCommand, bool? isMine = null, byte? adjacentMineCount = null)
 		{
 			if (!statusManager.CanMoveNext(inputCommand, isMine))
 			{
@@ -94,6 +97,7 @@ namespace F0.Minesweeper.Components
 
 			CellStatusType newStatus = statusManager.MoveNext(inputCommand, isMine);
 			StatusText = MapToText(newStatus, adjacentMineCount);
+			StateHasChanged();
 
 			return true;
 		}
