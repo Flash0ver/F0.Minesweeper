@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using F0.Minesweeper.Components.Logic.Cell;
+using F0.Minesweeper.Components.Extensions;
 using F0.Minesweeper.Logic;
 using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -14,9 +14,9 @@ namespace F0.Minesweeper.App
 			var builder = WebAssemblyHostBuilder.CreateDefault(args);
 			builder.RootComponents.Add<App>("#app");
 
-			builder.Services.AddTransient(CellStatusManagerFactory.GetManager);
-			builder.Services.AddSingleton<IMinefieldFactory>(new MinefieldFactory());
-
+			builder.Services.AddMinesweeperComponentsServices();
+			builder.Services.AddSingleton<IMinefieldFactory>((serviceProvider) => new MinefieldFactory());
+			
 			await builder.Build().RunAsync();
 		}
 	}
