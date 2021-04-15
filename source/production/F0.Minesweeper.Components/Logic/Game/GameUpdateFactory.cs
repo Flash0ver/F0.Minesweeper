@@ -19,14 +19,14 @@ namespace F0.Minesweeper.Components.Logic.Game
 			};
 		}
 
-		public GameUpdater On(IGameUpdateReport report)
+		public GameUpdater On(GameStatus gameStatus)
 		{
-			if (gameUpdater.TryGetValue(report.Status, out GameUpdater updater))
+			if (gameUpdater.TryGetValue(gameStatus, out GameUpdater updater))
 			{
-				return updater.WithReport(report);
+				return updater;
 			}
 
-			throw new ArgumentOutOfRangeException(nameof(report), $"The {typeof(GameStatus)} '{report.Status}' has no associated {typeof(GameUpdater)} implementation.");
+			throw new ArgumentOutOfRangeException(nameof(gameStatus), $"The {typeof(GameStatus)} '{gameStatus}' has no associated {typeof(GameUpdater)} implementation.");
 		}
 	}
 }

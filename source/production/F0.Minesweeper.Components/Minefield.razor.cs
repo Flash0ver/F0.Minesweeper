@@ -20,7 +20,7 @@ namespace F0.Minesweeper.Components
 
 		[Inject]
 		internal IGameUpdateFactory? GameUpdateFactory { get; set; }
-		
+
 		private readonly List<Cell> cells;
 
 		private Cell Cell { set => cells.Add(value); }
@@ -47,7 +47,7 @@ namespace F0.Minesweeper.Components
 
 		protected override void OnAfterRender(bool firstRender)
 		{
-			foreach(Cell cell in cells)
+			foreach (Cell cell in cells)
 			{
 				cell.UncoveredAsync += OnCellUncoveredAsync;
 			}
@@ -65,8 +65,8 @@ namespace F0.Minesweeper.Components
 
 			IGameUpdateReport report = minefield.Uncover(clickedLocation);
 
-			GameUpdateFactory.On(report).UpdateAsync(cells, clickedLocation);
-			
+			GameUpdateFactory.On(report.Status).WithReport(report).UpdateAsync(cells, clickedLocation);
+
 			return Task.CompletedTask;
 		}
 	}

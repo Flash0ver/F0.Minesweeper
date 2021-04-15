@@ -5,6 +5,6 @@ namespace F0.Minesweeper.Components.Abstractions
 {
 	internal interface IGameUpdateFactory
 	{
-		GameUpdater On(IGameUpdateReport report);
+		GameUpdater On(GameStatus gameStatus);
 	}
 }
