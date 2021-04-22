@@ -8,7 +8,7 @@
 		"threshold-low": 60,
 		"threshold-break": 0,
 		"ignore-methods": [
-			"ToString",
+			"Assert",
 			"ConfigureAwait"
 		]
 	}
