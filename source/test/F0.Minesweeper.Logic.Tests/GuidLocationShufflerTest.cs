@@ -6,7 +6,7 @@ using Xunit;
 
 namespace F0.Minesweeper.Logic.Tests
 {
-	public class DefaultLocationShufflerTest
+	public class GuidLocationShufflerTest
 	{
 		[Theory]
 		[InlineData(1)]
@@ -18,8 +18,8 @@ namespace F0.Minesweeper.Logic.Tests
 		[InlineData(13)]
 		public void ShuffleAndTake_WithCount_DoesReturnCorrectCount(int count)
 		{
-			DefaultLocationShuffler locationShufflerUnderTest = new();
-			IReadOnlyCollection<Location> resultingLocations = ((ILocationShuffler)locationShufflerUnderTest).ShuffleAndTake(field, count);
+			ILocationShuffler locationShufflerUnderTest = GuidLocationShuffler.Instance;
+			IReadOnlyCollection<Location> resultingLocations = locationShufflerUnderTest.ShuffleAndTake(field, count);
 
 			resultingLocations.Should().HaveCount(count);
 		}
