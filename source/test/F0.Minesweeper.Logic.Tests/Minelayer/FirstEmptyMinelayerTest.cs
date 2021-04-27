@@ -20,8 +20,8 @@ namespace F0.Minesweeper.Logic.Tests.Minelayer
 		{
 			Location clickedLocation = new(clickedLocationX, clickedLocationY);
 			LocationShufflerToTest locationShuffler = new(mineLocations);
-			FirstEmptyMinelayer minelayerUnderTest = new(locationShuffler);
-			IEnumerable<Location> placedMines = ((IMinelayer)minelayerUnderTest).PlaceMines(field, (uint)mineLocations.Length, clickedLocation);
+			IMinelayer minelayerUnderTest = new FirstEmptyMinelayer(locationShuffler);
+			IEnumerable<Location> placedMines = minelayerUnderTest.PlaceMines(field, (uint)mineLocations.Length, clickedLocation);
 
 			placedMines.Should().NotContain(clickedLocation);
 		}
@@ -42,8 +42,8 @@ namespace F0.Minesweeper.Logic.Tests.Minelayer
 		{
 			Location clickedLocation = new(clickedLocationX, clickedLocationY);
 			LocationShufflerToTest locationShuffler = new(mineLocations);
-			FirstEmptyMinelayer minelayerUnderTest = new(locationShuffler);
-			IEnumerable<Location> placedMines = ((IMinelayer)minelayerUnderTest).PlaceMines(field, (uint)mineLocations.Length, clickedLocation);
+			IMinelayer minelayerUnderTest = new FirstEmptyMinelayer(locationShuffler);
+			IEnumerable<Location> placedMines = minelayerUnderTest.PlaceMines(field, (uint)mineLocations.Length, clickedLocation);
 
 			placedMines.Should().HaveCount(mineLocations.Length + mineCountChange);
 		}

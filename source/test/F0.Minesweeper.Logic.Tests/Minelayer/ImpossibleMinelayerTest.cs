@@ -23,8 +23,8 @@ namespace F0.Minesweeper.Logic.Tests.Minelayer
 		public void PlaceMines_AlwaysResultsInOneMineAtClickedLocation(uint clickedLocationX, uint clickedLocationY)
 		{
 			Location clickedLocation = new(clickedLocationX, clickedLocationY);
-			ImpossibleMinelayer minelayerUnderTest = new();
-			IEnumerable<Location> placedMines = ((IMinelayer)minelayerUnderTest).PlaceMines(field, 0, clickedLocation);
+			IMinelayer minelayerUnderTest = new ImpossibleMinelayer();
+			IEnumerable<Location> placedMines = minelayerUnderTest.PlaceMines(field, 0, clickedLocation);
 
 			placedMines.Should().HaveCount(1);
 			placedMines.Should().BeEquivalentTo(clickedLocation);
