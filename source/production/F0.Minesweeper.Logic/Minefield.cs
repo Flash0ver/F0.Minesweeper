@@ -80,12 +80,14 @@ namespace F0.Minesweeper.Logic
 			{
 				return GameStatus.IsLost;
 			}
+
 			if (minefield
 				.Where(cell => !cell.IsMine)
 				.All(nonMineCell => nonMineCell.Uncovered))
 			{
 				return GameStatus.IsWon;
 			}
+
 			return GameStatus.InProgress;
 		}
 
