@@ -5,6 +5,7 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 {
 	internal interface ILocationShuffler
 	{
+		internal static ILocationShuffler Instance { get; }
 		internal IReadOnlyCollection<Location> ShuffleAndTake(IEnumerable<Location> allLocations, int count);
 	}
 }

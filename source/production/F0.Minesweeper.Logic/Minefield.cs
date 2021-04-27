@@ -14,7 +14,7 @@ namespace F0.Minesweeper.Logic
 		private readonly IMinelayer mineplacer;
 		private bool isFirstUncover = true;
 		private readonly List<Cell> minefield;
-		private static readonly DefaultLocationShuffler defaultLocationShuffler = new DefaultLocationShuffler();
+		private static readonly ILocationShuffler locationShuffler = GuidLocationShuffler.Instance;
 
 		private IEnumerable<Location> GetAllLocations() => minefield.Select(m => m.Location);
 
@@ -24,9 +24,9 @@ namespace F0.Minesweeper.Logic
 			mineCount,
 			generationOptions switch
 			{
-				MinefieldFirstUncoverBehavior.MayYieldMine => new RandomMinelayer(defaultLocationShuffler),
-				MinefieldFirstUncoverBehavior.CannotYieldMine => new SafeMinelayer(defaultLocationShuffler),
-				MinefieldFirstUncoverBehavior.WithoutAdjacentMines => new FirstEmptyMinelayer(defaultLocationShuffler),
+				MinefieldFirstUncoverBehavior.MayYieldMine => new RandomMinelayer(locationShuffler),
+				MinefieldFirstUncoverBehavior.CannotYieldMine => new SafeMinelayer(locationShuffler),
+				MinefieldFirstUncoverBehavior.WithoutAdjacentMines => new FirstEmptyMinelayer(locationShuffler),
 				MinefieldFirstUncoverBehavior.AlwaysYieldsMine => new ImpossibleMinelayer(),
 				_ => throw new InvalidEnumArgumentException($"Enumeration {generationOptions.GetType().Name}.{generationOptions} not implemented."),
 			})
@@ -41,6 +41,11 @@ namespace F0.Minesweeper.Logic
 
 		internal Minefield(uint width, uint height, uint mineCount, IMinelayer mineplacer)
 		{
+			if (mineCount > int.MaxValue)
+			{
+				throw new ArgumentOutOfRangeException(nameof(mineCount), mineCount, "Minecount should not be greater than int.MaxValue.");
+			}
+
 			this.width = width;
 			this.height = height;
 			this.mineCount = mineCount;
