@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Components;
 
@@ -47,23 +48,31 @@ namespace F0.Minesweeper.Components
 			}
 		}
 
-		private Task OnCellUncoveredAsync(Location location)
+		private Task OnCellUncoveredAsync(Location clickedLocation)
 		{
 			if(minefield == null)
 			{
 				throw new InvalidOperationException($"The '{nameof(minefield)}' has to be created before an uncover.");
 			}
 
-			IGameUpdateReport report = minefield.Uncover(location);
+			IGameUpdateReport report = minefield.Uncover(clickedLocation);
 
-			foreach(Cell cell in cells)
+
+			var uncoverableCells =
+				(
+					from cell in cells
+					join reportCell in report.Cells on cell.Location equals reportCell.Location
+					select new { Cell = cell, IsMine = reportCell.IsMine, AdjacentMineCount = reportCell.AdjacentMineCount }
+				).ToList();
+
+			foreach(var uncoverableCell in uncoverableCells)
 			{
-				IUncoveredCell? uncoveredCell = report.Cells.SingleOrDefault(uncovered => uncovered.Location == cell.Location);
+				CellInteractionType interactionType =
+					uncoverableCell.Cell.Location == clickedLocation
+					? CellInteractionType.LeftClick
+					: CellInteractionType.Automatic;
 
-				if(uncoveredCell != null)
-				{
-					cell.SetUncoveredStatus(uncoveredCell.IsMine, uncoveredCell.AdjacentMineCount);
-				}
+				uncoverableCell.Cell.SetUncoveredStatus(interactionType, uncoverableCell.IsMine, uncoverableCell.AdjacentMineCount);
 			}
 
 			return Task.CompletedTask;
