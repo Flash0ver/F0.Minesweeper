@@ -44,7 +44,7 @@ namespace F0.Minesweeper.Logic.Tests.Minelayer
 			Location clickedLocation = new(clickedLocationX, clickedLocationY);
 			LocationShufflerToTest locationShuffler = new(mineLocations);
 			IMinelayer minelayerUnderTest = new SafeMinelayer(locationShuffler);
-            IEnumerable<Location> placedMines = minelayerUnderTest.PlaceMines(field, (uint)mineLocations.Length, clickedLocation);
+			IEnumerable<Location> placedMines = minelayerUnderTest.PlaceMines(field, (uint)mineLocations.Length, clickedLocation);
 
 			placedMines.Should().HaveCount(mineLocations.Length + mineCountChange);
 			placedMines.Should().BeEquivalentTo(mineLocations.Except(new[] { clickedLocation }));
