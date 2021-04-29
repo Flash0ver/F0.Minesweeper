@@ -11,16 +11,17 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 		{
 			_ = allLocations ?? throw new ArgumentNullException(nameof(allLocations));
 
-			var allLocationsCount = allLocations.Count();
-			if (count > allLocationsCount)
-			{
-				throw new ArgumentOutOfRangeException(nameof(count), count, $"The take count should not be greater than the number of elements in {nameof(allLocations)}. Element count: {allLocationsCount}");
-			}
-
-			return allLocations
+			Location[] shuffledLocations = allLocations
 				  .OrderBy(_ => Guid.NewGuid())
 				  .Take(count)
 				  .ToArray();
+
+			if (count > shuffledLocations.Length)
+			{
+				throw new ArgumentOutOfRangeException(nameof(count), count, $"The take count should not be greater than the number of elements in {nameof(allLocations)}. Element count: {shuffledLocations.Length}");
+			}
+
+			return shuffledLocations;
 		}
 	}
 }
