@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using F0.Minesweeper.Logic.Abstractions;
-using F0.Minesweeper.Logic.LocationShuffler;
 using F0.Minesweeper.Logic.Minelayer;
 
 namespace F0.Minesweeper.Logic
@@ -11,35 +9,12 @@ namespace F0.Minesweeper.Logic
 	internal sealed class Minefield : IMinefield
 	{
 		private readonly uint width, height, mineCount;
-		private readonly IMinelayer mineplacer;
+		private readonly IMinelayer minelayer;
 		private bool isFirstUncover = true;
 		private readonly List<Cell> minefield;
-		private static readonly ILocationShuffler locationShuffler = GuidLocationShuffler.Instance;
-
 		private IEnumerable<Location> GetAllLocations() => minefield.Select(m => m.Location);
 
-		internal Minefield(uint width, uint height, uint mineCount, MinefieldFirstUncoverBehavior generationOptions) : this(
-			width,
-			height,
-			mineCount,
-			generationOptions switch
-			{
-				MinefieldFirstUncoverBehavior.MayYieldMine => new RandomMinelayer(locationShuffler),
-				MinefieldFirstUncoverBehavior.CannotYieldMine => new SafeMinelayer(locationShuffler),
-				MinefieldFirstUncoverBehavior.WithoutAdjacentMines => new FirstEmptyMinelayer(locationShuffler),
-				MinefieldFirstUncoverBehavior.AlwaysYieldsMine => new ImpossibleMinelayer(),
-				_ => throw new InvalidEnumArgumentException($"Enumeration {generationOptions.GetType().Name}.{generationOptions} not implemented."),
-			})
-		{ }
-
-		internal Minefield(MinefieldOptions minefieldOptions) : this(
-			minefieldOptions.Width,
-			minefieldOptions.Height,
-			minefieldOptions.MineCount,
-			minefieldOptions.GenerationOption)
-		{ }
-
-		internal Minefield(uint width, uint height, uint mineCount, IMinelayer mineplacer)
+		internal Minefield(uint width, uint height, uint mineCount, IMinelayer minelayer)
 		{
 			if (mineCount > int.MaxValue)
 			{
@@ -49,7 +24,7 @@ namespace F0.Minesweeper.Logic
 			this.width = width;
 			this.height = height;
 			this.mineCount = mineCount;
-			this.mineplacer = mineplacer;
+			this.minelayer = minelayer;
 			minefield = new List<Cell>();
 		}
 
@@ -62,7 +37,7 @@ namespace F0.Minesweeper.Logic
 				isFirstUncover = false;
 			}
 
-			if(!GetAllLocations().Contains(location))
+			if (!GetAllLocations().Contains(location))
 			{
 				throw new ArgumentException("Invalid Location for minefield.");
 			}
@@ -131,7 +106,7 @@ namespace F0.Minesweeper.Logic
 				}
 			}
 
-			IReadOnlyCollection<Location> mineLocations = mineplacer.PlaceMines(allLocations, mineCount, clickedLocation);
+			IReadOnlyCollection<Location> mineLocations = minelayer.PlaceMines(allLocations, mineCount, clickedLocation);
 
 			foreach (var minefieldCell in minefield)
 			{

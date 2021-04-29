@@ -18,7 +18,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[InlineData(13)]
 		public void ShuffleAndTake_WithCount_DoesReturnCorrectCount(int count)
 		{
-			ILocationShuffler locationShufflerUnderTest = GuidLocationShuffler.Instance;
+			ILocationShuffler locationShufflerUnderTest =  new GuidLocationShuffler();
 			IReadOnlyCollection<Location> resultingLocations = locationShufflerUnderTest.ShuffleAndTake(field, count);
 
 			resultingLocations.Should().HaveCount(count);

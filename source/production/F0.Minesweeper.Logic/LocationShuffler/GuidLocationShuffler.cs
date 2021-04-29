@@ -7,19 +7,6 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 {
 	internal class GuidLocationShuffler : ILocationShuffler
 	{
-		private static ILocationShuffler? instance;
-
-		private GuidLocationShuffler() { }
-
-		internal static ILocationShuffler Instance
-		{
-			get
-			{
-				instance ??= new GuidLocationShuffler();
-				return instance;
-			}
-		}
-
 		IReadOnlyCollection<Location> ILocationShuffler.ShuffleAndTake(IEnumerable<Location> allLocations, int count)
 		{
 			_ = allLocations ?? throw new ArgumentNullException(nameof(allLocations));
