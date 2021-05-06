@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.LocationShuffler;
 using F0.Minesweeper.Logic.Minelayer;
@@ -15,16 +16,16 @@ namespace F0.Minesweeper.Logic
 		{
 			ILocationShuffler locationShuffler;
 
-			if (LocationShufflers.ContainsKey(options.LocationShuffler))
+			if (LocationShufflers.TryGetValue(options.LocationShuffler, out ILocationShuffler? shuffler))
 			{
-				locationShuffler = LocationShufflers[options.LocationShuffler];
+				locationShuffler = shuffler;
 			}
 			else
 			{
 				locationShuffler = options.LocationShuffler switch
 				{
 					Abstractions.LocationShuffler.GuidLocationShuffler => new GuidLocationShuffler(),
-					_ => throw new ArgumentOutOfRangeException(nameof(options.LocationShuffler), $"Not expected LocationShuffler value: {options.LocationShuffler}"),
+					_ => throw new InvalidEnumArgumentException(nameof(options.LocationShuffler), (int)options.LocationShuffler, typeof(Abstractions.LocationShuffler)),
 				};
 
 				LocationShufflers.Add(options.LocationShuffler, locationShuffler);
@@ -36,7 +37,7 @@ namespace F0.Minesweeper.Logic
 				MinefieldFirstUncoverBehavior.CannotYieldMine => new SafeMinelayer(locationShuffler),
 				MinefieldFirstUncoverBehavior.WithoutAdjacentMines => new FirstEmptyMinelayer(locationShuffler),
 				MinefieldFirstUncoverBehavior.AlwaysYieldsMine => new ImpossibleMinelayer(),
-				_ => throw new ArgumentOutOfRangeException(nameof(options.GenerationOption), $"Not expected GenerationOption value: {options.GenerationOption}"),
+				_ => throw new InvalidEnumArgumentException(nameof(options.GenerationOption), (int)options.GenerationOption, typeof(MinefieldFirstUncoverBehavior)),
 			};
 
 			return new Minefield(options.Width, options.Height, options.MineCount, minelayer);
