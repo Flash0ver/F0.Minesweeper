@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.LocationShuffler;
@@ -16,12 +17,22 @@ namespace F0.Minesweeper.Logic.Tests
 		[InlineData(5)]
 		[InlineData(10)]
 		[InlineData(13)]
+		[InlineData(25)]
 		public void ShuffleAndTake_WithCount_DoesReturnCorrectCount(int count)
 		{
-			ILocationShuffler locationShufflerUnderTest =  new GuidLocationShuffler();
+			ILocationShuffler locationShufflerUnderTest = new GuidLocationShuffler();
 			IReadOnlyCollection<Location> resultingLocations = locationShufflerUnderTest.ShuffleAndTake(field, count);
 
 			resultingLocations.Should().HaveCount(count);
+		}
+
+		[Fact]
+		public void ShuffleAndTake_WithCountGreaterThanField_ThrowsArgumentOutOfRangeException()
+		{
+			ILocationShuffler locationShufflerUnderTest = new GuidLocationShuffler();
+			Action shuffleAction = () => locationShufflerUnderTest.ShuffleAndTake(field, field.Length + 1);
+
+			shuffleAction.Should().Throw<ArgumentOutOfRangeException>();
 		}
 
 		private readonly Location[] field = {
