@@ -17,16 +17,31 @@ namespace F0.Minesweeper.Components.Logic.Cell
 			transitions = new Dictionary<CellStatusTransition, CellStatusType>
 			{
 				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.LeftClick, false)), CellStatusType.Uncovered },
-				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.LeftClick, true)), CellStatusType.Mine },
+				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.LeftClick, true)), CellStatusType.MineExploded },
 				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.LeftClick)), CellStatusType.Undefined },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.LeftClick, false)), CellStatusType.Uncovered },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.LeftClick, true)), CellStatusType.MineExploded },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.LeftClick)), CellStatusType.Undefined },
+
 				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.Automatic, false)), CellStatusType.Uncovered },
-				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.Automatic, true)), CellStatusType.Mine },
 				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.RightClick)), CellStatusType.Flagged },
 				{ new CellStatusTransition(CellStatusType.Flagged, new (CellInteractionType.RightClick)), CellStatusType.Unsure },
-				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.LeftClick, false)), CellStatusType.Uncovered },
-				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.LeftClick, true)), CellStatusType.Mine },
-				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.LeftClick)), CellStatusType.Undefined },
-				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.RightClick)), CellStatusType.Covered }
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.RightClick)), CellStatusType.Covered },
+
+				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.GameWon, true)), CellStatusType.Flagged },
+				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.GameWon, false)), CellStatusType.Uncovered },
+				{ new CellStatusTransition(CellStatusType.Flagged, new (CellInteractionType.GameWon, true)), CellStatusType.Flagged },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.GameWon, true)), CellStatusType.Flagged },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.GameWon, false)), CellStatusType.Uncovered },
+				{ new CellStatusTransition(CellStatusType.Uncovered, new (CellInteractionType.GameWon, false)), CellStatusType.Uncovered },
+
+				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.GameLost, false)), CellStatusType.Covered },
+				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.GameLost, true)), CellStatusType.Mine },
+				{ new CellStatusTransition(CellStatusType.Flagged, new (CellInteractionType.GameLost, true)), CellStatusType.Flagged },
+				{ new CellStatusTransition(CellStatusType.Flagged, new (CellInteractionType.GameLost, false)), CellStatusType.FlaggedWrong },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.GameLost, true)), CellStatusType.Mine },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.GameLost, false)), CellStatusType.Unsure },
+				{ new CellStatusTransition(CellStatusType.Uncovered, new (CellInteractionType.GameLost, false)), CellStatusType.Uncovered },
 			};
 		}
 

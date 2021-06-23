@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using F0.Minesweeper.Components.Abstractions;
-using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Components;
 
-namespace F0.Minesweeper.Components
+namespace F0.Minesweeper.Components.Pages.Game.Modules
 {
 	public partial class Minefield
 	{
@@ -24,7 +22,7 @@ namespace F0.Minesweeper.Components
 		private readonly List<Cell> cells;
 
 		private Cell Cell { set => cells.Add(value); }
-
+		
 		private IMinefield? minefield;
 
 		private bool isValidSize;
@@ -53,21 +51,18 @@ namespace F0.Minesweeper.Components
 			}
 		}
 
-		private Task OnCellUncoveredAsync(Location clickedLocation)
+		private async Task OnCellUncoveredAsync(Location clickedLocation)
 		{
-			Debug.Assert(minefield != null, $"The '{nameof(minefield)}' has to be created before an uncover.");
 			Debug.Assert(GameUpdateFactory != null, $"The '{nameof(GameUpdateFactory)}' is injected on minefield generation.");
-
-			if (minefield == null)
+			
+			if(minefield == null)
 			{
-				throw new InvalidOperationException();
+				throw new InvalidOperationException($"The '{nameof(minefield)}' has to be created before an uncover.");
 			}
 
 			IGameUpdateReport report = minefield.Uncover(clickedLocation);
 
-			GameUpdateFactory.On(report.Status).WithReport(report).UpdateAsync(cells, clickedLocation);
-
-			return Task.CompletedTask;
+			await GameUpdateFactory.On(report.Status).WithReport(report).UpdateAsync(cells, clickedLocation);
 		}
 	}
 }

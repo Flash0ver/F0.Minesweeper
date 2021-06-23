@@ -4,6 +4,7 @@ using F0.Minesweeper.Logic;
 using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Prism.Events;
 
 namespace F0.Minesweeper.App
 {
@@ -15,8 +16,8 @@ namespace F0.Minesweeper.App
 			builder.RootComponents.Add<App>("#app");
 
 			builder.Services.AddMinesweeperComponentsServices();
-			builder.Services.AddSingleton<IMinefieldFactory>((serviceProvider) => new MinefieldFactory());
-			
+			builder.Services.AddSingleton<IMinefieldFactory>(new MinefieldFactory());
+
 			await builder.Build().RunAsync();
 		}
 	}

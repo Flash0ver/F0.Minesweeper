@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
-using F0.Minesweeper.Components;
+using F0.Minesweeper.Components.Pages.Game;
 
 namespace F0.Minesweeper.App
 {

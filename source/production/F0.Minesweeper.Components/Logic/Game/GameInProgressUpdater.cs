@@ -1,20 +1,14 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 
 namespace F0.Minesweeper.Components.Logic.Game
 {
 	internal class GameInProgressUpdater : GameUpdater
 	{
-		internal override void UpdateAsync(List<Components.Cell> cells, Minesweeper.Logic.Abstractions.Location clickedLocation) 
+		protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation) 
         {
-            var uncoverableCells =
-				(
-					from cell in cells
-					join reportCell in report.Cells on cell.Location equals reportCell.Location
-					select new { Cell = cell, IsMine = reportCell.IsMine, AdjacentMineCount = reportCell.AdjacentMineCount }
-				).ToList();
-
 			foreach(var uncoverableCell in uncoverableCells)
 			{
 				CellInteractionType interactionType =
@@ -24,6 +18,8 @@ namespace F0.Minesweeper.Components.Logic.Game
 
 				uncoverableCell.Cell.SetUncoveredStatus(interactionType, uncoverableCell.IsMine, uncoverableCell.AdjacentMineCount);
 			}
+
+			return Task.CompletedTask;
         }
 	}
 }

@@ -1,26 +1,33 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Bunit;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Logic.Cell;
+using F0.Minesweeper.Components.Logic.Game;
+using F0.Minesweeper.Components.Pages.Game.Modules;
 using F0.Minesweeper.Logic.Abstractions;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Xunit;
 
-namespace F0.Minesweeper.Components.Tests
+namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 {
 	public class MinefieldTests : TestContext
 	{
 		private readonly Mock<IMinefieldFactory> minefieldFactoryMock;
 		private readonly Mock<IMinefield> minefieldMock;
+		private readonly Mock<IGameUpdateFactory> gameUpdateFactoryMock;
 
 		public MinefieldTests()
 		{
 			minefieldFactoryMock = new Mock<IMinefieldFactory>(MockBehavior.Strict);
 			minefieldMock = new Mock<IMinefield>(MockBehavior.Strict);
+			gameUpdateFactoryMock = new Mock<IGameUpdateFactory>(MockBehavior.Strict);
 			Services.AddSingleton(minefieldFactoryMock.Object);
 			Services.AddSingleton<ICellStatusManager>(new CellStatusManager());
+			Services.AddSingleton(gameUpdateFactoryMock.Object);
 		}
 
 		protected override void Dispose(bool disposing)
@@ -110,9 +117,9 @@ namespace F0.Minesweeper.Components.Tests
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns<IMinefield>(null);
 
-			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
+			ComponentParameter optionsParameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
 
-			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
+			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(optionsParameter);
 
 			// Act && Assert
 			Action actionToTest = () => componentUnderTest.Find("button").Click();
@@ -128,6 +135,7 @@ namespace F0.Minesweeper.Components.Tests
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
 			minefieldMock.Setup(field => field.Uncover(It.Is<Location>(s => s == new Location(0, 0)))).Returns(report);
+			gameUpdateFactoryMock.Setup(factory => factory.On(report.Status)).Returns(new GameUpdaterForTests());
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
 
@@ -202,6 +210,11 @@ namespace F0.Minesweeper.Components.Tests
 					new UncoveredCellForTests(new (500,400),false,3)
 				})
 			};
+
+		private class GameUpdaterForTests : GameUpdater
+		{
+			protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> cells, Location clickedLocation) => Task.CompletedTask;
+		}
 
 		private class GameUpdateReportForTests : IGameUpdateReport
 		{

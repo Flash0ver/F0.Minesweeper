@@ -1,0 +1,33 @@
+.f0-cell {
+    min-height: 25px;
+    min-width: 25px;
+    color:rgba(0, 0, 0, 1);
+}
+
+.f0-cell-covered, .f0-cell-covered:disabled  {
+	background-color: rgba(239, 239, 239, 1);
+    border-width: thin;
+}
+
+.f0-cell-flagged-wrong, .f0-cell-flagged-wrong:disabled {
+	background-color: rgba(255, 0, 0, 0.3);
+    border-width: thin;
+}
+
+.f0-cell-mine-exploded, .f0-cell-mine-exploded:disabled {
+	background-color: rgba(255, 0, 0, 1);
+    border: none;
+}
+
+.f0-cell-uncovered, .f0-cell-uncovered:disabled {
+    background-color: rgba(239, 239, 239, 1);
+    border: none;
+    min-height: 25px;
+    min-width: 25px;
+}
+
+.f0-cell-undefinedstatus, .f0-cell-undefinedstatus:disabled {
+    background-color: black;
+    color: aqua;
+    border-width: thin;
+}

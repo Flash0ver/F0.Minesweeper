@@ -1,0 +1,9 @@
+<div>
+	<button @onclick="@OnClickAsync"
+			@oncontextmenu="@(e => { if (!IsDisabled) OnRightClick(); })"
+			@oncontextmenu:preventDefault="true"
+			class='@CssClass'
+			disabled="@IsDisabled"> 
+		@StatusText
+	</button>
+</div>

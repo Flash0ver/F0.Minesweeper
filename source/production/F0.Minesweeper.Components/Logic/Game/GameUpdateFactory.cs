@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Logic.Abstractions;
+using Prism.Events;
 
 namespace F0.Minesweeper.Components.Logic.Game
 {
@@ -9,19 +10,19 @@ namespace F0.Minesweeper.Components.Logic.Game
 	{
 		private readonly Dictionary<GameStatus, GameUpdater> gameUpdater;
 
-		internal GameUpdateFactory()
+		internal GameUpdateFactory(IEventAggregator eventAggregator)
 		{
 			gameUpdater = new()
 			{
 				{ GameStatus.InProgress, new GameInProgressUpdater() },
-				{ GameStatus.IsWon, new GameWonUpdater() },
-				{ GameStatus.IsLost, new GameLostUpdater() }
+				{ GameStatus.IsWon, new GameWonUpdater(eventAggregator) },
+				{ GameStatus.IsLost, new GameLostUpdater(eventAggregator) }
 			};
 		}
 
 		public GameUpdater On(GameStatus gameStatus)
 		{
-			if (gameUpdater.TryGetValue(gameStatus, out GameUpdater updater))
+			if (gameUpdater.TryGetValue(gameStatus, out GameUpdater? updater))
 			{
 				return updater;
 			}
