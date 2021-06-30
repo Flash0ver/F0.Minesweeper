@@ -13,7 +13,7 @@
 	</ExpectedOutput>
 
 	@code {
-		private MinefieldOptions TestMinefieldOptions = new (10, 10, 2, MinefieldFirstUncoverBehavior.MayYieldMine);
+		private MinefieldOptions TestMinefieldOptions = new (10, 10, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 
 		private void Setup(SnapshotTest test)
 		{
