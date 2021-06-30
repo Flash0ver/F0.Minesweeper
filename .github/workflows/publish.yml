@@ -40,4 +40,5 @@ jobs:
         with:
           branch: main
           folder: ${{ env.Output_Directory }}wwwroot
+          token: ${{ secrets.Deploy_F0Minesweeper }}
           repository-name: Flash0ver/F0-Tests-Minesweeper
