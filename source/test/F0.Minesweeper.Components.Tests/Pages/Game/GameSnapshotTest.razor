@@ -15,15 +15,15 @@
 
 	@code {
 		// todo: fix this when refactoring snapshot tests to tests with inline render fragments 
-		private MinefieldOptions TestMinefieldOptions = new (10, 10, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+		private MinefieldOptions TestMinefieldOptions = new(10, 10, 10, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 
 		private void Setup(SnapshotTest test)
 		{
-			Mock<IMinefieldFactory> minefieldFactory = new (MockBehavior.Strict);
-			Mock<IMinefield> minefield = new (MockBehavior.Strict);
-			Mock<ICellStatusManager> statusManager = new (MockBehavior.Strict);
-			Mock<IGameUpdateFactory> gameUpdateFactory = new (MockBehavior.Strict);
-			Mock<IEventAggregator> eventAggregator = new (MockBehavior.Strict);
+			Mock<IMinefieldFactory> minefieldFactory = new(MockBehavior.Strict);
+			Mock<IMinefield> minefield = new(MockBehavior.Strict);
+			Mock<ICellStatusManager> statusManager = new(MockBehavior.Strict);
+			Mock<IGameUpdateFactory> gameUpdateFactory = new(MockBehavior.Strict);
+			Mock<IEventAggregator> eventAggregator = new(MockBehavior.Strict);
 
 			minefieldFactory.Setup(factory => factory.Create(It.Is<MinefieldOptions>(options => options == TestMinefieldOptions))).Returns(minefield.Object);
 			eventAggregator.Setup(agg => agg.GetEvent<GameFinishedEvent>()).Returns(new GameFinishedEvent());
