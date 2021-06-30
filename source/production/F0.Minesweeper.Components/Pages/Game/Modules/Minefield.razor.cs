@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using F0.Minesweeper.Components.Abstractions.Enums;
+using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Components;
 
-namespace F0.Minesweeper.Components
+namespace F0.Minesweeper.Components.Pages.Game.Modules
 {
 	public partial class Minefield
 	{
@@ -16,10 +16,13 @@ namespace F0.Minesweeper.Components
 		[Inject]
 		internal IMinefieldFactory? MinefieldFactory { get; set; }
 
+		[Inject]
+		internal IGameUpdateFactory? GameUpdateFactory { get; set; }
+
 		private readonly List<Cell> cells;
 
 		private Cell Cell { set => cells.Add(value); }
-
+		
 		private IMinefield? minefield;
 
 		private bool isValidSize;
@@ -42,14 +45,16 @@ namespace F0.Minesweeper.Components
 
 		protected override void OnAfterRender(bool firstRender)
 		{
-			foreach(Cell cell in cells)
+			foreach (Cell cell in cells)
 			{
 				cell.UncoveredAsync += OnCellUncoveredAsync;
 			}
 		}
 
-		private Task OnCellUncoveredAsync(Location clickedLocation)
+		private async Task OnCellUncoveredAsync(Location clickedLocation)
 		{
+			Debug.Assert(GameUpdateFactory != null, $"The '{nameof(GameUpdateFactory)}' is injected on minefield generation.");
+			
 			if(minefield == null)
 			{
 				throw new InvalidOperationException($"The '{nameof(minefield)}' has to be created before an uncover.");
@@ -57,25 +62,7 @@ namespace F0.Minesweeper.Components
 
 			IGameUpdateReport report = minefield.Uncover(clickedLocation);
 
-
-			var uncoverableCells =
-				(
-					from cell in cells
-					join reportCell in report.Cells on cell.Location equals reportCell.Location
-					select new { Cell = cell, IsMine = reportCell.IsMine, AdjacentMineCount = reportCell.AdjacentMineCount }
-				).ToList();
-
-			foreach(var uncoverableCell in uncoverableCells)
-			{
-				CellInteractionType interactionType =
-					uncoverableCell.Cell.Location == clickedLocation
-					? CellInteractionType.LeftClick
-					: CellInteractionType.Automatic;
-
-				uncoverableCell.Cell.SetUncoveredStatus(interactionType, uncoverableCell.IsMine, uncoverableCell.AdjacentMineCount);
-			}
-
-			return Task.CompletedTask;
+			await GameUpdateFactory.On(report.Status).WithReport(report).UpdateAsync(cells, clickedLocation);
 		}
 	}
 }

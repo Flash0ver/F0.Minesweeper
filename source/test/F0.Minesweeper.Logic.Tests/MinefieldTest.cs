@@ -92,7 +92,7 @@ namespace F0.Minesweeper.Logic.Tests
 			IGameUpdateReport result = minefieldUnderTest.Uncover(0, 0);
 
 			result.Cells.Should().NotBeEmpty()
-				.And.HaveCount(22)
+				.And.HaveCount(25)
 				.And.Contain(cell => !cell.IsMine);
 			result.Status.Should().Be(GameStatus.IsWon);
 		}
@@ -118,7 +118,7 @@ namespace F0.Minesweeper.Logic.Tests
 
 			result = minefieldUnderTest.Uncover(0, 4);
 			result.Cells.Should().NotBeEmpty()
-				.And.HaveCount(1)
+				.And.HaveCount(25)
 				.And.Contain(cell => !cell.IsMine);
 			result.Status.Should().Be(GameStatus.IsWon);
 		}
