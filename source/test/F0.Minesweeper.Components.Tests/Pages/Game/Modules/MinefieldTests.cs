@@ -155,57 +155,57 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 				new GameUpdateReportForTests(GameStatus.IsWon, new UncoveredCellForTests[0]),
 
 				// with one valid mine cell 
-				new GameUpdateReportForTests(GameStatus.InProgress, new []
+				new GameUpdateReportForTests(GameStatus.InProgress, new[]
 				{
 					new UncoveredCellForTests(new (0,0),true,0)
 				}),
-				new GameUpdateReportForTests(GameStatus.IsLost, new []
+				new GameUpdateReportForTests(GameStatus.IsLost, new[]
 				{
 					new UncoveredCellForTests(new (0,0),true,0)
 				}),
-				new GameUpdateReportForTests(GameStatus.IsWon, new []
+				new GameUpdateReportForTests(GameStatus.IsWon, new[]
 				{
 					new UncoveredCellForTests(new (0,0),true,0)
 				}),
 
 				// with one mine cell outside of field
-				new GameUpdateReportForTests(GameStatus.InProgress, new []
+				new GameUpdateReportForTests(GameStatus.InProgress, new[]
 				{
 					new UncoveredCellForTests(new (500,400),true,0)
 				}),
-				new GameUpdateReportForTests(GameStatus.IsLost, new []
+				new GameUpdateReportForTests(GameStatus.IsLost, new[]
 				{
 					new UncoveredCellForTests(new (500,400),true,0)
 				}),
-				new GameUpdateReportForTests(GameStatus.IsWon, new []
+				new GameUpdateReportForTests(GameStatus.IsWon, new[]
 				{
 					new UncoveredCellForTests(new (500,400),true,0)
 				}),
 
 				// with one valid none mine cell
-				new GameUpdateReportForTests(GameStatus.InProgress, new []
+				new GameUpdateReportForTests(GameStatus.InProgress, new[]
 				{
 					new UncoveredCellForTests(new (0,0),false,1)
 				}),
-				new GameUpdateReportForTests(GameStatus.IsLost, new []
+				new GameUpdateReportForTests(GameStatus.IsLost, new[]
 				{
 					new UncoveredCellForTests(new (0,0),false,1)
 				}),
-				new GameUpdateReportForTests(GameStatus.IsWon, new []
+				new GameUpdateReportForTests(GameStatus.IsWon, new[]
 				{
 					new UncoveredCellForTests(new (0,0),false,1)
 				}),
 
-					// with one non mine cell outside of field
-				new GameUpdateReportForTests(GameStatus.InProgress, new []
+				// with one non mine cell outside of field
+				new GameUpdateReportForTests(GameStatus.InProgress, new[]
 				{
 					new UncoveredCellForTests(new (500,400),false,3)
 				}),
-				new GameUpdateReportForTests(GameStatus.IsLost, new []
+				new GameUpdateReportForTests(GameStatus.IsLost, new[]
 				{
 					new UncoveredCellForTests(new (500,400),false,3)
 				}),
-				new GameUpdateReportForTests(GameStatus.IsWon, new []
+				new GameUpdateReportForTests(GameStatus.IsWon, new[]
 				{
 					new UncoveredCellForTests(new (500,400),false,3)
 				})

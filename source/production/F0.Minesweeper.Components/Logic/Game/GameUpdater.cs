@@ -22,7 +22,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 
 			IEnumerable<UncoverableCell> uncoverableCells = GetUncoverableCells(cells);
 
-			await this.OnUpdateAsync(uncoverableCells, clickedLocation);
+			await OnUpdateAsync(uncoverableCells, clickedLocation);
 		}
 
 		internal GameUpdater WithReport(IGameUpdateReport report)
@@ -36,7 +36,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 		private IEnumerable<UncoverableCell> GetUncoverableCells(IEnumerable<GameModule.Cell> cells)
 		{
 			Debug.Assert(report is not null, $"'{nameof(WithReport)}' on game updater '{GetType()}' has not been called before '{nameof(GetUncoverableCells)}'.");
-			
+
 			return
 				(
 					from cell in cells

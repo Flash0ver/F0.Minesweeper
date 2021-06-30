@@ -10,9 +10,9 @@ namespace F0.Minesweeper.Components.Extensions
 	{
 		public static IServiceCollection AddMinesweeperComponentsServices(this IServiceCollection serviceCollection)
 		{
-			serviceCollection.AddSingleton<IEventAggregator>(new EventAggregator());
+			serviceCollection.AddSingleton<IEventAggregator, EventAggregator>();
 			serviceCollection.AddTransient(CellStatusManagerFactory.GetManager);
-			serviceCollection.AddSingleton<IGameUpdateFactory>((ServiceProvider) => new GameUpdateFactory(ServiceProvider.GetRequiredService<IEventAggregator>()));
+			serviceCollection.AddSingleton<IGameUpdateFactory>((serviceProvider) => new GameUpdateFactory(serviceProvider.GetRequiredService<IEventAggregator>()));
 			return serviceCollection;
 		}
 	}

@@ -9,8 +9,8 @@ using Xunit;
 
 namespace F0.Minesweeper.Components.Tests.Logic.Game
 {
-    public class GameInProgressUpdaterTests 
-    {
+	public class GameInProgressUpdaterTests
+	{
 		[Fact]
 		public async Task OnUpdateAsync_UncoverableCellAndClickedLocationMatch_UncoversCellWithLeftClick()
 		{
@@ -22,10 +22,10 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			const bool expectedIsMine = true;
 			const byte expectedAdjacentMineCount = 0;
 
-			UncoverableCell[] uncoverableCells = new []
+			UncoverableCell[] uncoverableCells = new[]
 			{
 				new UncoverableCell(uiCell.Object, expectedIsMine, expectedAdjacentMineCount)
-            };
+			};
 
 			uiCell
 				.Setup(cell => cell.Location)
@@ -33,7 +33,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 
 			uiCell
 				.Setup(cell => cell.SetUncoveredStatus(CellInteractionType.LeftClick, expectedIsMine, expectedAdjacentMineCount));
-			
+
 			// Act && Assert
 			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Minesweeper.Logic.Abstractions.Location(expectedX, expectedY));
 		}
@@ -47,10 +47,10 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			const bool expectedIsMine = false;
 			const byte expectedAdjacentMineCount = 1;
 
-			UncoverableCell[] uncoverableCells = new []
+			UncoverableCell[] uncoverableCells = new[]
 			{
 				new UncoverableCell(uiCell.Object, expectedIsMine, expectedAdjacentMineCount)
-            };
+			};
 
 			uiCell
 				.Setup(cell => cell.Location)
@@ -58,7 +58,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 
 			uiCell
 				.Setup(cell => cell.SetUncoveredStatus(CellInteractionType.Automatic, expectedIsMine, expectedAdjacentMineCount));
-			
+
 			// Act && Assert
 			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Minesweeper.Logic.Abstractions.Location(2, 2));
 		}
@@ -71,11 +71,11 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			Mock<ICell> uiCellClicked = new(MockBehavior.Strict);
 			Mock<ICell> uiCellAutomatic = new(MockBehavior.Strict);
 
-			UncoverableCell[] uncoverableCells = new []
+			UncoverableCell[] uncoverableCells = new[]
 			{
 				new UncoverableCell(uiCellClicked.Object, false, 0),
 				new UncoverableCell(uiCellAutomatic.Object, false, 1)
-            };
+			};
 
 			uiCellClicked
 				.Setup(cell => cell.Location)
@@ -90,7 +90,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 
 			uiCellAutomatic
 				.Setup(cell => cell.SetUncoveredStatus(CellInteractionType.Automatic, false, 1));
-			
+
 			// Act && Assert
 			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Minesweeper.Logic.Abstractions.Location(1, 1));
 		}
@@ -102,8 +102,8 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			{
 			}
 
-            internal Task OnUpdateAsyncExposed(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation) 
-                => this.OnUpdateAsync(uncoverableCells, clickedLocation);
+			internal Task OnUpdateAsyncExposed(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation)
+				=> this.OnUpdateAsync(uncoverableCells, clickedLocation);
 		}
 	}
 }

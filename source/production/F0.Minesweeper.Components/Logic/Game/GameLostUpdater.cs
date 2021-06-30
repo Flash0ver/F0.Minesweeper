@@ -31,7 +31,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 				uncoverableCell.Cell.DisableClick();
 			}
 
-			this.eventAggregator.GetEvent<GameFinishedEvent>().Publish("You lost the game!");
+			eventAggregator.GetEvent<GameFinishedEvent>().Publish("You lost the game!");
 			return Task.CompletedTask;
 		}
 	}

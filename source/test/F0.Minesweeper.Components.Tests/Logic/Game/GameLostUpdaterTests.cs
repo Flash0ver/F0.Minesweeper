@@ -11,9 +11,9 @@ using Xunit;
 
 namespace F0.Minesweeper.Components.Tests.Logic.Game
 {
-    public class GameLostUpdaterTests
-    {
-        [Fact]
+	public class GameLostUpdaterTests
+	{
+		[Fact]
 		public async Task OnUpdateAsync_UncoverableCellAndClickedLocationMatch_UncoversCellWithLeftClick()
 		{
 			// Arrange
@@ -24,10 +24,10 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			const bool expectedIsMine = true;
 			const byte expectedAdjacentMineCount = 0;
 
-			UncoverableCell[] uncoverableCells = new []
+			UncoverableCell[] uncoverableCells = new[]
 			{
 				new UncoverableCell(uiCell.Object, expectedIsMine, expectedAdjacentMineCount)
-            };
+			};
 
 			uiCell
 				.Setup(cell => cell.Location)
@@ -42,7 +42,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 				.Setup(agg => agg.GetEvent<GameFinishedEvent>().Publish(It.IsAny<string>()));
 
 			GameLostUpdaterForTests instanceUnderTest = new(eventAggregator.Object);
-			
+
 			// Act && Assert
 			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Minesweeper.Logic.Abstractions.Location(expectedX, expectedY));
 		}
@@ -56,10 +56,10 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			const bool expectedIsMine = false;
 			const byte expectedAdjacentMineCount = 1;
 
-			UncoverableCell[] uncoverableCells = new []
+			UncoverableCell[] uncoverableCells = new[]
 			{
 				new UncoverableCell(uiCell.Object, expectedIsMine, expectedAdjacentMineCount)
-            };
+			};
 
 			uiCell
 				.Setup(cell => cell.Location)
@@ -67,13 +67,13 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 
 			uiCell
 				.Setup(cell => cell.SetUncoveredStatus(CellInteractionType.GameLost, expectedIsMine, expectedAdjacentMineCount));
-			
-            uiCell.Setup(cell => cell.DisableClick());
+
+			uiCell.Setup(cell => cell.DisableClick());
 
 			eventAggregator
 				.Setup(agg => agg.GetEvent<GameFinishedEvent>().Publish(It.IsAny<string>()));
 
-            GameLostUpdaterForTests instanceUnderTest = new(eventAggregator.Object);
+			GameLostUpdaterForTests instanceUnderTest = new(eventAggregator.Object);
 
 			// Act && Assert
 			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Minesweeper.Logic.Abstractions.Location(2, 2));
@@ -87,11 +87,11 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			Mock<ICell> uiCellClicked = new(MockBehavior.Strict);
 			Mock<ICell> uiCellAutomatic = new(MockBehavior.Strict);
 
-			UncoverableCell[] uncoverableCells = new []
+			UncoverableCell[] uncoverableCells = new[]
 			{
 				new UncoverableCell(uiCellClicked.Object, false, 0),
 				new UncoverableCell(uiCellAutomatic.Object, false, 1)
-            };
+			};
 
 			uiCellClicked
 				.Setup(cell => cell.Location)
@@ -100,7 +100,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			uiCellClicked
 				.Setup(cell => cell.SetUncoveredStatus(CellInteractionType.LeftClick, false, 0));
 
-            uiCellClicked.Setup(cell => cell.DisableClick());
+			uiCellClicked.Setup(cell => cell.DisableClick());
 
 			uiCellAutomatic
 				.Setup(cell => cell.Location)
@@ -109,25 +109,25 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			uiCellAutomatic
 				.Setup(cell => cell.SetUncoveredStatus(CellInteractionType.GameLost, false, 1));
 
-            uiCellAutomatic.Setup(cell => cell.DisableClick());
+			uiCellAutomatic.Setup(cell => cell.DisableClick());
 
-            eventAggregator
+			eventAggregator
 				.Setup(agg => agg.GetEvent<GameFinishedEvent>().Publish(It.IsAny<string>()));
-			
-            GameLostUpdaterForTests instanceUnderTest = new(eventAggregator.Object);
+
+			GameLostUpdaterForTests instanceUnderTest = new(eventAggregator.Object);
 
 			// Act && Assert
 			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Minesweeper.Logic.Abstractions.Location(1, 1));
 		}
 
-        private class GameLostUpdaterForTests : GameLostUpdater
+		private class GameLostUpdaterForTests : GameLostUpdater
 		{
 			public GameLostUpdaterForTests(IEventAggregator eventAggregator) : base(eventAggregator)
 			{
 			}
 
-            internal Task OnUpdateAsyncExposed(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation) 
-                => this.OnUpdateAsync(uncoverableCells, clickedLocation);
+			internal Task OnUpdateAsyncExposed(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation)
+				=> this.OnUpdateAsync(uncoverableCells, clickedLocation);
 		}
-    }
+	}
 }

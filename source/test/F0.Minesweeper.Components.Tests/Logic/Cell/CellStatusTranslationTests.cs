@@ -5,12 +5,12 @@ using Xunit;
 
 namespace F0.Minesweeper.Components.Tests.Logic.Cell
 {
-    public class CellStatusTranslationTests 
-    {
-        [Fact]
-        public void Constructor_WithoutTranslation_SetsCssClass()
-        {
-            // Arrange & Act
+	public class CellStatusTranslationTests
+	{
+		[Fact]
+		public void Constructor_WithoutTranslation_SetsCssClass()
+		{
+			// Arrange & Act
 			const string expectedCssClass = "my-class";
 			var instanceUnderTest = new CellStatusTranslation(expectedCssClass);
 
@@ -18,10 +18,10 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			instanceUnderTest.CssClass.Should().Be(expectedCssClass);
 		}
 
-        [Fact]
-        public void Constructor_WithTranslation_SetsCssClass()
-        {
-            // Arrange & Act
+		[Fact]
+		public void Constructor_WithTranslation_SetsCssClass()
+		{
+			// Arrange & Act
 			const string expectedCssClass = "my-class";
 			var instanceUnderTest = new CellStatusTranslation('1', expectedCssClass);
 
@@ -29,9 +29,9 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			instanceUnderTest.CssClass.Should().Be(expectedCssClass);
 		}
 
-        [Fact]
-        public void GetDisplayValue_NoActiveTranslationSet_NoAdjacentMines_Throws()
-        {
+		[Fact]
+		public void GetDisplayValue_NoActiveTranslationSet_NoAdjacentMines_Throws()
+		{
 			// Arrange
 			var instanceUnderTest = new CellStatusTranslation("css-class");
 
@@ -40,11 +40,11 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			actionToTest.Should().Throw<ArgumentNullException>();
 		}
 
-        [Theory]
-        [InlineData(null)]
-        [InlineData(4)]
-        public void GetDisplayValue_ActiveTranslationSet_ReturnsActiveTranslation(int? adjacentMineCount)
-        {
+		[Theory]
+		[InlineData(null)]
+		[InlineData(4)]
+		public void GetDisplayValue_ActiveTranslationSet_ReturnsActiveTranslation(int? adjacentMineCount)
+		{
 			// Arrange
 			const char expectedTranslation = 't';
 			var instanceUnderTest = new CellStatusTranslation(expectedTranslation, "css-class");
@@ -56,19 +56,19 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			displayValue.Should().Be(expectedTranslation);
 		}
 
-        [Theory]
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(3)]
-        [InlineData(4)]
-        [InlineData(5)]
-        [InlineData(6)]
-        [InlineData(7)]
-        [InlineData(8)]
-        public void GetDisplayValue_NoActiveTranslationSet_HasAdjacentMines_ReturnsCharRepresentationOfAdjacentMines(int adjacentMineCount)
-        {
-            // Arrange
+		[Theory]
+		[InlineData(0)]
+		[InlineData(1)]
+		[InlineData(2)]
+		[InlineData(3)]
+		[InlineData(4)]
+		[InlineData(5)]
+		[InlineData(6)]
+		[InlineData(7)]
+		[InlineData(8)]
+		public void GetDisplayValue_NoActiveTranslationSet_HasAdjacentMines_ReturnsCharRepresentationOfAdjacentMines(int adjacentMineCount)
+		{
+			// Arrange
 			var instanceUnderTest = new CellStatusTranslation("css-class");
 
 			// Act
@@ -76,6 +76,6 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 
 			// Assert
 			displayValue.Should().Be(adjacentMineCount.ToString()[0]);
-        }
-    }
+		}
+	}
 }

@@ -189,7 +189,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		[InlineData(CellStatusType.Flagged, CellInteractionType.RightClick, null, CellStatusType.Unsure)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.LeftClick, false, CellStatusType.Uncovered)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.LeftClick, true, CellStatusType.MineExploded)]
-		[InlineData(CellStatusType.Unsure, CellInteractionType.RightClick, null, CellStatusType.Covered)]		
+		[InlineData(CellStatusType.Unsure, CellInteractionType.RightClick, null, CellStatusType.Covered)]
 		[InlineData(CellStatusType.Covered, CellInteractionType.GameWon, false, CellStatusType.Uncovered)]
 		[InlineData(CellStatusType.Covered, CellInteractionType.GameWon, true, CellStatusType.Flagged)]
 		[InlineData(CellStatusType.Covered, CellInteractionType.GameLost, false, CellStatusType.Covered)]
@@ -215,7 +215,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 
 		private static CellStatusManager CreateCellStatusManager(CellStatusType currentStatus)
 		{
-			CellStatusManager componentForTest = new ();
+			CellStatusManager componentForTest = new();
 
 			PropertyInfo? currentStatusProperty = typeof(CellStatusManager).GetProperty(nameof(CellStatusManager.CurrentStatus));
 			currentStatusProperty!.SetValue(componentForTest, currentStatus, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);

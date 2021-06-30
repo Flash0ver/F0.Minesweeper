@@ -43,7 +43,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 			actionUnderTest.Should().Throw<InvalidOperationException>();
 		}
 
-        [Fact]
+		[Fact]
 		public async Task UpdateAsync_WithReport_CallsOnUpdateWithUncoverableCells()
 		{
 			// Arrange
@@ -88,7 +88,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 
 			IUncoveredCell[] GetUncoveredCells()
 			{
-				return new []{
+				return new[]{
 					new UncoveredCellForTests(new Location(1, 0), false, 1),
 					new UncoveredCellForTests(new Location(1, 1), false, 2),
 					new UncoveredCellForTests(new Location(1, 2), false, 1),
@@ -104,8 +104,8 @@ namespace F0.Minesweeper.Components.Logic.Game
 			internal IGameUpdateReport? ExposedReport => report;
 			internal IEnumerable<UncoverableCell>? UncoverableCells;
 
-			protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> cells, Location clickedLocation) 
-            {
+			protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> cells, Location clickedLocation)
+			{
 				UncoverableCells = cells;
 				return Task.CompletedTask;
 			}
