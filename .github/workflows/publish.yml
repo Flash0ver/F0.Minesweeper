@@ -41,7 +41,7 @@ jobs:
       - name: Publish
         run: dotnet publish ${{ env.Project_File }} --configuration Release --nologo --output ${{ env.Output_Directory }}
       - name: Change base-tag in index.html
-        run: sed -i 's/<base href="\/" \/>/<base href="\/$Repository_Name\/" \/>/g' ${{ env.Output_Directory }}wwwroot/index.html
+        run: sed -i 's/<base href="\/" \/>/<base href="\/${{ env.Repository_Name }}\/" \/>/g' ${{ env.Output_Directory }}wwwroot/index.html
       - name: Copy index.html to 404.html
         run: cp ${{ env.Output_Directory }}wwwroot/index.html ${{ env.Output_Directory }}wwwroot/404.html
       - name: Create .nojekyll file
