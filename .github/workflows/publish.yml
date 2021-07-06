@@ -2,11 +2,9 @@ name: Publish
 
 on:
   push:
-    branches: [ publish ]
+    branches: [ main, publish ]
   pull_request:
     branches: [ main ]
-
-  workflow_dispatch:
 
 env:
   DOTNET_NOLOGO: true
@@ -21,8 +19,21 @@ jobs:
     env:
       Project_File: ./source/production/F0.Minesweeper.App/F0.Minesweeper.App.csproj
       Output_Directory: ./release/
+      Is_Live: ${{ github.event_name == 'push' && github.ref == 'refs/heads/publish' }}
+      Is_Preview: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      Is_Development: ${{ github.event_name == 'pull_request' }}
 
     steps:
+      - name: Define environment variables for Live
+        if: ${{ env.Is_Live }}
+        run: echo "Repository_Name=F0-Games-Minesweeper" >> $GITHUB_ENV
+      - name: Define environment variables for Preview
+        if: ${{ env.Is_Preview }}
+        run: echo "Repository_Name=F0-Games-Minesweeper-Preview" >> $GITHUB_ENV
+      - name: Define environment variables for Development
+        if: ${{ env.Is_Development }}
+        run: echo "Repository_Name=F0-Games-Minesweeper-Development" >> $GITHUB_ENV
+
       - name: Checkout
         uses: actions/checkout@v2.3.4
       - name: Setup .NET SDK
@@ -30,7 +41,7 @@ jobs:
       - name: Publish
         run: dotnet publish ${{ env.Project_File }} --configuration Release --nologo --output ${{ env.Output_Directory }}
       - name: Change base-tag in index.html
-        run: sed -i 's/<base href="\/" \/>/<base href="\/F0-Tests-Minesweeper\/" \/>/g' ${{ env.Output_Directory }}wwwroot/index.html
+        run: sed -i 's/<base href="\/" \/>/<base href="\/$Repository_Name\/" \/>/g' ${{ env.Output_Directory }}wwwroot/index.html
       - name: Copy index.html to 404.html
         run: cp ${{ env.Output_Directory }}wwwroot/index.html ${{ env.Output_Directory }}wwwroot/404.html
       - name: Create .nojekyll file
@@ -38,7 +49,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          branch: main
+          branch: gh-pages
           folder: ${{ env.Output_Directory }}wwwroot
           token: ${{ secrets.Deploy_F0Minesweeper }}
-          repository-name: Flash0ver/F0-Tests-Minesweeper
+          repository-name: Flash0ver/${{ env.Repository_Name }}
