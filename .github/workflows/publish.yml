@@ -25,13 +25,13 @@ jobs:
 
     steps:
       - name: Define environment variables for Live
-        if: ${{ env.Is_Live }}
+        if: ${{ env.Is_Live == 'true' }}
         run: echo "Repository_Name=F0-Games-Minesweeper" >> $GITHUB_ENV
       - name: Define environment variables for Preview
-        if: ${{ env.Is_Preview }}
+        if: ${{ env.Is_Preview == 'true' }}
         run: echo "Repository_Name=F0-Games-Minesweeper-Preview" >> $GITHUB_ENV
       - name: Define environment variables for Development
-        if: ${{ env.Is_Development }}
+        if: ${{ env.Is_Development == 'true' }}
         run: echo "Repository_Name=F0-Games-Minesweeper-Development" >> $GITHUB_ENV
 
       - name: Checkout
