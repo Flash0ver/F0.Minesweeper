@@ -24,6 +24,8 @@ namespace F0.Minesweeper.Components.Logic.Cell
 				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.LeftClick)), CellStatusType.Undefined },
 
 				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.Automatic, false)), CellStatusType.Uncovered },
+				{ new CellStatusTransition(CellStatusType.Flagged, new (CellInteractionType.Automatic, false)), CellStatusType.Uncovered },
+
 				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.RightClick)), CellStatusType.Flagged },
 				{ new CellStatusTransition(CellStatusType.Flagged, new (CellInteractionType.RightClick)), CellStatusType.Unsure },
 				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.RightClick)), CellStatusType.Covered },
@@ -31,6 +33,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.GameWon, true)), CellStatusType.Flagged },
 				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.GameWon, false)), CellStatusType.Uncovered },
 				{ new CellStatusTransition(CellStatusType.Flagged, new (CellInteractionType.GameWon, true)), CellStatusType.Flagged },
+				{ new CellStatusTransition(CellStatusType.Flagged, new (CellInteractionType.GameWon, false)), CellStatusType.Uncovered },
 				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.GameWon, true)), CellStatusType.Flagged },
 				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.GameWon, false)), CellStatusType.Uncovered },
 				{ new CellStatusTransition(CellStatusType.Uncovered, new (CellInteractionType.GameWon, false)), CellStatusType.Uncovered },
