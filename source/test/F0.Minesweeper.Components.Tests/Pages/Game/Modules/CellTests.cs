@@ -1,18 +1,18 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Bunit;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
+using F0.Minesweeper.Components.Pages.Game.Modules;
 using F0.Minesweeper.Logic.Abstractions;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Xunit;
 
-namespace F0.Minesweeper.Components.Tests
+namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 {
 	public class CellTests : TestContext
 	{
@@ -46,7 +46,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void Rendering_LocationProvided_ShowsCell(uint x, uint y)
 		{
 			// Arrange
-			string expectedMarkup = "<div><button>C</button></div>";
+			string expectedMarkup = "<div><button class=\"f0-cell f0-cell-covered\">C</button></div>";
 
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(x, y));
 
@@ -137,7 +137,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnRightClick_StatusManagerReturnsFlagged_ChangesTextToFlagged()
 		{
 			// Arrange
-			string expectedMarkup = "<div><button>⚐</button></div>";
+			string expectedMarkup = "<div><button class=\"f0-cell f0-cell-covered\">⚐</button></div>";
 
 			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.RightClick, null)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.RightClick, null)).Returns(CellStatusType.Flagged);
@@ -156,7 +156,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnRightClick_StatusManagerReturnsUnsure_ChangesTextToQuestionMark()
 		{
 			// Arrange
-			string expectedMarkup = "<div><button>?</button></div>";
+			string expectedMarkup = "<div><button class=\"f0-cell f0-cell-covered\">?</button></div>";
 
 			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.RightClick, null)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.RightClick, null)).Returns(CellStatusType.Unsure);
@@ -175,7 +175,7 @@ namespace F0.Minesweeper.Components.Tests
 		public void OnRightClick_StatusManagerReturnsUndefined_ChangesTextToSpecialUndefinedValue()
 		{
 			// Arrange
-			string expectedMarkup = "<div><button>!</button></div>";
+			string expectedMarkup = "<div><button class=\"f0-cell f0-cell-undefinedstatus\">!</button></div>";
 
 			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.RightClick, null)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.RightClick, null)).Returns(CellStatusType.Undefined);
@@ -191,30 +191,31 @@ namespace F0.Minesweeper.Components.Tests
 		}
 
 		[Theory]
-		[InlineData(CellInteractionType.LeftClick, true, CellStatusType.Mine, 3, '☢')]
-		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 0, '0')]
-		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 1, '1')]
-		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 2, '2')]
-		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 3, '3')]
-		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 4, '4')]
-		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 5, '5')]
-		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 6, '6')]
-		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 7, '7')]
-		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 8, '8')]
-		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 0, '0')]
-		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 1, '1')]
-		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 2, '2')]
-		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 3, '3')]
-		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 4, '4')]
-		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 5, '5')]
-		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 6, '6')]
-		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 7, '7')]
-		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 8, '8')]
-		public void SetUncoveredStatus_StatusManagerCanMoveNext_ChangesTextToCorrectTranslation(CellInteractionType cellInteraction, bool isMine, CellStatusType newStatus, byte adjacentMineCount, char expectedStatusChar)
+		[InlineData(CellInteractionType.LeftClick, true, CellStatusType.MineExploded, 3, '☢', "f0-cell f0-cell-mine-exploded")]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 0, '0', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 1, '1', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 2, '2', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 3, '3', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 4, '4', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 5, '5', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 6, '6', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 7, '7', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 8, '8', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 0, '0', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 1, '1', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 2, '2', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 3, '3', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 4, '4', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 5, '5', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 6, '6', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 7, '7', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 8, '8', "f0-cell f0-cell-uncovered")]
+		[InlineData(CellInteractionType.GameLost, true, CellStatusType.Mine, 8, '☢', "f0-cell f0-cell-uncovered")]
+		public void SetUncoveredStatus_StatusManagerCanMoveNext_ChangesTextToCorrectTranslation(CellInteractionType cellInteraction, bool isMine, CellStatusType newStatus, byte adjacentMineCount, char expectedStatusChar, string expectedCssClass)
 		{
 			// Arrange
-			string expectedMarkup = $"<div><button>{expectedStatusChar}</button></div>";
-
+			string expectedMarkup = $"<div><button class=\"{expectedCssClass}\">{expectedStatusChar}</button></div>";
+			
 			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(cellInteraction, isMine)).Returns(true);
 			cellStatusManagerMock.Setup((manager) => manager.MoveNext(cellInteraction, isMine)).Returns(newStatus);
 
@@ -282,10 +283,41 @@ namespace F0.Minesweeper.Components.Tests
 		}
 
 		[Fact]
+		public void DisableClick_LeftMouseClickIsDisabled()
+		{
+			// Arrange
+			const string disabled = "disabled";
+
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
+			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
+
+			// Act
+			componentUnderTest.InvokeAsync(() => componentUnderTest.Instance.DisableClick());
+
+			// Assert
+			var button = componentUnderTest.Find("button");
+			button.Attributes.Should().Contain(attribute => attribute.Name == disabled);
+		}
+
+		[Fact]
+		public void DisableClick_RightMouseClickIsDisabled()
+		{
+			// Arrange
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
+			IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
+
+			// Act
+			componentUnderTest.InvokeAsync(() => componentUnderTest.Instance.DisableClick());
+			componentUnderTest.Find("button").ContextMenu();
+
+			// Asserted by the cell status manager being a strict mock and having no method call setup
+		}
+
+		[Fact]
 		public void OnClick_HasAdjacentMinesToUncover_UncoversAllCells()
 		{
 			// Arrange
-			string expectedMarkup = "<div><button>0</button></div>";
+			string expectedMarkup = "<div><button class=\"f0-cell f0-cell-uncovered\">0</button></div>";
 			Location expectedLocationClickedCell = new(1, 1);
 
 			cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.LeftClick, null)).Returns(true);

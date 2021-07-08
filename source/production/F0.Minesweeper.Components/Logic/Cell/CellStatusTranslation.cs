@@ -6,12 +6,17 @@ namespace F0.Minesweeper.Components.Logic.Cell
 	{
 		private readonly char? activeTranslation;
 
-		internal CellStatusTranslation() { }
+		internal CellStatusTranslation(string cssClass)
+		{
+			CssClass = cssClass;
+		}
 
-		internal CellStatusTranslation(char translation)
+		internal CellStatusTranslation(char translation, string cssClass) : this(cssClass)
 		{
 			activeTranslation = translation;
 		}
+
+		internal string CssClass { get; }
 
 		internal char GetDisplayValue(byte? adjacentMineCount)
 		{
@@ -20,7 +25,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 				throw new ArgumentNullException(nameof(adjacentMineCount));
 			}
 
-			if(activeTranslation.HasValue)
+			if (activeTranslation.HasValue)
 			{
 				return activeTranslation.Value;
 			}
