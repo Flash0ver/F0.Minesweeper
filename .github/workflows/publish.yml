@@ -39,7 +39,7 @@ jobs:
         run: |
           echo "Repository_Name=F0-Games-Minesweeper-Development" >> $GITHUB_ENV
           echo "VersionSuffix=development" >> $GITHUB_ENV
-          echo "SourceRevisionId=${{ github.sha }}" >> $GITHUB_ENV
+          echo "SourceRevisionId=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v2.3.4
