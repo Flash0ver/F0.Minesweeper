@@ -61,4 +61,4 @@ jobs:
           token: ${{ secrets.Deploy_F0Minesweeper }}
           git-config-name: 0x-F0
           git-config-email: 86806558+0x-F0@users.noreply.github.com
-          repository-name: Flash0ver/${{ env.Repository_Name }}
+          repository-name: ${{ github.repository_owner }}/${{ env.Repository_Name }}
