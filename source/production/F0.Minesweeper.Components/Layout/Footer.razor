@@ -1,7 +1,38 @@
 <footer id="f0-footer">
-    <hr />
-    <span>Follow this project on </span>
-    <a href="https://github.com/Flash0ver/F0.Minesweeper" target="_blank">
-        GitHub
-    </a>
+	<hr />
+	<span>Follow this project on </span>
+	<a href="https://github.com/Flash0ver/F0.Minesweeper" target="_blank">
+		GitHub
+	</a>
+
+	@if (ProductName is not null && ProductVersion is not null)
+	{
+		<p>@ProductName v@(ProductVersion)</p>
+	}
+	@if (FrameworkVersion is not null)
+	{
+		<p>powered by @FrameworkVersion</p>
+	}
+	@if (CopyrightNotice is not null)
+	{
+		<p>
+			@CopyrightNotice
+			<a href="https://github.com/Flash0ver/F0.Minesweeper/graphs/contributors" target="_blank">Contributors</a>
+			(<a href="https://github.com/Flash0ver/F0.Minesweeper/blob/main/LICENSE" target="_blank">License</a>)
+		</p>
+	}
 </footer>
+
+@code {
+	[Parameter]
+	public string? ProductName { get; set; }
+
+	[Parameter]
+	public string? ProductVersion { get; set; }
+
+	[Parameter]
+	public string? FrameworkVersion { get; set; }
+
+	[Parameter]
+	public string? CopyrightNotice { get; set; }
+}

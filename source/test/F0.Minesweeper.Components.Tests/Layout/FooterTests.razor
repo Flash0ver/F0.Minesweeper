@@ -1,0 +1,27 @@
+@inherits TestContext
+
+@code
+{
+	[Fact]
+	public void Footer_WithParameters()
+	{
+		// Arrange
+		// Act
+		var fragment = Render(@<Footer ProductName="Title" ProductVersion="1.2.3" FrameworkVersion="Core 9.8.7" CopyrightNotice="(c)"></Footer>);
+
+		// Assert
+		fragment.MarkupMatches(
+@<footer id="f0-footer">
+	<hr />
+	<span>Follow this project on</span><a href="https://github.com/Flash0ver/F0.Minesweeper" target="_blank" >GitHub</a>
+	<p>Title v1.2.3</p>
+	<p>powered by Core 9.8.7</p>
+	<p>
+		(c)
+		<a href="https://github.com/Flash0ver/F0.Minesweeper/graphs/contributors" target="_blank" >Contributors</a>
+		(<a href="https://github.com/Flash0ver/F0.Minesweeper/blob/main/LICENSE" target="_blank" >License</a>)
+	</p>
+</footer>
+		);
+	}
+}
