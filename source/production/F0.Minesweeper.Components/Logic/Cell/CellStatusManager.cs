@@ -25,6 +25,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 
 				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.Automatic, false)), CellStatusType.Uncovered },
 				{ new CellStatusTransition(CellStatusType.Flagged, new (CellInteractionType.Automatic, false)), CellStatusType.Uncovered },
+				{ new CellStatusTransition(CellStatusType.Unsure, new (CellInteractionType.Automatic, false)), CellStatusType.Uncovered },
 
 				{ new CellStatusTransition(CellStatusType.Covered, new (CellInteractionType.RightClick)), CellStatusType.Flagged },
 				{ new CellStatusTransition(CellStatusType.Flagged, new (CellInteractionType.RightClick)), CellStatusType.Unsure },
