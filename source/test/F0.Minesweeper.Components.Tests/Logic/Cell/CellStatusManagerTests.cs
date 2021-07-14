@@ -26,7 +26,6 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		[InlineData(CellStatusType.Flagged, CellInteractionType.GameLost, null)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.Automatic, null)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.Automatic, true)]
-		[InlineData(CellStatusType.Unsure, CellInteractionType.Automatic, false)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.RightClick, true)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.RightClick, false)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.GameWon, null)]
@@ -95,6 +94,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		[InlineData(CellStatusType.Unsure, CellInteractionType.GameWon, false)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.GameLost, true)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.GameLost, false)]
+		[InlineData(CellStatusType.Unsure, CellInteractionType.Automatic, false)]
 		public void CanMoveNext_DefinedTransition_ReturnsTrue(CellStatusType currentStatus, CellInteractionType command, bool? isMine)
 		{
 			// Arrange
@@ -124,7 +124,6 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		[InlineData(CellStatusType.Flagged, CellInteractionType.GameLost, null)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.Automatic, null)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.Automatic, true)]
-		[InlineData(CellStatusType.Unsure, CellInteractionType.Automatic, false)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.RightClick, true)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.RightClick, false)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.GameWon, null)]
@@ -189,6 +188,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		[InlineData(CellStatusType.Unsure, CellInteractionType.LeftClick, false, CellStatusType.Uncovered)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.LeftClick, true, CellStatusType.MineExploded)]
 		[InlineData(CellStatusType.Unsure, CellInteractionType.RightClick, null, CellStatusType.Covered)]
+		[InlineData(CellStatusType.Unsure, CellInteractionType.Automatic, false, CellStatusType.Uncovered)]
 		[InlineData(CellStatusType.Covered, CellInteractionType.GameWon, false, CellStatusType.Uncovered)]
 		[InlineData(CellStatusType.Covered, CellInteractionType.GameWon, true, CellStatusType.Flagged)]
 		[InlineData(CellStatusType.Covered, CellInteractionType.GameLost, false, CellStatusType.Covered)]
