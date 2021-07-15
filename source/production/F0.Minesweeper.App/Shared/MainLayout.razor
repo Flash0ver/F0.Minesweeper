@@ -7,12 +7,4 @@
 	@Body
 </div>
 
-<Footer
-	ProductName="@(assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title)"
-	ProductVersion="@(assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion)"
-	FrameworkVersion="@System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription"
-	CopyrightNotice="Copyright © 2021" />
-
-@code {
-	private static readonly Assembly assembly = Assembly.GetExecutingAssembly();
-}
+<Footer />

@@ -1,10 +1,12 @@
+using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using F0.Minesweeper.Components.Extensions;
+using F0.Minesweeper.Components.Services;
 using F0.Minesweeper.Logic;
 using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Prism.Events;
 
 namespace F0.Minesweeper.App
 {
@@ -16,9 +18,17 @@ namespace F0.Minesweeper.App
 			builder.RootComponents.Add<App>("#app");
 
 			builder.Services.AddMinesweeperComponentsServices();
-			builder.Services.AddSingleton<IMinefieldFactory>(new MinefieldFactory());
+			builder.Services.AddSingleton<IMinefieldFactory, MinefieldFactory>();
+			builder.Services.AddSingleton(CreateVersionInfo);
 
 			await builder.Build().RunAsync();
+		}
+
+		private static VersionInfo CreateVersionInfo(IServiceProvider serviceProvider)
+		{
+			var assembly = Assembly.GetExecutingAssembly();
+
+			return new VersionInfo(assembly);
 		}
 	}
 }
