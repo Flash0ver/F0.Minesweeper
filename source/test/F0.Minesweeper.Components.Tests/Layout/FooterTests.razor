@@ -29,7 +29,7 @@
 		// Arrange
 		var assembly = Assembly.GetExecutingAssembly();
 		string title = $"{typeof(FooterTests).Assembly.GetName().Name}";
-		string commit = $@"<a href=""https://github.com/Flash0ver/F0.Minesweeper/commit/{Information.SourceRevisionId}"" target=""_blank"">{Information.SourceRevisionId}</a>";
+		var commit = (MarkupString)$@"<a href=""https://github.com/Flash0ver/F0.Minesweeper/commit/{Information.SourceRevisionId}"" target=""_blank"">{Information.SourceRevisionId}</a>";
 		string framework = $"powered by {RuntimeInformation.FrameworkDescription}";
 		string copyright = "Copyright © 2021";
 

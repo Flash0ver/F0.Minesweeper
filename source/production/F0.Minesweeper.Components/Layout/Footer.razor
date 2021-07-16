@@ -21,12 +21,12 @@
 
 @code
 {
-	private static string Format(SemanticVersion version)
+	private static MarkupString Format(SemanticVersion version)
 	{
 		string preRelease = version.IsPrerelease ? $"-{version.Release}" : String.Empty;
 		string buildMetadata = version.HasMetadata ? $"+{Commit(version.Metadata)}": String.Empty;
 
-		return $"v{version.Major}.{version.Minor}.{version.Patch}{preRelease}{buildMetadata}";
+		return (MarkupString)$"v{version.Major}.{version.Minor}.{version.Patch}{preRelease}{buildMetadata}";
 	}
 
 	private static string Commit(string commit)
