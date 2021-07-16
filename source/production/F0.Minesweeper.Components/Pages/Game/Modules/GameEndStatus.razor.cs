@@ -1,3 +1,4 @@
+using System;
 using F0.Minesweeper.Components.Events;
 using Microsoft.AspNetCore.Components;
 using Prism.Events;
@@ -15,16 +16,16 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		public GameEndStatus()
 		{
-			GameEndMessage = string.Empty;
+			GameEndMessage = String.Empty;
 			GameEndTextCssClass = "f0-end-text-invisible";
 		}
 
-		protected override void OnParametersSet() 
+		protected override void OnParametersSet()
 		{
 			EventAggregator?.GetEvent<GameFinishedEvent>().Subscribe(OnGameFinished);
 		}
 
-		private void OnGameFinished(string finishedMessage) 
+		private void OnGameFinished(string finishedMessage)
 		{
 			GameEndMessage = finishedMessage;
 			GameEndTextCssClass = "f0-end-text-visible";

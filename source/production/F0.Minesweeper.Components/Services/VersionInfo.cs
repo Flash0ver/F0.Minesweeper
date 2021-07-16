@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using NuGet.Versioning;
 
 namespace F0.Minesweeper.Components.Services
 {
@@ -11,7 +12,8 @@ namespace F0.Minesweeper.Components.Services
 			if (assembly is not null)
 			{
 				ProductName = assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
-				ProductVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+				string? version = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+				ProductVersion = SemanticVersion.Parse(version);
 				FrameworkVersion = RuntimeInformation.FrameworkDescription;
 				CopyrightNotice = "Copyright © 2021";
 			}
@@ -24,7 +26,7 @@ namespace F0.Minesweeper.Components.Services
 		public bool HasInformation => ProductName is not null && ProductVersion is not null;
 
 		public string? ProductName { get; }
-		public string? ProductVersion { get; }
+		public SemanticVersion? ProductVersion { get; }
 		public string? FrameworkVersion { get; }
 		public string? CopyrightNotice { get; }
 	}

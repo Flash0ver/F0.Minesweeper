@@ -9,7 +9,7 @@
 
 	@if (Version.HasInformation)
 	{
-		<p>@Version.ProductName v@(Version.ProductVersion)</p>
+		<p>@Version.ProductName @Format(Version.ProductVersion)</p>
 		<p>powered by @Version.FrameworkVersion</p>
 		<p>
 			@Version.CopyrightNotice
@@ -18,3 +18,19 @@
 		</p>
 	}
 </footer>
+
+@code
+{
+	private static string Format(SemanticVersion version)
+	{
+		string preRelease = version.IsPrerelease ? $"-{version.Release}" : String.Empty;
+		string buildMetadata = version.HasMetadata ? $"+{Commit(version.Metadata)}": String.Empty;
+
+		return $"v{version.Major}.{version.Minor}.{version.Patch}{preRelease}{buildMetadata}";
+	}
+
+	private static string Commit(string commit)
+	{
+		return $@"<a href=""https://github.com/Flash0ver/F0.Minesweeper/commit/{commit}"" target=""_blank"">{commit}</a>";
+	}
+}
