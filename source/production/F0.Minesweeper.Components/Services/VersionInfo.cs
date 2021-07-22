@@ -19,10 +19,7 @@ namespace F0.Minesweeper.Components.Services
 			}
 		}
 
-		[MemberNotNullWhen(true, nameof(ProductName))]
-		[MemberNotNullWhen(true, nameof(ProductVersion))]
-		[MemberNotNullWhen(true, nameof(FrameworkVersion))]
-		[MemberNotNullWhen(true, nameof(CopyrightNotice))]
+		[MemberNotNullWhen(true, nameof(ProductName), nameof(ProductVersion), nameof(FrameworkVersion), nameof(CopyrightNotice))]
 		public bool HasInformation => ProductName is not null && ProductVersion is not null;
 
 		public string? ProductName { get; }
