@@ -16,7 +16,8 @@ namespace F0.Minesweeper.Components.Logic.Game
 			{
 				{ GameStatus.InProgress, new GameInProgressUpdater() },
 				{ GameStatus.IsWon, new GameWonUpdater(eventAggregator) },
-				{ GameStatus.IsLost, new GameLostUpdater(eventAggregator) }
+				{ GameStatus.IsLost, new GameLostUpdater(eventAggregator) },
+				{ GameStatus.DifficultyChanged, new GameDifficultyChangedUpdater() }
 			};
 		}
 
