@@ -18,19 +18,3 @@
 		</p>
 	}
 </footer>
-
-@code
-{
-	private static MarkupString Format(SemanticVersion version)
-	{
-		string preRelease = version.IsPrerelease ? $"-{version.Release}" : String.Empty;
-		string buildMetadata = version.HasMetadata ? $"+{Commit(version.Metadata)}": String.Empty;
-
-		return (MarkupString)$"v{version.Major}.{version.Minor}.{version.Patch}{preRelease}{buildMetadata}";
-	}
-
-	private static string Commit(string commit)
-	{
-		return $@"<a href=""https://github.com/Flash0ver/F0.Minesweeper/commit/{commit}"" target=""_blank"">{commit}</a>";
-	}
-}
