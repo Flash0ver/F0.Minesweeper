@@ -1,7 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
 	</PropertyGroup>
 
 	<ItemGroup>

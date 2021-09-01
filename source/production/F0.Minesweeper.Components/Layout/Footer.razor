@@ -1,7 +1,20 @@
+@inject VersionInfo Version
+
 <footer id="f0-footer">
-    <hr />
-    <span>Follow this project on </span>
-    <a href="https://github.com/Flash0ver/F0.Minesweeper" target="_blank">
-        GitHub
-    </a>
+	<hr />
+	<span>Follow this project on </span>
+	<a href="https://github.com/Flash0ver/F0.Minesweeper" target="_blank">
+		GitHub
+	</a>
+
+	@if (Version.HasInformation)
+	{
+		<p>@Version.ProductName @Format(Version.ProductVersion)</p>
+		<p>powered by @Version.FrameworkVersion</p>
+		<p>
+			@Version.CopyrightNotice
+			<a href="https://github.com/Flash0ver/F0.Minesweeper/graphs/contributors" target="_blank">Contributors</a>
+			(<a href="https://github.com/Flash0ver/F0.Minesweeper/blob/main/LICENSE" target="_blank">License</a>)
+		</p>
+	}
 </footer>

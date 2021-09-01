@@ -1,0 +1,56 @@
+@inherits TestContext
+
+@code
+{
+	[Fact]
+	public void Footer_WithoutVersionInfo()
+	{
+		// Arrange
+		Services.AddSingleton(sp => new VersionInfo(null));
+
+		// Act
+		var fragment = Render(@<Footer />);
+
+		// Assert
+		fragment.MarkupMatches(
+@<footer id="f0-footer">
+	<hr />
+	<span diff:ignore />
+	<a href="https://github.com/Flash0ver/F0.Minesweeper" target="_blank">
+		GitHub
+	</a>
+</footer>
+		);
+	}
+
+	[Fact]
+	public void Footer_WithVersionInfo()
+	{
+		// Arrange
+		var assembly = Assembly.GetExecutingAssembly();
+		string title = $"{typeof(FooterTests).Assembly.GetName().Name}";
+		var commit = (MarkupString)$@"<a href=""https://github.com/Flash0ver/F0.Minesweeper/commit/{Information.SourceRevisionId}"" target=""_blank"">{Information.SourceRevisionId}</a>";
+		string framework = $"powered by {RuntimeInformation.FrameworkDescription}";
+		string copyright = "Copyright © 2021";
+
+		Services.AddSingleton(sp => new VersionInfo(assembly));
+
+		// Act
+		var fragment = Render(@<Footer />);
+
+		// Assert
+		fragment.MarkupMatches(
+@<footer id="f0-footer">
+	<hr />
+	<span>Follow this project on</span><a href="https://github.com/Flash0ver/F0.Minesweeper" target="_blank" >GitHub</a>
+	<p>@title v@(Information.VersionPrefix)-@Information.VersionSuffix+@commit</p>
+	<p>@framework</p>
+	<p>
+		@copyright
+		<a href="https://github.com/Flash0ver/F0.Minesweeper/graphs/contributors" target="_blank" >Contributors</a>
+		(<a href="https://github.com/Flash0ver/F0.Minesweeper/blob/main/LICENSE" target="_blank" >License</a>)
+	</p>
+</footer>
+		);
+	}
+}

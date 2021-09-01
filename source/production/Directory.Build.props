@@ -1,9 +1,18 @@
 <Project>
 
 	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+	<Import Project="$(MSBuildThisFileDirectory)Version.props" />
 
 	<PropertyGroup>
 		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<VersionPrefix>$(F0Version)</VersionPrefix>
+		<Description>Minesweeper, powered by Blazor.</Description>
+		<Product>F0.Minesweeper</Product>
+		<AssemblyTitle>F0.Minesweeper</AssemblyTitle>
+		<NeutralLanguage>en</NeutralLanguage>
 	</PropertyGroup>
 
 	<ItemGroup>
