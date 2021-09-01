@@ -13,7 +13,8 @@ namespace F0.Minesweeper.Components.Services
 			{
 				ProductName = assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
 				string? version = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-				ProductVersion = SemanticVersion.Parse(version);
+				_ = SemanticVersion.TryParse(version, out SemanticVersion? semanticVersion);
+				ProductVersion = semanticVersion;
 				FrameworkVersion = RuntimeInformation.FrameworkDescription;
 				CopyrightNotice = "Copyright © 2021";
 			}
