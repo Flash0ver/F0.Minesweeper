@@ -7,14 +7,12 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 {
 	public partial class Difficulty
 	{
-		private DifficultyLevel selected;
-
 		[Inject]
 		internal IEventAggregator? EventAggregator { get; set; }
 
-		public Difficulty() => selected = DifficultyLevel.Medium;
+		private DifficultyLevel selected;
 
-		public DifficultyLevel Selected
+		private DifficultyLevel Selected
 		{
 			get => selected;
 			set
@@ -28,5 +26,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 				EventAggregator?.GetEvent<DifficultyLevelChangedEvent>().Publish(value);
 			}
 		}
+
+		public Difficulty() => selected = DifficultyLevel.Medium;
 	}
 }

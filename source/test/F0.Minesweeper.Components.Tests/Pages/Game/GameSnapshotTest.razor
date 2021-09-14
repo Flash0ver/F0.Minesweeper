@@ -8,6 +8,7 @@
 	</TestInput>
 	<ExpectedOutput>
 		<div id="f0-game">
+			<Difficulty />
 			<Minefield Options="@TestMinefieldOptions" />
 			<GameEndStatus />
 		</div>
@@ -15,7 +16,7 @@
 
 	@code {
 		// todo: fix this when refactoring snapshot tests to tests with inline render fragments 
-		private MinefieldOptions TestMinefieldOptions = new(10, 10, 10, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+		private MinefieldOptions TestMinefieldOptions = MinefieldOptions.Medium;
 
 		private void Setup(SnapshotTest test)
 		{
@@ -26,6 +27,7 @@
 			Mock<IEventAggregator> eventAggregator = new(MockBehavior.Strict);
 
 			minefieldFactory.Setup(factory => factory.Create(It.Is<MinefieldOptions>(options => options == TestMinefieldOptions))).Returns(minefield.Object);
+			eventAggregator.Setup(agg => agg.GetEvent<DifficultyLevelChangedEvent>()).Returns(new DifficultyLevelChangedEvent());
 			eventAggregator.Setup(agg => agg.GetEvent<GameFinishedEvent>()).Returns(new GameFinishedEvent());
 			
 			test.Services.AddSingleton(minefieldFactory.Object);

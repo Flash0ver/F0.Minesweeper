@@ -5,6 +5,5 @@ namespace F0.Minesweeper.Logic.Abstractions
 		InProgress,
 		IsWon,
 		IsLost,
-		DifficultyChanged
 	}
 }

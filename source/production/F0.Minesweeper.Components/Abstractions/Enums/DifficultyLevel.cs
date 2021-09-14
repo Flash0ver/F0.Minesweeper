@@ -4,6 +4,6 @@ namespace F0.Minesweeper.Components.Abstractions.Enums
 	{
 		Easy = 1,
 		Medium = 2,
-		Hard = 3
+		Hard = 3,
 	}
 }

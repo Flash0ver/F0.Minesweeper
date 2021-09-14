@@ -45,7 +45,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		private bool IsDisabled { get; set; }
 
-		private static Dictionary<CellStatusType, CellStatusTranslation> translations = InitializeTranslations();
+		private static readonly Dictionary<CellStatusType, CellStatusTranslation> translations = InitializeTranslations();
 		private char statusText;
 		private string cssClass;
 

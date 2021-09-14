@@ -5,6 +5,6 @@ namespace F0.Minesweeper.Logic.Abstractions
 		MayYieldMine,
 		CannotYieldMine,
 		WithoutAdjacentMines,
-		AlwaysYieldsMine
+		AlwaysYieldsMine,
 	}
 }

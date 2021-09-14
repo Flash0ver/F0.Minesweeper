@@ -26,6 +26,9 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 			string expectedMarkup = $"<div id='f0-gameendstatus'><p class='f0-end-text-invisible' /></div>";
 
 			eventAggregatorMock
+				.Setup(agg => agg.GetEvent<DifficultyLevelChangedEvent>())
+				.Returns(new DifficultyLevelChangedEvent());
+			eventAggregatorMock
 				.Setup(agg => agg.GetEvent<GameFinishedEvent>())
 				.Returns(new GameFinishedEvent());
 
@@ -43,6 +46,9 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 			string expectedText = "Random Text" + Guid.NewGuid();
 			string expectedMarkup = $"<div id='f0-gameendstatus'><p class='f0-end-text-visible'>{expectedText}</p></div>";
 
+			eventAggregatorMock
+				.Setup(agg => agg.GetEvent<DifficultyLevelChangedEvent>())
+				.Returns(new DifficultyLevelChangedEvent());
 			eventAggregatorMock
 				.Setup(agg => agg.GetEvent<GameFinishedEvent>())
 				.Returns(new GameFinishedEvent());
