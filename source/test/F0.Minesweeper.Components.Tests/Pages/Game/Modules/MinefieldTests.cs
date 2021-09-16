@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AngleSharp.Dom;
 using Bunit;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Logic.Cell;
@@ -76,7 +77,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 		public void Rendering_SupportedSizeProvided_ShowsCorrectAmountOfCells(uint width, uint height)
 		{
 			// Arrange
-			var options = new MinefieldOptions(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new (width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 			int expectedCellAmount = (int)(width * height);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
@@ -96,7 +97,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 			// Arrange
 			const string expectedMarkup = "<div id='f0-minefield'><table><tr><td><div diff:ignore /></td></tr></table></div>";
 
-			var options = new MinefieldOptions(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
 
@@ -113,7 +114,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 		public void OnCellUncoveredAsync_MinefieldWasNotCreated_Throws()
 		{
 			// Arrange
-			var options = new MinefieldOptions(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns<IMinefield>(null);
 
@@ -128,10 +129,10 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 
 		[Theory]
 		[MemberData(nameof(GetReportVariations))]
-		private void OnCellUncoveredAsync_ReportVariations_DoesNotThrow(GameUpdateReportForTests report)
+		public void OnCellUncoveredAsync_ReportVariations_DoesNotThrow(GameUpdateReportForTests report)
 		{
 			// Arrange
-			var options = new MinefieldOptions(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
 			minefieldMock.Setup(field => field.Uncover(It.Is<Location>(s => s == new Location(0, 0)))).Returns(report);
@@ -144,6 +145,29 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 			// Act && Assert
 			Action actionToTest = () => componentUnderTest.Find("button").Click();
 			actionToTest.Should().NotThrow();
+		}
+
+		[Fact]
+		public void RepopulateMinefield_SecondRendering_OldCellsReplacedByNewCells()
+		{
+			MinefieldOptions options = new (1, 1, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			GameUpdateReportForTests report = new(GameStatus.IsWon, new[]
+			{
+				new UncoveredCellForTests(new (0,0),false,0)
+			});
+
+			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
+			
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
+			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
+			IElement oldButton = componentUnderTest.Find("button");
+			oldButton.TextContent = "Test";
+
+			parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
+			componentUnderTest = RenderComponent<Minefield>(parameter);
+
+			IElement newButton = componentUnderTest.Find("button");
+			newButton.TextContent.Should().NotBe("Test");
 		}
 
 		private static TheoryData<GameUpdateReportForTests> GetReportVariations() =>
@@ -216,7 +240,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 			protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> cells, Location clickedLocation) => Task.CompletedTask;
 		}
 
-		private class GameUpdateReportForTests : IGameUpdateReport
+		public class GameUpdateReportForTests : IGameUpdateReport
 		{
 			public GameUpdateReportForTests(GameStatus status, IUncoveredCell[] cells)
 			{
