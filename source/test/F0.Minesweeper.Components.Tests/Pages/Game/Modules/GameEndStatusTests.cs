@@ -69,7 +69,6 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 		{
 			// Arrange
 			string expectedMarkup = $"<div id='f0-gameendstatus'><p class='f0-end-text-invisible' /></div>";
-			var fixture = new Fixture();
 
 			eventAggregatorMock
 				.Setup(agg => agg.GetEvent<DifficultyLevelChangedEvent>())

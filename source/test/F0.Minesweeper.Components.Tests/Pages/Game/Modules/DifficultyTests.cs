@@ -37,34 +37,27 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 
 		[Theory]
 		[MemberData(nameof(GetDifficultyLevels))]
-		public void Render_Select_Option(DifficultyLevel difficultyLevel)
+		public void Render_Select_Option(DifficultyLevel inputDifficultyLevel, DifficultyLevel? expectedDifficultyLevel)
 		{
 			// Arrange
-			string expectedMarkup = GetMarkup(difficultyLevel);
+			string expectedMarkup = GetMarkup(inputDifficultyLevel);
 
 			DifficultyLevelChangedEvent @event = new();
-			var selected = (DifficultyLevel)Int32.MinValue;
+			DifficultyLevel? outputDifficultyLevel = null;
 
 			eventAggregatorMock
 				.Setup(agg => agg.GetEvent<DifficultyLevelChangedEvent>())
 				.Returns(@event);
-			@event.Subscribe(level => selected = level);
+			@event.Subscribe(level => outputDifficultyLevel = level);
 
 			// Act
 			IRenderedComponent<Difficulty> cut = RenderComponent<Difficulty>();
 			IElement select = cut.Find("select");
-			select.Change(difficultyLevel.ToString());
+			select.Change(inputDifficultyLevel.ToString());
 
 			// Assert
 			cut.MarkupMatches(expectedMarkup);
-			if (difficultyLevel == DifficultyLevel.Medium)
-			{
-				selected.Should().Be(Int32.MinValue);
-			}
-			else
-			{
-				selected.Should().Be(difficultyLevel);
-			}
+			outputDifficultyLevel.Should().Be(expectedDifficultyLevel);
 		}
 
 		private static string GetMarkup(DifficultyLevel difficultyLevel)
@@ -80,13 +73,20 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 </div>";
 		}
 
-		private static TheoryData<DifficultyLevel> GetDifficultyLevels()
+		private static TheoryData<DifficultyLevel, DifficultyLevel?> GetDifficultyLevels()
 		{
-			var data = new TheoryData<DifficultyLevel>();
+			var data = new TheoryData<DifficultyLevel, DifficultyLevel?>();
 
 			foreach (DifficultyLevel difficultyLevel in Enum.GetValues<DifficultyLevel>())
 			{
-				data.Add(difficultyLevel);
+				if(difficultyLevel == DifficultyLevel.Medium)
+				{
+					data.Add(difficultyLevel, null);
+				}
+				else
+				{
+					data.Add(difficultyLevel, difficultyLevel);
+				}
 			}
 
 			return data;
