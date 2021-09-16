@@ -5,7 +5,7 @@
 	<select name="difficulty" @bind="Selected">
 		@foreach (var value in Enum.GetNames<DifficultyLevel>())
 		{
-			<option>@value</option>
+			<option id="@value">@value</option>
 		}
 	</select>
 </div>
