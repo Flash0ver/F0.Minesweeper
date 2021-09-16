@@ -22,10 +22,12 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 		private readonly List<Cell> cells;
 
 		private Cell Cell { set => cells.Add(value); }
-		
+
 		private IMinefield? minefield;
 
 		private bool isValidSize;
+
+		private int cellVersion = 0;
 
 		public Minefield()
 		{
@@ -35,6 +37,12 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		protected override void OnParametersSet()
 		{
+			foreach (Cell cell in cells)
+			{
+				cell.UncoveredAsync -= OnCellUncoveredAsync;
+			}
+			cells.Clear();
+
 			isValidSize = Options.Height > 0 && Options.Width > 0;
 
 			if (isValidSize)
@@ -54,8 +62,8 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 		private async Task OnCellUncoveredAsync(Location clickedLocation)
 		{
 			Debug.Assert(GameUpdateFactory != null, $"The '{nameof(GameUpdateFactory)}' is injected on minefield generation.");
-			
-			if(minefield == null)
+
+			if (minefield == null)
 			{
 				throw new InvalidOperationException($"The '{nameof(minefield)}' has to be created before an uncover.");
 			}

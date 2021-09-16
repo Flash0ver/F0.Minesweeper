@@ -9,8 +9,6 @@ namespace F0.Minesweeper.App.Pages
 
 		protected override void OnInitialized()
 		{
-			base.OnInitialized();
-
 			NavigationManager?.NavigateTo("game");
 		}
 	}
