@@ -18,13 +18,13 @@ namespace F0.Minesweeper.Components.Logic.Game
 
 		protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation)
 		{
-			foreach (var uncoverableCell in uncoverableCells)
+			foreach (UncoverableCell uncoverableCell in uncoverableCells)
 			{
 				uncoverableCell.Cell.SetUncoveredStatus(CellInteractionType.GameWon, uncoverableCell.IsMine, uncoverableCell.AdjacentMineCount);
 				uncoverableCell.Cell.DisableClick();
 			}
 
-			this.eventAggregator.GetEvent<GameFinishedEvent>().Publish("Congratz! You've won the game!");
+			eventAggregator.GetEvent<GameFinishedEvent>().Publish("Congratz! You've won the game!");
 			return Task.CompletedTask;
 		}
 	}

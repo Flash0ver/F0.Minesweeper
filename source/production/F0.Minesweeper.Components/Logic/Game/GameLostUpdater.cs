@@ -18,7 +18,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 
 		protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation)
 		{
-			foreach (var uncoverableCell in uncoverableCells)
+			foreach (UncoverableCell uncoverableCell in uncoverableCells)
 			{
 				var interaction = CellInteractionType.GameLost;
 

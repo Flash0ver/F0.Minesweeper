@@ -1,0 +1,89 @@
+@inherits TestContext
+
+@code
+{
+	[Fact]
+	public void Game_Component_Verify_Initial_Markup()
+	{
+		// Arrange
+		MinefieldOptions testMinefieldOptions = MinefieldOptions.Medium;
+		Setup(testMinefieldOptions);
+
+		// Act
+		var fragment = Render(@<Game />);
+
+		// Assert
+		fragment.MarkupMatches(
+@<div id="f0-game">
+	<Difficulty />
+	<Minefield Options="testMinefieldOptions" />
+	<GameEndStatus />
+</div>
+		);
+	}
+
+	[Fact]
+	public void Game_Component_Verify_Markup_After_Difficulty_Change()
+	{
+		// Arrange
+		MinefieldOptions testMinefieldOptions = MinefieldOptions.Medium;
+		MinefieldOptions? transitionTo = MinefieldOptions.Easy;
+		Setup(testMinefieldOptions, transitionTo);
+
+		// Act
+		var component = RenderComponent<Game>();
+		var select = component.Find("select");
+		select.Change(nameof(DifficultyLevel.Easy));
+
+		// Assert
+		var minefield = component.Find("#f0-minefield");
+		minefield.MarkupMatches(@<Minefield Options="transitionTo" />);
+	}
+
+	[Fact]
+	public void Game_Component_Verify_Final_Markup()
+	{
+		// Arrange
+		MinefieldOptions testMinefieldOptions = MinefieldOptions.Medium;
+		Setup(testMinefieldOptions);
+
+		// Act
+		var fragment = Render(@<Game />);
+		FinishGame();
+
+		// Assert
+		var status = fragment.Find("#f0-gameendstatus");
+		status.Children.Single().ClassName.Should().Be("f0-end-text-visible");
+	}
+
+	private void Setup(MinefieldOptions testMinefieldOptions, MinefieldOptions? transitionTo = null)
+	{
+		Mock<IMinefieldFactory> minefieldFactory = new(MockBehavior.Strict);
+		Mock<IMinefield> minefield = new(MockBehavior.Strict);
+		Mock<ICellStatusManager> statusManager = new(MockBehavior.Strict);
+		Mock<IGameUpdateFactory> gameUpdateFactory = new(MockBehavior.Strict);
+		EventAggregator eventAggregator = new();
+
+		minefieldFactory.Setup(factory => factory.Create(It.Is<MinefieldOptions>(options => options == testMinefieldOptions))).Returns(minefield.Object);
+
+		if (transitionTo is not null)
+		{
+			minefieldFactory.Setup(factory => factory.Create(It.Is<MinefieldOptions>(options => options == transitionTo))).Returns(minefield.Object);
+		}
+
+		Services.AddSingleton(minefieldFactory.Object);
+		Services.AddSingleton(statusManager.Object);
+		Services.AddSingleton(gameUpdateFactory.Object);
+		Services.AddSingleton<IEventAggregator>(_ => eventAggregator);
+	}
+
+	private void FinishGame()
+	{
+		_ = Renderer.Dispatcher.InvokeAsync(EndGame);
+
+		void EndGame()
+		{
+			Services.GetRequiredService<IEventAggregator>().GetEvent<GameFinishedEvent>().Publish("Game Over");
+		}
+	}
+}
