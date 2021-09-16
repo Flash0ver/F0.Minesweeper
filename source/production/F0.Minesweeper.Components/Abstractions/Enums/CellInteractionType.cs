@@ -9,6 +9,6 @@ namespace F0.Minesweeper.Components.Abstractions.Enums
 		RightClick = 1,
 		Automatic = 2,
 		GameWon = 3,
-		GameLost = 4
+		GameLost = 4,
 	}
 }

@@ -7,9 +7,9 @@ namespace F0.Minesweeper.Components.Logic.Game
 {
 	internal class GameInProgressUpdater : GameUpdater
 	{
-		protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation) 
-        {
-			foreach(var uncoverableCell in uncoverableCells)
+		protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation)
+		{
+			foreach (UncoverableCell uncoverableCell in uncoverableCells)
 			{
 				CellInteractionType interactionType =
 					uncoverableCell.Cell.Location == clickedLocation
@@ -20,6 +20,6 @@ namespace F0.Minesweeper.Components.Logic.Game
 			}
 
 			return Task.CompletedTask;
-        }
+		}
 	}
 }

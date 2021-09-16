@@ -9,7 +9,7 @@
 					{
 						var location = new Location(currentWidth, currentHeight);
 						<td>
-							<Cell Location="location" @ref="Cell" />
+							<Cell Location="location" @ref="Cell" @key="cellVersion++" />
 						</td>
 					}
 				</tr>
