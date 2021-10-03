@@ -14,8 +14,8 @@ env:
 jobs:
   publish:
     name: Publish
-    runs-on: ubuntu-18.04
-    
+    runs-on: ubuntu-20.04
+
     env:
       Project_File: ./source/production/F0.Minesweeper.App/F0.Minesweeper.App.csproj
       Output_Directory: ./release/
