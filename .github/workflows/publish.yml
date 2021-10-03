@@ -44,7 +44,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.4
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v1.7.2
+        uses: actions/setup-dotnet@v1.8.2
       - name: Publish
         run: dotnet publish ${{ env.Project_File }} --configuration Release --nologo --output ${{ env.Output_Directory }}
       - name: Change base-tag in index.html
@@ -54,7 +54,7 @@ jobs:
       - name: Create .nojekyll file
         run: touch ${{ env.Output_Directory }}wwwroot/.nojekyll
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+        uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           branch: gh-pages
           folder: ${{ env.Output_Directory }}wwwroot
