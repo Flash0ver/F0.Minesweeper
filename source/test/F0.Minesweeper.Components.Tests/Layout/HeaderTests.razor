@@ -1,0 +1,18 @@
+@inherits TestContext
+
+@code
+{
+	[Fact]
+	public void Header_AfterRender_MarkupIsCorrect()
+	{
+		// Arrange && Act
+		IRenderedFragment fragmentUnderTest = Render(@<Header />);
+
+		// Assert
+		fragmentUnderTest.MarkupMatches(
+@<header id="f0-header">
+	<h3 diff:ignore />
+</header>
+		);
+	}
+}
