@@ -45,7 +45,7 @@ namespace F0.Minesweeper.Logic.Tests.LocationShuffler
 
 			resultingLocations
 				.Should()
-				.BeEquivalentTo(testDataTuple.result);
+				.Equal(testDataTuple.result);
 		}
 
 		private readonly Location[] field = {
