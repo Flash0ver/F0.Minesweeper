@@ -7,7 +7,11 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 {
 	internal class FisherYatesLocationShuffler : ILocationShuffler
 	{
-		private static Random randomNumberGenerator = new();
+		private readonly Random randomNumberGenerator;
+
+		internal FisherYatesLocationShuffler(Random? randomNumberGenerator = null)
+			=> this.randomNumberGenerator = randomNumberGenerator ?? new();
+
 		IReadOnlyCollection<Location> ILocationShuffler.ShuffleAndTake(IEnumerable<Location> allLocations, int count)
 		{
 			_ = allLocations ?? throw new ArgumentNullException(nameof(allLocations));
