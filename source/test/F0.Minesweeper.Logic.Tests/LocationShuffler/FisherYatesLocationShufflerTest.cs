@@ -5,9 +5,9 @@ using F0.Minesweeper.Logic.LocationShuffler;
 using FluentAssertions;
 using Xunit;
 
-namespace F0.Minesweeper.Logic.Tests
+namespace F0.Minesweeper.Logic.Tests.LocationShuffler
 {
-	public class GuidLocationShufflerTest
+	public class FisherYatesLocationShufflerTest
 	{
 		[Theory]
 		[InlineData(1)]
@@ -20,7 +20,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[InlineData(25)]
 		public void ShuffleAndTake_WithCount_DoesReturnCorrectCount(int count)
 		{
-			ILocationShuffler locationShufflerUnderTest = new GuidLocationShuffler();
+			ILocationShuffler locationShufflerUnderTest = new FisherYatesLocationShuffler();
 			IReadOnlyCollection<Location> resultingLocations = locationShufflerUnderTest.ShuffleAndTake(field, count);
 
 			resultingLocations.Should().HaveCount(count);
@@ -29,7 +29,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[Fact]
 		public void ShuffleAndTake_WithCountGreaterThanField_ThrowsArgumentOutOfRangeException()
 		{
-			ILocationShuffler locationShufflerUnderTest = new GuidLocationShuffler();
+			ILocationShuffler locationShufflerUnderTest = new FisherYatesLocationShuffler();
 			Action shuffleAction = () => locationShufflerUnderTest.ShuffleAndTake(field, field.Length + 1);
 
 			shuffleAction.Should().Throw<ArgumentOutOfRangeException>();
