@@ -10,7 +10,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="bunit.web" Version="1.2.49" />
-		<PackageReference Include="bunit.web.testcomponents" Version="1.2.49" />
 	</ItemGroup>
 
 	<ItemGroup>
