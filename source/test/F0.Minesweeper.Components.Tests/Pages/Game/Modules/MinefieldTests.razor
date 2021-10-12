@@ -134,6 +134,7 @@
 	[Fact]
 	public void RepopulateMinefield_SecondRendering_OldCellsReplacedByNewCells()
 	{
+		// Arrange
 		MinefieldOptions options = new (1, 1, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 		GameUpdateReportForTests report = new(GameStatus.IsWon, new[]
 		{
@@ -147,9 +148,10 @@
 		IElement oldButton = componentUnderTest.Find("button");
 		oldButton.TextContent = "Test";
 
-		parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
-		componentUnderTest = RenderComponent<Minefield>(parameter);
+		// Act
+		componentUnderTest.SetParametersAndRender(parameter);
 
+		// Assert
 		IElement newButton = componentUnderTest.Find("button");
 		newButton.TextContent.Should().NotBe("Test");
 	}
