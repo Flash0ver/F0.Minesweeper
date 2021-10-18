@@ -74,7 +74,7 @@ namespace F0.Minesweeper.Logic.Tests
 			IGameUpdateReport result = minefieldUnderTest.Uncover(1, 1);
 
 			result.Cells.Should().NotBeEmpty()
-				.And.ContainSingle(cell => cell.AdjacentMineCount == testdata.MineLocations.Length);
+				.And.ContainSingle(cell => cell.AdjacentMineCount == testdata.MineLocations.Count);
 		}
 
 		//5x5 Empty cell propagation + win
@@ -126,7 +126,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[Fact]
 		public void Uncover_ForTheFirstTime_PlacesMinesOnlyOnce()
 		{
-			Mock<IMinelayer> minelayerMock = new Mock<IMinelayer>(MockBehavior.Strict);
+			var minelayerMock = new Mock<IMinelayer>(MockBehavior.Strict);
 			minelayerMock
 				.Setup(ml => ml.PlaceMines(It.IsAny<IEnumerable<Location>>(), It.IsAny<uint>(), It.IsAny<Location>()))
 				.Returns(new List<Location> { new(0, 0), new(1, 0) });
@@ -143,7 +143,7 @@ namespace F0.Minesweeper.Logic.Tests
 
 	public class MinefieldTestData
 	{
-		public Location[] MineLocations { get; init; }
+		public IReadOnlyCollection<Location> MineLocations { get; }
 
 		public MinefieldTestData(Location[] mineLocations) => MineLocations = mineLocations;
 

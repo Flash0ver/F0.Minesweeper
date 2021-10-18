@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace F0.Minesweeper.Components.Logic.Cell
 {
@@ -32,7 +33,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 
 			if (adjacentMineCount.HasValue)
 			{
-				return adjacentMineCount.Value.ToString()[0];
+				return adjacentMineCount.Value.ToString(NumberFormatInfo.InvariantInfo)[0];
 			}
 
 			throw new InvalidOperationException($"Can not attain the display value with {nameof(activeTranslation)} value '{activeTranslation}' and {nameof(adjacentMineCount)} value '{adjacentMineCount}'");

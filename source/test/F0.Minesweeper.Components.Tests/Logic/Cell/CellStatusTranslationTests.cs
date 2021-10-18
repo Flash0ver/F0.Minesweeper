@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using F0.Minesweeper.Components.Logic.Cell;
 using FluentAssertions;
 using Xunit;
@@ -75,7 +76,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			char displayValue = instanceUnderTest.GetDisplayValue((byte?)adjacentMineCount);
 
 			// Assert
-			displayValue.Should().Be(adjacentMineCount.ToString()[0]);
+			displayValue.Should().Be(adjacentMineCount.ToString(NumberFormatInfo.InvariantInfo)[0]);
 		}
 	}
 }

@@ -1,14 +1,15 @@
+using System.Collections.Generic;
 using F0.Minesweeper.Logic.Abstractions;
 
 namespace F0.Minesweeper.Logic
 {
 	internal class GameUpdateReport : IGameUpdateReport
 	{
-		public GameStatus Status { get; private set; }
+		public GameStatus Status { get; }
 
-		public IUncoveredCell[] Cells { get; private set; }
+		public IReadOnlyCollection<IUncoveredCell> Cells { get; }
 
-		internal GameUpdateReport(GameStatus status, IUncoveredCell[] cells)
+		internal GameUpdateReport(GameStatus status, IReadOnlyCollection<IUncoveredCell> cells)
 		{
 			Status = status;
 			Cells = cells;

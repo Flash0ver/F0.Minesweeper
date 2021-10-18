@@ -77,7 +77,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 		public void Rendering_SupportedSizeProvided_ShowsCorrectAmountOfCells(uint width, uint height)
 		{
 			// Arrange
-			MinefieldOptions options = new (width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 			int expectedCellAmount = (int)(width * height);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
@@ -97,7 +97,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 			// Arrange
 			const string expectedMarkup = "<div id='f0-minefield'><table><tr><td><div diff:ignore /></td></tr></table></div>";
 
-			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
 
@@ -114,7 +114,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 		public void OnCellUncoveredAsync_MinefieldWasNotCreated_Throws()
 		{
 			// Arrange
-			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns<IMinefield>(null);
 
@@ -129,10 +129,10 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 
 		[Theory]
 		[MemberData(nameof(GetReportVariations))]
-		public void OnCellUncoveredAsync_ReportVariations_DoesNotThrow(GameUpdateReportForTests report)
+		private void OnCellUncoveredAsync_ReportVariations_DoesNotThrow(GameUpdateReportForTests report)
 		{
 			// Arrange
-			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
 			minefieldMock.Setup(field => field.Uncover(It.Is<Location>(s => s == new Location(0, 0)))).Returns(report);
@@ -150,14 +150,14 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 		[Fact]
 		public void RepopulateMinefield_SecondRendering_OldCellsReplacedByNewCells()
 		{
-			MinefieldOptions options = new (1, 1, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new(1, 1, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
 			GameUpdateReportForTests report = new(GameStatus.IsWon, new[]
 			{
 				new UncoveredCellForTests(new (0,0),false,0)
 			});
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
-			
+
 			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
 			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
 			IElement oldButton = componentUnderTest.Find("button");
@@ -174,83 +174,83 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 			new()
 			{
 				// with no cells
-				new GameUpdateReportForTests(GameStatus.InProgress, new UncoveredCellForTests[0]),
-				new GameUpdateReportForTests(GameStatus.IsLost, new UncoveredCellForTests[0]),
-				new GameUpdateReportForTests(GameStatus.IsWon, new UncoveredCellForTests[0]),
+				new GameUpdateReportForTests(GameStatus.InProgress, Array.Empty<UncoveredCellForTests>()),
+				new GameUpdateReportForTests(GameStatus.IsLost, Array.Empty<UncoveredCellForTests>()),
+				new GameUpdateReportForTests(GameStatus.IsWon, Array.Empty<UncoveredCellForTests>()),
 
 				// with one valid mine cell 
 				new GameUpdateReportForTests(GameStatus.InProgress, new[]
 				{
-					new UncoveredCellForTests(new (0,0),true,0)
+					new UncoveredCellForTests(new (0,0), true, 0)
 				}),
 				new GameUpdateReportForTests(GameStatus.IsLost, new[]
 				{
-					new UncoveredCellForTests(new (0,0),true,0)
+					new UncoveredCellForTests(new (0,0), true, 0)
 				}),
 				new GameUpdateReportForTests(GameStatus.IsWon, new[]
 				{
-					new UncoveredCellForTests(new (0,0),true,0)
+					new UncoveredCellForTests(new (0,0), true, 0)
 				}),
 
 				// with one mine cell outside of field
 				new GameUpdateReportForTests(GameStatus.InProgress, new[]
 				{
-					new UncoveredCellForTests(new (500,400),true,0)
+					new UncoveredCellForTests(new (500,400), true, 0)
 				}),
 				new GameUpdateReportForTests(GameStatus.IsLost, new[]
 				{
-					new UncoveredCellForTests(new (500,400),true,0)
+					new UncoveredCellForTests(new (500,400), true, 0)
 				}),
 				new GameUpdateReportForTests(GameStatus.IsWon, new[]
 				{
-					new UncoveredCellForTests(new (500,400),true,0)
+					new UncoveredCellForTests(new (500,400), true, 0)
 				}),
 
 				// with one valid none mine cell
 				new GameUpdateReportForTests(GameStatus.InProgress, new[]
 				{
-					new UncoveredCellForTests(new (0,0),false,1)
+					new UncoveredCellForTests(new (0,0), false, 1)
 				}),
 				new GameUpdateReportForTests(GameStatus.IsLost, new[]
 				{
-					new UncoveredCellForTests(new (0,0),false,1)
+					new UncoveredCellForTests(new (0,0), false, 1)
 				}),
 				new GameUpdateReportForTests(GameStatus.IsWon, new[]
 				{
-					new UncoveredCellForTests(new (0,0),false,1)
+					new UncoveredCellForTests(new (0,0), false, 1)
 				}),
 
 				// with one non mine cell outside of field
 				new GameUpdateReportForTests(GameStatus.InProgress, new[]
 				{
-					new UncoveredCellForTests(new (500,400),false,3)
+					new UncoveredCellForTests(new (500,400), false, 3)
 				}),
 				new GameUpdateReportForTests(GameStatus.IsLost, new[]
 				{
-					new UncoveredCellForTests(new (500,400),false,3)
+					new UncoveredCellForTests(new (500,400), false, 3)
 				}),
 				new GameUpdateReportForTests(GameStatus.IsWon, new[]
 				{
-					new UncoveredCellForTests(new (500,400),false,3)
+					new UncoveredCellForTests(new (500,400), false, 3)
 				})
 			};
 
 		private class GameUpdaterForTests : GameUpdater
 		{
-			protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> cells, Location clickedLocation) => Task.CompletedTask;
+			protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> uncoverableCells, Location clickedLocation) => Task.CompletedTask;
 		}
 
-		public class GameUpdateReportForTests : IGameUpdateReport
+		private class GameUpdateReportForTests : IGameUpdateReport
 		{
-			public GameUpdateReportForTests(GameStatus status, IUncoveredCell[] cells)
+			public GameUpdateReportForTests(GameStatus status, IReadOnlyCollection<IUncoveredCell> cells)
 			{
 				Status = status;
 				Cells = cells;
 			}
 
-			public GameStatus Status { get; init; }
+			public GameStatus Status { get; }
 
-			public IUncoveredCell[] Cells { get; init; }
+			public IReadOnlyCollection<IUncoveredCell> Cells { get; }
 		}
 
 		private class UncoveredCellForTests : IUncoveredCell
@@ -262,11 +262,11 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 				AdjacentMineCount = adjacentMineCount;
 			}
 
-			public Location Location { get; init; }
+			public Location Location { get; }
 
-			public bool IsMine { get; init; }
+			public bool IsMine { get; }
 
-			public byte AdjacentMineCount { get; init; }
+			public byte AdjacentMineCount { get; }
 		}
 	}
 }

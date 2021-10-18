@@ -101,12 +101,12 @@ namespace F0.Minesweeper.Components.Logic.Game
 
 		private class GameUpdaterForTests : GameUpdater
 		{
-			internal IGameUpdateReport? ExposedReport => report;
+			internal IGameUpdateReport? ExposedReport => Report;
 			internal IEnumerable<UncoverableCell>? UncoverableCells;
 
-			protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> cells, Location clickedLocation)
+			protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> uncoverableCells, Location clickedLocation)
 			{
-				UncoverableCells = cells;
+				UncoverableCells = uncoverableCells;
 				return Task.CompletedTask;
 			}
 		}
