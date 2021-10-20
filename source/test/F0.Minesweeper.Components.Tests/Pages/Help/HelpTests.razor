@@ -1,0 +1,20 @@
+@inherits TestContext
+
+@code
+{
+	[Fact]
+	public void Footer_WithoutVersionInfo()
+	{
+		// Arrange & Act 
+		IRenderedFragment fragmentUnderTest = Render(@<Help />);
+
+		// Assert
+		fragmentUnderTest.MarkupMatches(
+@<div>
+	<h3 diff:ignore="true" />
+	<p diff:ignore="true" />
+	<p diff:ignore="true" />
+</div>
+		);
+	}
+}
