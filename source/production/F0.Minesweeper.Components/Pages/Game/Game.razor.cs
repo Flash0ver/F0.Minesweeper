@@ -18,11 +18,13 @@ namespace F0.Minesweeper.Components.Pages.Game
 		protected override void OnParametersSet()
 		{
 			EventAggregator?.GetEvent<DifficultyLevelChangedEvent>().Subscribe(OnDifficultyChanged);
+			EventAggregator?.GetEvent<RestartGameEvent>().Subscribe(RestartGame);
 		}
 
 		void IDisposable.Dispose()
 		{
 			EventAggregator?.GetEvent<DifficultyLevelChangedEvent>().Unsubscribe(OnDifficultyChanged);
+			EventAggregator?.GetEvent<RestartGameEvent>().Unsubscribe(RestartGame);
 		}
 
 		private void OnDifficultyChanged(DifficultyLevel selectedDifficulty)
@@ -30,6 +32,8 @@ namespace F0.Minesweeper.Components.Pages.Game
 			options = CreateOptions(selectedDifficulty);
 			StateHasChanged();
 		}
+
+		private void RestartGame() => StateHasChanged();
 
 		private static MinefieldOptions CreateOptions(DifficultyLevel difficultyLevel)
 		{
