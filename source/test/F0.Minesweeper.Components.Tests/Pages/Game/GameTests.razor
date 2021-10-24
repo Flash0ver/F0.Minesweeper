@@ -14,6 +14,9 @@
 		eventAggregatorMock
 			.Setup(ea => ea.GetEvent<DifficultyLevelChangedEvent>())
 			.Returns(new DifficultyLevelChangedEvent());
+		eventAggregatorMock
+				.Setup(ea => ea.GetEvent<RestartGameEvent>())
+				.Returns(new RestartGameEvent());
 
 		Services.AddSingleton(eventAggregatorMock.Object);
 	}
@@ -32,11 +35,11 @@
 		// Assert
 		fragment.MarkupMatches(
 @<div id="f0-game">
-	<Difficulty />
+	<GameMenu />
 	<Minefield />
 	<GameEndStatus />
 </div>
-		);
+	);
 
 		var minefield = fragment.FindComponent<MinefieldForTests>();
 
@@ -61,9 +64,24 @@
 	}
 
 	[Fact]
+	public void OnRestartGame_GameIsRestarted()
+	{
+		// Arrange
+		var component = RenderComponent<Game>();
+
+		// Act
+		component.InvokeAsync(
+			() => eventAggregatorMock.Object.GetEvent<RestartGameEvent>().Publish());
+
+		// Assert
+		component.RenderCount.Should().Be(2);
+	}
+
+	[Fact]
 	public void ComponentLifeCycle_EventAggregatorSubscribesAndUnsubscribesCorrectly()
 	{
 		DifficultyLevelChangedForTests changedEvent;
+		RestartGameForTests restartGameEvent;
 
 		// the test needs its own context since dispose on the game fragment is only called
 		// when the context itself gets disposed. 
@@ -75,11 +93,16 @@
 			context.ComponentFactories.AddStub<GameEndStatus>();
 
 			changedEvent = new();
+			restartGameEvent = new();
 
 			Mock<IEventAggregator> eventAggregatorMock = new();
 			eventAggregatorMock
 				.Setup(ea => ea.GetEvent<DifficultyLevelChangedEvent>())
 				.Returns(changedEvent);
+
+			eventAggregatorMock
+				.Setup(ea => ea.GetEvent<RestartGameEvent>())
+				.Returns(restartGameEvent);
 
 			context.Services.AddSingleton(eventAggregatorMock.Object);
 
@@ -87,13 +110,15 @@
 			using(IRenderedFragment gameFragment =
 				context.Render(
 @<Game />
-				)
+	)
 			) {}
 		}
 		
 		// Assert
 		changedEvent.WasSubscribed.Should().BeTrue();
 		changedEvent.HasUnsubscribed.Should().BeTrue();
+		restartGameEvent.WasSubscribed.Should().BeTrue();
+		restartGameEvent.HasUnsubscribed.Should().BeTrue();
 	}
 
 	private static TheoryData<DifficultyLevel, MinefieldOptions> GetDifficultyLevels()
@@ -111,6 +136,19 @@
 		public bool HasUnsubscribed { get; private set; }
 
 		public override void Unsubscribe(Action<DifficultyLevel> subscriber)
+		{
+			WasSubscribed = Contains(subscriber);
+			base.Unsubscribe(subscriber);
+			HasUnsubscribed = true;
+		}
+	}
+
+	private class RestartGameForTests : RestartGameEvent
+	{
+		public bool WasSubscribed { get; private set; }
+		public bool HasUnsubscribed { get; private set; }
+
+		public override void Unsubscribe(Action subscriber)
 		{
 			WasSubscribed = Contains(subscriber);
 			base.Unsubscribe(subscriber);
