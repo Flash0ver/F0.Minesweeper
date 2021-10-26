@@ -7,9 +7,9 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 {
 	internal class RandomOrderLocationShuffler : ILocationShuffler
 	{
-		private readonly Random randomNumberGenerator;
-		internal RandomOrderLocationShuffler(Random? randomNumberGenerator = null)
-			=> this.randomNumberGenerator = randomNumberGenerator ?? new();
+		private readonly IRandom randomNumberGenerator;
+		internal RandomOrderLocationShuffler(IRandom? randomNumberGenerator = null)
+			=> this.randomNumberGenerator = randomNumberGenerator ?? new DefaultRandom();
 
 		IReadOnlyCollection<Location> ILocationShuffler.ShuffleAndTake(IEnumerable<Location> allLocations, int count)
 		{

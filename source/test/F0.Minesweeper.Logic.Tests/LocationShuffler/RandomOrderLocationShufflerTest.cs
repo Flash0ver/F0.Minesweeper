@@ -37,10 +37,10 @@ namespace F0.Minesweeper.Logic.Tests.LocationShuffler
 
 		[Theory]
 		[MemberData(nameof(RandomOrderLocationShufflerTestData.TestData), MemberType = typeof(RandomOrderLocationShufflerTestData))]
-		public void ShuffleAndTake_WithPredefinedRandom_ShufflesSpecificWay((int seed, Location[] field, Location[] result) testDataTuple)
+		public void ShuffleAndTake_WithPredefinedRandom_ShufflesSpecificWay((int[] randomNextValues, Location[] field, Location[] result) testDataTuple)
 		{
-			Random rng = new Random(testDataTuple.seed);
-			ILocationShuffler locationShufflerUnderTest = new RandomOrderLocationShuffler(rng);
+			IRandom random = new RandomToTest(testDataTuple.randomNextValues);
+			ILocationShuffler locationShufflerUnderTest = new RandomOrderLocationShuffler(random);
 			IReadOnlyCollection<Location> resultingLocations = locationShufflerUnderTest.ShuffleAndTake(testDataTuple.field, testDataTuple.field.Length);
 
 			resultingLocations
@@ -71,26 +71,74 @@ namespace F0.Minesweeper.Logic.Tests.LocationShuffler
 
 		private class RandomOrderLocationShufflerTestData
 		{
-			public static TheoryData<(int seed, Location[] field, Location[] result)> TestData => GenerateTestData();
+			public static TheoryData<(int[] randomNextValues, Location[] field, Location[] result)> TestData => GenerateTestData();
 		}
 
-		private static TheoryData<(int seed, Location[] field, Location[] result)> GenerateTestData()
+		private static TheoryData<(int[] randomNextValues, Location[] field, Location[] result)> GenerateTestData()
 		{
-			TheoryData<(int seed, Location[] field, Location[] result)> resultData = new();
+			TheoryData<(int[] randomNextValues, Location[] field, Location[] result)> resultData = new();
 			resultData.Add((
-				seed: 1,
+				randomNextValues: new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 },
 				field: randomSeedField,
 				result: new Location[] {
-					new(8, 0),
-					new(1, 0),
 					new(0, 0),
+					new(1, 0),
+					new(2, 0),
+					new(3, 0),
+					new(4, 0),
+					new(5, 0),
+					new(6, 0),
+					new(7, 0),
+					new(8, 0),
+					new(9, 0),
+				}
+			));
+			resultData.Add((
+				randomNextValues: new[] { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
+				field: randomSeedField,
+				result: new Location[] {
+					new(9, 0),
+					new(8, 0),
+					new(7, 0),
 					new(6, 0),
 					new(5, 0),
-					new(2, 0),
-					new(9, 0),
 					new(4, 0),
 					new(3, 0),
+					new(2, 0),
+					new(1, 0),
+					new(0, 0),
+				}
+			));
+			resultData.Add((
+				randomNextValues: new[] { 4, 3, 2, 1, 0, 9, 8, 7, 6, 5 },
+				field: randomSeedField,
+				result: new Location[] {
+					new(4, 0),
+					new(3, 0),
+					new(2, 0),
+					new(1, 0),
+					new(0, 0),
+					new(9, 0),
+					new(8, 0),
 					new(7, 0),
+					new(6, 0),
+					new(5, 0),
+				}
+			));
+			resultData.Add((
+				randomNextValues: new[] { 7, 6, 3, 9, 4, 2, 0, 8, 1, 5 },
+				field: randomSeedField,
+				result: new Location[] {
+					new(6, 0),
+					new(8, 0),
+					new(5, 0),
+					new(2, 0),
+					new(4, 0),
+					new(9, 0),
+					new(1, 0),
+					new(0, 0),
+					new(7, 0),
+					new(3, 0),
 				}
 			));
 
