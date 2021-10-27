@@ -57,16 +57,16 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		}
 
 		[Theory]
-		[InlineData(0)]
-		[InlineData(1)]
-		[InlineData(2)]
-		[InlineData(3)]
-		[InlineData(4)]
-		[InlineData(5)]
-		[InlineData(6)]
-		[InlineData(7)]
-		[InlineData(8)]
-		public void GetDisplayValue_NoActiveTranslationSet_HasAdjacentMines_ReturnsCharRepresentationOfAdjacentMines(int adjacentMineCount)
+		[InlineData(0, ' ')]
+		[InlineData(1, '1')]
+		[InlineData(2, '2')]
+		[InlineData(3, '3')]
+		[InlineData(4, '4')]
+		[InlineData(5, '5')]
+		[InlineData(6, '6')]
+		[InlineData(7, '7')]
+		[InlineData(8, '8')]
+		public void GetDisplayValue_NoActiveTranslationSet_HasAdjacentMines_ReturnsCharRepresentationOfAdjacentMines(int adjacentMineCount, char expectdValue)
 		{
 			// Arrange
 			var instanceUnderTest = new CellStatusTranslation("css-class");
@@ -75,7 +75,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			char displayValue = instanceUnderTest.GetDisplayValue((byte?)adjacentMineCount);
 
 			// Assert
-			displayValue.Should().Be(adjacentMineCount.ToString()[0]);
+			displayValue.Should().Be(expectdValue);
 		}
 	}
 }

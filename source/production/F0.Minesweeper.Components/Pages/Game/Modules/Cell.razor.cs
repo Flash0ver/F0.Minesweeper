@@ -88,7 +88,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 			return new Dictionary<CellStatusType, CellStatusTranslation>
 				{
-					{ CellStatusType.Covered, new ('C', $"{cellLayout} f0-cell-covered") },
+					{ CellStatusType.Covered, new (' ', $"{cellLayout} f0-cell-covered") },
 					{ CellStatusType.Flagged, new ('⚐', $"{cellLayout} f0-cell-covered") },
 					{ CellStatusType.FlaggedWrong, new ('⚐', $"{cellLayout} f0-cell-flagged-wrong") },
 					{ CellStatusType.Uncovered, new ($"{cellLayout} f0-cell-uncovered") },

@@ -32,7 +32,11 @@ namespace F0.Minesweeper.Components.Logic.Cell
 
 			if (adjacentMineCount.HasValue)
 			{
-				return adjacentMineCount.Value.ToString()[0];
+				return adjacentMineCount.Value switch
+				{
+					0 => ' ',
+					_ => adjacentMineCount.Value.ToString()[0]
+				};
 			}
 
 			throw new InvalidOperationException($"Can not attain the display value with {nameof(activeTranslation)} value '{activeTranslation}' and {nameof(adjacentMineCount)} value '{adjacentMineCount}'");

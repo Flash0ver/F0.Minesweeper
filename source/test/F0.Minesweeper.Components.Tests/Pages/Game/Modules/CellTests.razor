@@ -31,7 +31,7 @@
 	public void Rendering_LocationProvided_ShowsCell(uint x, uint y)
 	{
 		// Arrange
-		RenderFragment expectedMarkup = @<div><button class="f0-cell f0-cell-covered">C</button></div>;
+		RenderFragment expectedMarkup = @<div><button class="f0-cell f0-cell-covered"> </button></div>;
 
 		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(x, y));
 
@@ -177,7 +177,7 @@
 
 	[Theory]
 	[InlineData(CellInteractionType.LeftClick, true, CellStatusType.MineExploded, 3, '☢', "f0-cell f0-cell-mine-exploded")]
-	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 0, '0', "f0-cell f0-cell-uncovered")]
+	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 0, ' ', "f0-cell f0-cell-uncovered")]
 	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 1, '1', "f0-cell f0-cell-uncovered")]
 	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 2, '2', "f0-cell f0-cell-uncovered")]
 	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 3, '3', "f0-cell f0-cell-uncovered")]
@@ -186,7 +186,7 @@
 	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 6, '6', "f0-cell f0-cell-uncovered")]
 	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 7, '7', "f0-cell f0-cell-uncovered")]
 	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 8, '8', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 0, '0', "f0-cell f0-cell-uncovered")]
+	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 0, ' ', "f0-cell f0-cell-uncovered")]
 	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 1, '1', "f0-cell f0-cell-uncovered")]
 	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 2, '2', "f0-cell f0-cell-uncovered")]
 	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 3, '3', "f0-cell f0-cell-uncovered")]
@@ -302,7 +302,7 @@
 	public void OnClick_HasAdjacentMinesToUncover_UncoversAllCells()
 	{
 		// Arrange
-		RenderFragment expectedMarkup = @<div><button class="f0-cell f0-cell-uncovered">0</button></div>;
+		RenderFragment expectedMarkup = @<div><button class="f0-cell f0-cell-uncovered"> </button></div>;
 		Location expectedLocationClickedCell = new(1, 1);
 
 		cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.LeftClick, null)).Returns(true);
