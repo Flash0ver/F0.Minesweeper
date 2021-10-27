@@ -10,7 +10,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[Fact]
 		public void Create_Null_Throws()
 		{
-			var minefieldFactoryUnderTest = new MinefieldFactory();
+			MinefieldFactory minefieldFactoryUnderTest = new();
 			Func<IMinefield> create = () => minefieldFactoryUnderTest.Create(null!);
 			create.Should().ThrowExactly<ArgumentNullException>();
 		}
@@ -19,7 +19,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[MemberData(nameof(TestData))]
 		public void Create_WithAllPossibleEnumValues_GeneratesValidMinefields(MinefieldOptions options)
 		{
-			var minefieldFactoryUnderTest = new MinefieldFactory();
+			MinefieldFactory minefieldFactoryUnderTest = new();
 			IMinefield? result = null;
 			Action create = () => result = minefieldFactoryUnderTest.Create(options);
 			create.Should().NotThrow();
