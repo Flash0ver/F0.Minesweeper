@@ -1,0 +1,257 @@
+@inherits TestContext
+
+@code {
+	private readonly Mock<IMinefieldFactory> minefieldFactoryMock;
+	private readonly Mock<IMinefield> minefieldMock;
+	private readonly Mock<IGameUpdateFactory> gameUpdateFactoryMock;
+
+	public MinefieldTests()
+	{
+		minefieldFactoryMock = new Mock<IMinefieldFactory>(MockBehavior.Strict);
+		minefieldMock = new Mock<IMinefield>(MockBehavior.Strict);
+		gameUpdateFactoryMock = new Mock<IGameUpdateFactory>(MockBehavior.Strict);
+		Services.AddSingleton(minefieldFactoryMock.Object);
+		Services.AddSingleton<ICellStatusManager>(new CellStatusManager());
+		Services.AddSingleton(gameUpdateFactoryMock.Object);
+	}
+
+	protected override void Dispose(bool disposing)
+	{
+		Mock.VerifyAll(minefieldFactoryMock);
+		base.Dispose(disposing);
+	}
+
+	[Fact]
+	public void Rendering_NoSizeProvided_ShowsErrorLabel()
+	{
+		// Arrange
+		RenderFragment expectedMarkup = @<div id='f0-minefield'><label diff:ignore /></div>;
+
+		// Act
+		IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>();
+
+		// Assert
+		componentUnderTest.MarkupMatches(expectedMarkup);
+	}
+
+	[Theory]
+	[InlineData(0, 0)]
+	[InlineData(0, 1)]
+	[InlineData(1, 0)]
+	public void Rendering_UnsupportedSizeProvided_ShowsErrorLabel(uint height, uint width)
+	{
+		// Arrange
+		RenderFragment expectedMarkup = @<div id='f0-minefield'><label diff:ignore /></div>;
+
+		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), new MinefieldOptions(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler));
+
+		// Act
+		IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
+
+		// Assert
+		componentUnderTest.MarkupMatches(expectedMarkup);
+	}
+
+	[Theory]
+	[InlineData(1, 1)]
+	[InlineData(2, 2)]
+	[InlineData(1, 2)]
+	[InlineData(2, 1)]
+	[InlineData(10, 20)]
+	public void Rendering_SupportedSizeProvided_ShowsCorrectAmountOfCells(uint width, uint height)
+	{
+		// Arrange
+		MinefieldOptions options = new(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+		int expectedCellAmount = (int)(width * height);
+
+		minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
+
+		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
+
+		// Act
+		IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
+
+		// Assert
+		componentUnderTest.FindComponents<Cell>().Count.Should().Be(expectedCellAmount);
+	}
+
+	[Fact]
+	public void Rendering_OneCellShown_MarkupIsCorrect()
+	{
+		// Arrange
+		RenderFragment expectedMarkup = @<div id='f0-minefield'><table><tr><td><div diff:ignore /></td></tr></table></div>;
+
+		MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+
+		minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
+
+		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
+
+		// Act
+		IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
+
+		// Assert
+		componentUnderTest.MarkupMatches(expectedMarkup);
+	}
+
+	[Fact]
+	public void OnCellUncoveredAsync_MinefieldWasNotCreated_Throws()
+	{
+		// Arrange
+		MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+
+		minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns<IMinefield>(null);
+
+		ComponentParameter optionsParameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
+
+		IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(optionsParameter);
+
+		// Act && Assert
+		Action actionToTest = () => componentUnderTest.Find("button").Click();
+		actionToTest.Should().Throw<InvalidOperationException>();
+	}
+
+	[Theory]
+	[MemberData(nameof(GetReportVariations))]
+	private void OnCellUncoveredAsync_ReportVariations_DoesNotThrow(GameUpdateReportForTests report)
+	{
+		// Arrange
+		MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+
+		minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
+		minefieldMock.Setup(field => field.Uncover(It.Is<Location>(s => s == new Location(0, 0)))).Returns(report);
+		gameUpdateFactoryMock.Setup(factory => factory.On(report.Status)).Returns(new GameUpdaterForTests());
+
+		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
+
+		IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
+
+		// Act && Assert
+		Action actionToTest = () => componentUnderTest.Find("button").Click();
+		actionToTest.Should().NotThrow();
+	}
+
+	[Fact]
+	public void RepopulateMinefield_SecondRendering_OldCellsReplacedByNewCells()
+	{
+		// Arrange
+		MinefieldOptions options = new(1, 1, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+		GameUpdateReportForTests report = new(GameStatus.IsWon, new[]
+		{
+			new UncoveredCellForTests(new (0,0),false,0)
+		});
+
+		minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
+
+		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), options);
+		IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
+		IElement oldButton = componentUnderTest.Find("button");
+		oldButton.TextContent = "Test";
+
+		// Act
+		componentUnderTest.SetParametersAndRender(parameter);
+
+		// Assert
+		IElement newButton = componentUnderTest.Find("button");
+		newButton.TextContent.Should().NotBe("Test");
+	}
+
+	private static TheoryData<GameUpdateReportForTests> GetReportVariations() =>
+		new()
+		{
+			// with no cells
+			new GameUpdateReportForTests(GameStatus.InProgress, Array.Empty<UncoveredCellForTests>()),
+			new GameUpdateReportForTests(GameStatus.IsLost, Array.Empty<UncoveredCellForTests>()),
+			new GameUpdateReportForTests(GameStatus.IsWon, Array.Empty<UncoveredCellForTests>()),
+
+			// with one valid mine cell 
+			new GameUpdateReportForTests(GameStatus.InProgress, new[]
+			{
+				new UncoveredCellForTests(new (0,0), true, 0)
+			}),
+			new GameUpdateReportForTests(GameStatus.IsLost, new[]
+			{
+				new UncoveredCellForTests(new (0,0), true, 0)
+			}),
+			new GameUpdateReportForTests(GameStatus.IsWon, new[]
+			{
+				new UncoveredCellForTests(new (0,0), true, 0)
+			}),
+
+			// with one mine cell outside of field
+			new GameUpdateReportForTests(GameStatus.InProgress, new[]
+			{
+				new UncoveredCellForTests(new (500,400), true, 0)
+			}),
+			new GameUpdateReportForTests(GameStatus.IsLost, new[]
+			{
+				new UncoveredCellForTests(new (500,400), true, 0)
+			}),
+			new GameUpdateReportForTests(GameStatus.IsWon, new[]
+			{
+				new UncoveredCellForTests(new (500,400), true, 0)
+			}),
+
+			// with one valid none mine cell
+			new GameUpdateReportForTests(GameStatus.InProgress, new[]
+			{
+				new UncoveredCellForTests(new (0,0), false, 1)
+			}),
+			new GameUpdateReportForTests(GameStatus.IsLost, new[]
+			{
+				new UncoveredCellForTests(new (0,0), false, 1)
+			}),
+			new GameUpdateReportForTests(GameStatus.IsWon, new[]
+			{
+				new UncoveredCellForTests(new (0,0), false, 1)
+			}),
+
+			// with one non mine cell outside of field
+			new GameUpdateReportForTests(GameStatus.InProgress, new[]
+			{
+				new UncoveredCellForTests(new (500,400), false, 3)
+			}),
+			new GameUpdateReportForTests(GameStatus.IsLost, new[]
+			{
+				new UncoveredCellForTests(new (500,400), false, 3)
+			}),
+			new GameUpdateReportForTests(GameStatus.IsWon, new[]
+			{
+				new UncoveredCellForTests(new (500,400), false, 3)
+			})
+		};
+
+	private class GameUpdaterForTests : GameUpdater
+	{
+		protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> uncoverableCells, Location clickedLocation) => Task.CompletedTask;
+	}
+
+	private class GameUpdateReportForTests : IGameUpdateReport
+	{
+		public GameUpdateReportForTests(GameStatus status, IReadOnlyCollection<IUncoveredCell> cells)
+		{
+			Status = status;
+			Cells = cells;
+		}
+
+		public GameStatus Status { get; }
+
+		public IReadOnlyCollection<IUncoveredCell> Cells { get; }
+	}
+
+	private class UncoveredCellForTests : IUncoveredCell
+	{
+		public UncoveredCellForTests(Location location, bool isMine, byte adjacentMineCount)
+		{
+			Location = location;
+			IsMine = isMine;
+			AdjacentMineCount = adjacentMineCount;
+		}
+
+		public Location Location { get; }
+
+		public bool IsMine { get; }
+
+		public byte AdjacentMineCount { get; }
+	}
+}

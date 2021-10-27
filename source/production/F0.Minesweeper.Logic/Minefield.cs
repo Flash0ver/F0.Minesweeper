@@ -48,7 +48,7 @@ namespace F0.Minesweeper.Logic
 
 			if (gameStatus != GameStatus.InProgress)
 			{
-				return new GameUpdateReport(gameStatus, minefield);
+				return new GameUpdateReport(gameStatus, minefield.ToArray());
 			}
 
 			return new GameUpdateReport(gameStatus, allUncoveredCells);

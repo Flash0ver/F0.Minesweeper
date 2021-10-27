@@ -2,88 +2,125 @@
 
 @code
 {
+	private readonly Mock<IEventAggregator> eventAggregatorMock;
+
+	public GameTests()
+	{
+		ComponentFactories.AddStub<Difficulty>();
+		ComponentFactories.Add<Minefield, MinefieldForTests>();
+		ComponentFactories.AddStub<GameEndStatus>();
+
+		eventAggregatorMock = new();
+		eventAggregatorMock
+			.Setup(ea => ea.GetEvent<DifficultyLevelChangedEvent>())
+			.Returns(new DifficultyLevelChangedEvent());
+
+		Services.AddSingleton(eventAggregatorMock.Object);
+	}
+
 	[Fact]
-	public void Game_Component_Verify_Initial_Markup()
+	public void Rendering_GameWithDefaultOptionsShown()
 	{
 		// Arrange
-		MinefieldOptions testMinefieldOptions = MinefieldOptions.Medium;
-		Setup(testMinefieldOptions);
+		MinefieldOptions expectedOptions = MinefieldOptions.Medium;
 
 		// Act
-		var fragment = Render(@<Game />);
+		var fragment = Render(
+@<Game />
+		);
 
 		// Assert
 		fragment.MarkupMatches(
 @<div id="f0-game">
 	<Difficulty />
-	<Minefield Options="testMinefieldOptions" />
+	<Minefield />
 	<GameEndStatus />
 </div>
 		);
+
+		var minefield = fragment.FindComponent<MinefieldForTests>();
+
+		minefield.Instance.Options.Should().BeEquivalentTo(expectedOptions);
 	}
 
-	[Fact]
-	public void Game_Component_Verify_Markup_After_Difficulty_Change()
+	[Theory]
+	[MemberData(nameof(GetDifficultyLevels))]
+	public void OnDifficultyChanged_OptionsAreSetAndPassedToMinefield(DifficultyLevel newDifficulty, MinefieldOptions expectedOptions)
 	{
 		// Arrange
-		MinefieldOptions testMinefieldOptions = MinefieldOptions.Medium;
-		MinefieldOptions? transitionTo = MinefieldOptions.Easy;
-		Setup(testMinefieldOptions, transitionTo);
-
-		// Act
 		var component = RenderComponent<Game>();
-		var select = component.Find("select");
-		select.Change(nameof(DifficultyLevel.Easy));
+
+		// Act
+		component.InvokeAsync(
+			() => eventAggregatorMock.Object.GetEvent<DifficultyLevelChangedEvent>().Publish(newDifficulty));
 
 		// Assert
-		var minefield = component.Find("#f0-minefield");
-		minefield.MarkupMatches(@<Minefield Options="transitionTo" />);
+		var minefield = component.FindComponent<MinefieldForTests>();
+
+		minefield.Instance.Options.Should().BeEquivalentTo(expectedOptions);
 	}
 
 	[Fact]
-	public void Game_Component_Verify_Final_Markup()
+	public void ComponentLifeCycle_EventAggregatorSubscribesAndUnsubscribesCorrectly()
 	{
-		// Arrange
-		MinefieldOptions testMinefieldOptions = MinefieldOptions.Medium;
-		Setup(testMinefieldOptions);
+		DifficultyLevelChangedForTests changedEvent;
 
-		// Act
-		var fragment = Render(@<Game />);
-		FinishGame();
+		// the test needs its own context since dispose on the game fragment is only called
+		// when the context itself gets disposed. 
+		using(TestContext context = new())
+		{
+			// Arrange
+			context.ComponentFactories.AddStub<Difficulty>();
+			context.ComponentFactories.Add<Minefield, MinefieldForTests>();
+			context.ComponentFactories.AddStub<GameEndStatus>();
 
+			changedEvent = new();
+
+			Mock<IEventAggregator> eventAggregatorMock = new();
+			eventAggregatorMock
+				.Setup(ea => ea.GetEvent<DifficultyLevelChangedEvent>())
+				.Returns(changedEvent);
+
+			context.Services.AddSingleton(eventAggregatorMock.Object);
+
+			// Act
+			using(IRenderedFragment gameFragment =
+				context.Render(
+@<Game />
+				)
+			) {}
+		}
+		
 		// Assert
-		var status = fragment.Find("#f0-gameendstatus");
-		status.Children.Single().ClassName.Should().Be("f0-end-text-visible");
+		changedEvent.WasSubscribed.Should().BeTrue();
+		changedEvent.HasUnsubscribed.Should().BeTrue();
 	}
 
-	private void Setup(MinefieldOptions testMinefieldOptions, MinefieldOptions? transitionTo = null)
+	private static TheoryData<DifficultyLevel, MinefieldOptions> GetDifficultyLevels()
 	{
-		Mock<IMinefieldFactory> minefieldFactory = new(MockBehavior.Strict);
-		Mock<IMinefield> minefield = new(MockBehavior.Strict);
-		Mock<ICellStatusManager> statusManager = new(MockBehavior.Strict);
-		Mock<IGameUpdateFactory> gameUpdateFactory = new(MockBehavior.Strict);
-		EventAggregator eventAggregator = new();
-
-		minefieldFactory.Setup(factory => factory.Create(It.Is<MinefieldOptions>(options => options == testMinefieldOptions))).Returns(minefield.Object);
-
-		if (transitionTo is not null)
-		{
-			minefieldFactory.Setup(factory => factory.Create(It.Is<MinefieldOptions>(options => options == transitionTo))).Returns(minefield.Object);
-		}
-
-		Services.AddSingleton(minefieldFactory.Object);
-		Services.AddSingleton(statusManager.Object);
-		Services.AddSingleton(gameUpdateFactory.Object);
-		Services.AddSingleton<IEventAggregator>(_ => eventAggregator);
+		TheoryData<DifficultyLevel, MinefieldOptions> theory = new();
+		theory.Add(DifficultyLevel.Easy, MinefieldOptions.Easy);
+		theory.Add(DifficultyLevel.Medium, MinefieldOptions.Medium);
+		theory.Add(DifficultyLevel.Hard, MinefieldOptions.Hard);
+		return theory;
 	}
 
-	private void FinishGame()
+	private class DifficultyLevelChangedForTests : DifficultyLevelChangedEvent
 	{
-		_ = Renderer.Dispatcher.InvokeAsync(EndGame);
+		public bool WasSubscribed { get; private set; }
+		public bool HasUnsubscribed { get; private set; }
 
-		void EndGame()
+		public override void Unsubscribe(Action<DifficultyLevel> subscriber)
 		{
-			Services.GetRequiredService<IEventAggregator>().GetEvent<GameFinishedEvent>().Publish("Game Over");
+			WasSubscribed = Contains(subscriber);
+			base.Unsubscribe(subscriber);
+			HasUnsubscribed = true;
 		}
+	}
+
+	private class MinefieldForTests : ComponentBase
+	{
+		[Parameter]
+		public MinefieldOptions? Options { get; set; }
 	}
 }

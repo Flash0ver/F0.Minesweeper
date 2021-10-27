@@ -28,7 +28,7 @@ namespace F0.Minesweeper.Logic.Tests
 
 		private static TheoryData<MinefieldOptions> TestData()
 		{
-			var resultData = new TheoryData<MinefieldOptions>();
+			TheoryData<MinefieldOptions> resultData = new();
 			uint[] allWidthHeights = { 5, 7, 10 };
 			uint[] allCountMines = { 15, 17, 20 };
 			foreach (uint widthHeight in allWidthHeights)
