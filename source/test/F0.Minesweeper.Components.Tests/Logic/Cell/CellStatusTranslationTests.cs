@@ -15,7 +15,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			var instanceUnderTest = new CellStatusTranslation(expectedCssClass);
 
 			// Assert
-			instanceUnderTest.CssClass.Should().Be(expectedCssClass);
+			instanceUnderTest.GetCssClass().Should().Be(expectedCssClass);
 		}
 
 		[Fact]
@@ -26,7 +26,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			var instanceUnderTest = new CellStatusTranslation('1', expectedCssClass);
 
 			// Assert
-			instanceUnderTest.CssClass.Should().Be(expectedCssClass);
+			instanceUnderTest.GetCssClass().Should().Be(expectedCssClass);
 		}
 
 		[Fact]

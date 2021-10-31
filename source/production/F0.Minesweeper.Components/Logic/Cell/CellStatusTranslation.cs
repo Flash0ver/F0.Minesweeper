@@ -1,22 +1,22 @@
 using System;
+using F0.Minesweeper.Components.Abstractions.Enums;
 
 namespace F0.Minesweeper.Components.Logic.Cell
 {
 	internal class CellStatusTranslation
 	{
 		private readonly char? activeTranslation;
+		private string cssClass;
 
 		internal CellStatusTranslation(string cssClass)
 		{
-			CssClass = cssClass;
+			this.cssClass = cssClass;
 		}
 
 		internal CellStatusTranslation(char translation, string cssClass) : this(cssClass)
 		{
 			activeTranslation = translation;
 		}
-
-		internal string CssClass { get; }
 
 		internal char GetDisplayValue(byte? adjacentMineCount)
 		{
@@ -40,6 +40,11 @@ namespace F0.Minesweeper.Components.Logic.Cell
 			}
 
 			throw new InvalidOperationException($"Can not attain the display value with {nameof(activeTranslation)} value '{activeTranslation}' and {nameof(adjacentMineCount)} value '{adjacentMineCount}'");
+		}
+
+		internal string GetCssClass(byte? adjacentMineCount)
+		{
+			return string.Format(cssClass, adjacentMineCount);
 		}
 	}
 }
