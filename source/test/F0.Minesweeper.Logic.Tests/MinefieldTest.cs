@@ -126,7 +126,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[Fact]
 		public void Uncover_ForTheFirstTime_PlacesMinesOnlyOnce()
 		{
-			var minelayerMock = new Mock<IMinelayer>(MockBehavior.Strict);
+			Mock<IMinelayer> minelayerMock = new(MockBehavior.Strict);
 			minelayerMock
 				.Setup(ml => ml.PlaceMines(It.IsAny<IEnumerable<Location>>(), It.IsAny<uint>(), It.IsAny<Location>()))
 				.Returns(new List<Location> { new(0, 0), new(1, 0) });

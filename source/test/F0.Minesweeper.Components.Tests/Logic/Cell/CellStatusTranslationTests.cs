@@ -13,7 +13,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		{
 			// Arrange & Act
 			const string expectedCssClass = "my-class";
-			var instanceUnderTest = new CellStatusTranslation(expectedCssClass);
+			CellStatusTranslation instanceUnderTest = new(expectedCssClass);
 
 			// Assert
 			instanceUnderTest.CssClass.Should().Be(expectedCssClass);
@@ -24,7 +24,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		{
 			// Arrange & Act
 			const string expectedCssClass = "my-class";
-			var instanceUnderTest = new CellStatusTranslation('1', expectedCssClass);
+			CellStatusTranslation instanceUnderTest = new('1', expectedCssClass);
 
 			// Assert
 			instanceUnderTest.CssClass.Should().Be(expectedCssClass);
@@ -34,7 +34,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		public void GetDisplayValue_NoActiveTranslationSet_NoAdjacentMines_Throws()
 		{
 			// Arrange
-			var instanceUnderTest = new CellStatusTranslation("css-class");
+			CellStatusTranslation instanceUnderTest = new("css-class");
 
 			// Act && Assert
 			Action actionToTest = () => instanceUnderTest.GetDisplayValue(null);
@@ -48,7 +48,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		{
 			// Arrange
 			const char expectedTranslation = 't';
-			var instanceUnderTest = new CellStatusTranslation(expectedTranslation, "css-class");
+			CellStatusTranslation instanceUnderTest = new(expectedTranslation, "css-class");
 
 			// Act
 			char displayValue = instanceUnderTest.GetDisplayValue((byte?)adjacentMineCount);
@@ -70,7 +70,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		public void GetDisplayValue_NoActiveTranslationSet_HasAdjacentMines_ReturnsCharRepresentationOfAdjacentMines(int adjacentMineCount)
 		{
 			// Arrange
-			var instanceUnderTest = new CellStatusTranslation("css-class");
+			CellStatusTranslation instanceUnderTest = new("css-class");
 
 			// Act
 			char displayValue = instanceUnderTest.GetDisplayValue((byte?)adjacentMineCount);

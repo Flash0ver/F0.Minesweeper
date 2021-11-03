@@ -28,7 +28,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 			instanceUnderTest.WithReport(gameReport.Object);
 
 			// Assert
-			Action actionUnderAssertion = () => { var cells = instanceUnderTest.ExposedReport?.Cells; };
+			Action actionUnderAssertion = () => { _ = instanceUnderTest.ExposedReport?.Cells; };
 			actionUnderAssertion.Should().Throw<NotImplementedException>();
 		}
 
