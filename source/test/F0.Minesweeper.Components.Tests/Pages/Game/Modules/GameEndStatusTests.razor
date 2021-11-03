@@ -30,8 +30,7 @@
 	{
 		// Arrange
 		string expectedText = "Random Text" + Guid.NewGuid();
-		RenderFragment expectedMarkup = 
-	@<div id='f0-gameendstatus'><p class='f0-end-text-visible'>@expectedText</p></div>;
+		RenderFragment expectedMarkup = @<div id='f0-gameendstatus'><p class='f0-end-text-visible'>@expectedText</p></div>;
 
 		SetupEventAggregator();
 
@@ -48,8 +47,7 @@
 	public void Rendering_GameRestartMessageReceived_GameEndTextIsHidden(DifficultyLevel difficultyLevel)
 	{
 		// Arrange
-		RenderFragment expectedMarkup = @<div id='f0-gameendstatus'><p class='f0-end-text-invisible' /></div>
-	;
+		RenderFragment expectedMarkup = @<div id='f0-gameendstatus'><p class='f0-end-text-invisible' /></div>;
 
 		SetupEventAggregator();
 
@@ -67,8 +65,7 @@
 	public void OnRestartGame_GameEndTextIsHidden()
 	{
 		// Arrange
-		RenderFragment expectedMarkup = @<div id='f0-gameendstatus'><p class='f0-end-text-invisible' /></div>
-	;
+		RenderFragment expectedMarkup = @<div id='f0-gameendstatus'><p class='f0-end-text-invisible' /></div>;
 
 		SetupEventAggregator();
 
