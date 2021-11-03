@@ -28,7 +28,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 			instanceUnderTest.WithReport(gameReport.Object);
 
 			// Assert
-			Action actionUnderAssertion = () => { var cells = instanceUnderTest.ExposedReport?.Cells; };
+			Action actionUnderAssertion = () => { _ = instanceUnderTest.ExposedReport?.Cells; };
 			actionUnderAssertion.Should().Throw<NotImplementedException>();
 		}
 
@@ -101,12 +101,12 @@ namespace F0.Minesweeper.Components.Logic.Game
 
 		private class GameUpdaterForTests : GameUpdater
 		{
-			internal IGameUpdateReport? ExposedReport => report;
+			internal IGameUpdateReport? ExposedReport => Report;
 			internal IEnumerable<UncoverableCell>? UncoverableCells;
 
-			protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> cells, Location clickedLocation)
+			protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> uncoverableCells, Location clickedLocation)
 			{
-				UncoverableCells = cells;
+				UncoverableCells = uncoverableCells;
 				return Task.CompletedTask;
 			}
 		}
