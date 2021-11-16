@@ -1,14 +1,15 @@
 <Project>
 
 	<PropertyGroup>
-		<LangVersion>preview</LangVersion>
+		<LangVersion>10.0</LangVersion>
 		<Nullable>enable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<AnalysisLevel>5.0</AnalysisLevel>
-		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AnalysisLevel>6.0</AnalysisLevel>
+		<AnalysisMode>All</AnalysisMode>
 	</PropertyGroup>
 
 	<PropertyGroup>

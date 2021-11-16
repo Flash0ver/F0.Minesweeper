@@ -1,10 +1,12 @@
-<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true" AdditionalAssemblies="@GetAdditionalAssemblies()">
+<Router AppAssembly="@typeof(App).Assembly" PreferExactMatches="@true" AdditionalAssemblies="@GetAdditionalAssemblies()">
 	<Found Context="routeData">
 		<RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+		<FocusOnNavigate RouteData="@routeData" Selector="#f0-body" />
 	</Found>
 	<NotFound>
+		<PageTitle>Not found</PageTitle>
 		<LayoutView Layout="@typeof(MainLayout)">
-			<p>Sorry, there's nothing at this address.</p>
+			<p role="alert">Sorry, there's nothing at this address.</p>
 		</LayoutView>
 	</NotFound>
 </Router>
