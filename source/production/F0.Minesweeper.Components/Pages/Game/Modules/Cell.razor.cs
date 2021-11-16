@@ -12,6 +12,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 	public partial class Cell : ICell
 	{
 		[Parameter]
+		[EditorRequired]
 		public Location? Location { get; set; }
 
 		public Func<Location, Task>? UncoveredAsync { get; set; }
