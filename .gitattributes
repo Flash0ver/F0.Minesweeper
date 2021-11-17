@@ -17,6 +17,7 @@
 *.runsettings text
 *.sln text
 *.slnf text
+*.svg text
 *.targets text
 *.txt text
 *.vb text
