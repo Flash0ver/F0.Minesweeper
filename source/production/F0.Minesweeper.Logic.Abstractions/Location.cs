@@ -1,6 +1,6 @@
 namespace F0.Minesweeper.Logic.Abstractions
 {
-	public record Location
+	public record class Location
 	{
 		public uint X { get; init; }
 		public uint Y { get; init; }

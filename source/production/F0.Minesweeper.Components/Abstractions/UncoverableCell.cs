@@ -1,4 +1,4 @@
 namespace F0.Minesweeper.Components.Abstractions
 {
-	internal record UncoverableCell(ICell Cell, bool IsMine, byte AdjacentMineCount);
+	internal record class UncoverableCell(ICell Cell, bool IsMine, byte AdjacentMineCount);
 }

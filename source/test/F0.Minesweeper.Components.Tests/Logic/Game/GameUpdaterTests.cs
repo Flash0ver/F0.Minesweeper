@@ -111,6 +111,6 @@ namespace F0.Minesweeper.Components.Logic.Game
 			}
 		}
 
-		private record UncoveredCellForTests(Location Location, bool IsMine, byte AdjacentMineCount) : IUncoveredCell;
+		private record class UncoveredCellForTests(Location Location, bool IsMine, byte AdjacentMineCount) : IUncoveredCell;
 	}
 }
