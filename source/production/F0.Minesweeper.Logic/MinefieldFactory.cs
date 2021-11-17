@@ -14,7 +14,7 @@ namespace F0.Minesweeper.Logic
 
 		public IMinefield Create(MinefieldOptions options)
 		{
-			_ = options ?? throw new ArgumentNullException(nameof(options));
+			ArgumentNullException.ThrowIfNull(options);
 
 			ILocationShuffler locationShuffler;
 

@@ -23,7 +23,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 		{
 			if (activeTranslation is null && adjacentMineCount is null)
 			{
-				throw new ArgumentNullException(nameof(adjacentMineCount));
+				ArgumentNullException.ThrowIfNull(adjacentMineCount);
 			}
 
 			if (activeTranslation.HasValue)

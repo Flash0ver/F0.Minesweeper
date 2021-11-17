@@ -12,7 +12,8 @@ namespace F0.Minesweeper.Logic.Tests
 		{
 			MinefieldFactory minefieldFactoryUnderTest = new();
 			Func<IMinefield> create = () => minefieldFactoryUnderTest.Create(null!);
-			create.Should().ThrowExactly<ArgumentNullException>();
+			create.Should().ThrowExactly<ArgumentNullException>()
+				.And.ParamName.Should().Be("options");
 		}
 
 		[Theory]

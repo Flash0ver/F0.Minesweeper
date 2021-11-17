@@ -60,10 +60,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		protected override void OnParametersSet()
 		{
-			if (Location is null)
-			{
-				throw new ArgumentNullException(nameof(Location));
-			}
+			ArgumentNullException.ThrowIfNull(Location);
 		}
 
 		public void SetUncoveredStatus(CellInteractionType cellInteraction, bool isMine, byte adjacentMineCount)

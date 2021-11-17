@@ -9,7 +9,7 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 	{
 		IReadOnlyCollection<Location> ILocationShuffler.ShuffleAndTake(IEnumerable<Location> allLocations, int count)
 		{
-			_ = allLocations ?? throw new ArgumentNullException(nameof(allLocations));
+			ArgumentNullException.ThrowIfNull(allLocations);
 
 			Location[] shuffledLocations = allLocations
 				  .OrderBy(_ => Guid.NewGuid())

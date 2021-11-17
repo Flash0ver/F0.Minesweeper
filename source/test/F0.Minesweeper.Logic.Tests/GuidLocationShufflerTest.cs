@@ -9,6 +9,17 @@ namespace F0.Minesweeper.Logic.Tests
 {
 	public class GuidLocationShufflerTest
 	{
+		[Fact]
+		public void ThrowIfNull()
+		{
+			ILocationShuffler locationShufflerUnderTest = new GuidLocationShuffler();
+
+			Func<IReadOnlyCollection<Location>> act = () => locationShufflerUnderTest.ShuffleAndTake(null!, 0);
+
+			act.Should().ThrowExactly<ArgumentNullException>()
+				.And.ParamName.Should().Be("allLocations");
+		}
+
 		[Theory]
 		[InlineData(1)]
 		[InlineData(2)]
