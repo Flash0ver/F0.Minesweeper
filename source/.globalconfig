@@ -1,0 +1,17 @@
+# AnalyzerConfig
+is_global = true
+
+# CA1033: Interface methods should be callable by child types
+dotnet_diagnostic.CA1033.severity = silent
+
+# CA1063: Implement IDisposable Correctly
+dotnet_diagnostic.CA1063.severity = silent
+
+# CA1724: Type names should not match namespaces
+dotnet_diagnostic.CA1724.severity = silent
+
+# CA1816: Dispose methods should call SuppressFinalize
+dotnet_diagnostic.CA1816.severity = silent
+
+# CA2007: Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CA2007.severity = silent

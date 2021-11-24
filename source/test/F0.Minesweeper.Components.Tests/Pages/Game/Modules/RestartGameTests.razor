@@ -1,0 +1,43 @@
+@inherits TestContext;
+
+@code {
+	private readonly Mock<IEventAggregator> eventAggregatorMock;
+
+	public RestartGameTests()
+	{
+		eventAggregatorMock = new(MockBehavior.Strict);
+		Services.AddSingleton(eventAggregatorMock.Object);
+	}
+
+	[Fact]
+	public void Rendering_CorrectMarkupIsShown()
+	{
+		// Arrange
+		RenderFragment expectedMarkup = 
+@<div>
+	<button class="f0-button-restartgame">
+		Restart
+	</button>
+</div>
+	;
+
+		// Act
+		IRenderedComponent<RestartGame> componentUnderTest = RenderComponent<RestartGame>();
+
+		// Assert
+		componentUnderTest.MarkupMatches(expectedMarkup);
+	}
+
+	[Fact]
+	public void RestartGame_RestartGameEventIsPublished()
+	{
+		// Arrange
+		eventAggregatorMock
+			.Setup(agg => agg.GetEvent<RestartGameEvent>().Publish());
+
+		IRenderedComponent<RestartGame> componentUnderTest = RenderComponent<RestartGame>();
+
+		// Act && Assert by setup of mock
+		componentUnderTest.Find("button").Click();
+	}
+}
