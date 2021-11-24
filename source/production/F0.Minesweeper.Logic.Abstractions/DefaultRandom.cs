@@ -2,7 +2,7 @@ using System;
 
 namespace F0.Minesweeper.Logic.Abstractions
 {
-	public class DefaultRandom : IRandom
+	public sealed class DefaultRandom : IRandom
 	{
 		private readonly Random random;
 		public DefaultRandom() => random = new Random();

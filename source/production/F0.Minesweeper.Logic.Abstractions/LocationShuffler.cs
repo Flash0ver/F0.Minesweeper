@@ -2,8 +2,8 @@ namespace F0.Minesweeper.Logic.Abstractions
 {
 	public enum LocationShuffler
 	{
-		GuidLocationShuffler,
-		RandomOrderLocationShuffler,
-		FisherYatesShuffler
+		Guid,
+		RandomOrder,
+		FisherYates
 	}
 }

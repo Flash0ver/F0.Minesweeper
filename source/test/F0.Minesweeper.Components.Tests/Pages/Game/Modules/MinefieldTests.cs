@@ -59,7 +59,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 			// Arrange
 			string expectedMarkup = $"<div id='f0-minefield'><label diff:ignore /></div>";
 
-			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), new MinefieldOptions(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler));
+			ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), new MinefieldOptions(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.Guid));
 
 			// Act
 			IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
@@ -77,7 +77,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 		public void Rendering_SupportedSizeProvided_ShowsCorrectAmountOfCells(uint width, uint height)
 		{
 			// Arrange
-			MinefieldOptions options = new (width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new (width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.Guid);
 			int expectedCellAmount = (int)(width * height);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
@@ -97,7 +97,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 			// Arrange
 			const string expectedMarkup = "<div id='f0-minefield'><table><tr><td><div diff:ignore /></td></tr></table></div>";
 
-			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.Guid);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
 
@@ -114,7 +114,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 		public void OnCellUncoveredAsync_MinefieldWasNotCreated_Throws()
 		{
 			// Arrange
-			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.Guid);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns<IMinefield>(null);
 
@@ -132,7 +132,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 		public void OnCellUncoveredAsync_ReportVariations_DoesNotThrow(GameUpdateReportForTests report)
 		{
 			// Arrange
-			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new (1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.Guid);
 
 			minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
 			minefieldMock.Setup(field => field.Uncover(It.Is<Location>(s => s == new Location(0, 0)))).Returns(report);
@@ -150,7 +150,7 @@ namespace F0.Minesweeper.Components.Tests.Pages.Game.Modules
 		[Fact]
 		public void RepopulateMinefield_SecondRendering_OldCellsReplacedByNewCells()
 		{
-			MinefieldOptions options = new (1, 1, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			MinefieldOptions options = new (1, 1, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.Guid);
 			GameUpdateReportForTests report = new(GameStatus.IsWon, new[]
 			{
 				new UncoveredCellForTests(new (0,0),false,0)

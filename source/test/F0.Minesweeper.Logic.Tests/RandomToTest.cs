@@ -26,12 +26,17 @@ namespace F0.Minesweeper.Logic.Tests
 			}
 			else
 			{
+				if (count >= nextNumbers.Length)
+				{
+					throw new InvalidOperationException($"Tried to get more Next numbers than this instance is initialized with.");
+				}
+
 				nextToReturn = nextNumbers[count];
 			}
 
 			if (nextToReturn >= maxValue)
 			{
-				throw new InvalidOperationException("Next number is bigger then the maximum allowed");
+				throw new InvalidOperationException("Next number is bigger then the maximum allowed.");
 			}
 
 			count++;

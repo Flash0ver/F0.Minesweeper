@@ -36,7 +36,7 @@ namespace F0.Minesweeper.Logic.Tests.LocationShuffler
 		}
 
 		[Theory]
-		[MemberData(nameof(FisherYatesLocationShufflerTestData.TestData), MemberType = typeof(FisherYatesLocationShufflerTestData))]
+		[MemberData(nameof(TestData))]
 		public void ShuffleAndTake_WithPredefinedRandom_ShufflesSpecificWay((int[] randomNextValues, Location[] field, Location[] result) testDataTuple)
 		{
 			IRandom random = new RandomToTest(testDataTuple.randomNextValues);
@@ -69,12 +69,7 @@ namespace F0.Minesweeper.Logic.Tests.LocationShuffler
 			new(9, 0),
 		};
 
-		private class FisherYatesLocationShufflerTestData
-		{
-			public static TheoryData<(int[] randomNextValues, Location[] field, Location[] result)> TestData => GenerateTestData();
-		}
-
-		private static TheoryData<(int[] randomNextValues, Location[] field, Location[] result)> GenerateTestData()
+		private static TheoryData<(int[] randomNextValues, Location[] field, Location[] result)> TestData()
 		{
 			TheoryData<(int[] randomNextValues, Location[] field, Location[] result)> resultData = new();
 			resultData.Add((
