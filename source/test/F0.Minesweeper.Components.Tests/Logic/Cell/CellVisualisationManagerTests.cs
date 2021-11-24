@@ -33,11 +33,11 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			visualisation.Content.Should().Be(visualisationData.ExpectedContent);
 			visualisation.CssClass.Should().NotBeNull();
 		}
+	}
 
-		public class CellVisualisationManagerTestData
-		{
-			public static TheoryData<VisualisationData> TestData => GenerateTestData();
-		}
+	public static class CellVisualisationManagerTestData
+	{
+		public static TheoryData<VisualisationData> TestData => GenerateTestData();
 
 		private static TheoryData<VisualisationData> GenerateTestData()
 		{
@@ -60,7 +60,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			resultData.Add(new(CellStatusType.MineExploded, null, '☢'));
 			return resultData;
 		}
-
-		public record VisualisationData(CellStatusType CellStatusType, byte? AdjacentMineCount, char ExpectedContent);
 	}
+
+	public record VisualisationData(CellStatusType CellStatusType, byte? AdjacentMineCount, char ExpectedContent);
 }
