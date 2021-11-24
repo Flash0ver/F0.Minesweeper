@@ -31,7 +31,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		public Minefield()
 		{
-			Options = new MinefieldOptions(0, 0, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GloballyUniqueIdentifier);
+			Options = new MinefieldOptions(0, 0, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.FisherYates);
 			cells = new List<Cell>();
 		}
 
