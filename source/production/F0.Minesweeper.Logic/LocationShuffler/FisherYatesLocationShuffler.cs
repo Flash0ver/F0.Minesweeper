@@ -27,7 +27,7 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 			while (n > 1)
 			{
 				n--;
-				int k = randomNumberGenerator.Next(n + 1);
+				int k = randomNumberGenerator.NextNumber(n + 1);
 				(shuffledLocations[n], shuffledLocations[k]) = (shuffledLocations[k], shuffledLocations[n]);
 			}
 

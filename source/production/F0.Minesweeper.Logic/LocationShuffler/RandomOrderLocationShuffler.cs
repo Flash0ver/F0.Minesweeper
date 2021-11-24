@@ -17,7 +17,7 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 			_ = allLocations ?? throw new ArgumentNullException(nameof(allLocations));
 
 			Location[] shuffledLocations = allLocations
-				  .OrderBy(_ => randomNumberGenerator.Next())
+				  .OrderBy(_ => randomNumberGenerator.NextNumber())
 				  .Take(count)
 				  .ToArray();
 

@@ -15,9 +15,9 @@ namespace F0.Minesweeper.Logic.Tests
 			this.shouldRepeat = shouldRepeat;
 		}
 
-		public int Next() => Next(int.MaxValue);
+		public int NextNumber() => NextNumber(int.MaxValue);
 
-		public int Next(int maxValue)
+		public int NextNumber(int maxValue)
 		{
 			int nextToReturn;
 			if (shouldRepeat)

@@ -26,7 +26,7 @@ namespace F0.Minesweeper.Logic
 			{
 				locationShuffler = options.LocationShuffler switch
 				{
-					Abstractions.LocationShuffler.Guid => new GuidLocationShuffler(),
+					Abstractions.LocationShuffler.GloballyUniqueIdentifier => new GuidLocationShuffler(),
 					Abstractions.LocationShuffler.RandomOrder => new RandomOrderLocationShuffler(),
 					Abstractions.LocationShuffler.FisherYates => new FisherYatesLocationShuffler(),
 					_ => throw new InvalidEnumArgumentException(nameof(options.LocationShuffler), (int)options.LocationShuffler, typeof(Abstractions.LocationShuffler)),
