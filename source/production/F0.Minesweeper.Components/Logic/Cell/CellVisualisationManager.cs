@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 
@@ -13,7 +14,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 		{
 			(char? content, string cssClass) template = GetVisualisationTemplateOrDefault(cellStatus);
 
-			string cssClass = string.Format(template.cssClass, adjacentMineCount);
+			string cssClass = string.Format(CultureInfo.InvariantCulture, template.cssClass, adjacentMineCount);
 
 			if(template.content is null && adjacentMineCount is null)
 			{
@@ -30,7 +31,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 			return adjacentMineCount switch
 			{
 				0 => ' ',
-				_ => adjacentMineCount.ToString()[0]
+				_ => adjacentMineCount.ToString(CultureInfo.InvariantCulture)[0]
 			};
 		}
 
