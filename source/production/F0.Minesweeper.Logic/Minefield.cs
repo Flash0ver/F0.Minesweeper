@@ -16,7 +16,7 @@ namespace F0.Minesweeper.Logic
 
 		internal Minefield(uint width, uint height, uint mineCount, IMinelayer minelayer)
 		{
-			if (mineCount > int.MaxValue)
+			if (mineCount > Int32.MaxValue)
 			{
 				throw new ArgumentOutOfRangeException(nameof(mineCount), mineCount, "Minecount should not be greater than int.MaxValue.");
 			}
@@ -46,12 +46,12 @@ namespace F0.Minesweeper.Logic
 
 			GameStatus gameStatus = GetGameStatus();
 
-			if(gameStatus != GameStatus.InProgress)
+			if (gameStatus != GameStatus.InProgress)
 			{
 				return new GameUpdateReport(gameStatus, minefield.ToArray());
 			}
 
-			return new GameUpdateReport(gameStatus, allUncoveredCells.ToArray());
+			return new GameUpdateReport(gameStatus, allUncoveredCells);
 		}
 
 		private GameStatus GetGameStatus()
@@ -113,7 +113,7 @@ namespace F0.Minesweeper.Logic
 
 			IReadOnlyCollection<Location> mineLocations = minelayer.PlaceMines(allLocations, mineCount, clickedLocation);
 
-			foreach (var minefieldCell in minefield)
+			foreach (Cell minefieldCell in minefield)
 			{
 				if (mineLocations.Contains(minefieldCell.Location))
 				{
@@ -121,7 +121,7 @@ namespace F0.Minesweeper.Logic
 					continue;
 				}
 
-				var locationsArea = Utilities.GetLocationsAreaAroundLocation(allLocations, minefieldCell.Location, true);
+				IEnumerable<Location> locationsArea = Utilities.GetLocationsAreaAroundLocation(allLocations, minefieldCell.Location, true);
 
 				byte countAdjactentMines = (byte)mineLocations
 					.Intersect(locationsArea)

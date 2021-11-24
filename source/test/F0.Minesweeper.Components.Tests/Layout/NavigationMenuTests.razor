@@ -1,0 +1,19 @@
+@inherits TestContext
+
+@code
+{
+	[Fact]
+	public void Footer_WithoutVersionInfo()
+	{
+		// Arrange & Act 
+		IRenderedFragment fragmentUnderTest = Render(@<NavigationMenu />);
+
+		// Assert
+		fragmentUnderTest.MarkupMatches(
+@<div id="f0-navigationmenu">
+	<NavigationMenuItem href="game">Game</NavigationMenuItem>
+	<NavigationMenuItem href="help">Help</NavigationMenuItem>
+</div>
+		);
+	}
+}

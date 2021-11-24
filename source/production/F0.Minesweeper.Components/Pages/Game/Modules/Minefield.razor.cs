@@ -27,7 +27,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		private bool isValidSize;
 
-		private int cellVersion = 0;
+		private int cellVersion;
 
 		public Minefield()
 		{

@@ -1,0 +1,5 @@
+# AnalyzerConfig
+is_global = true
+
+# CA1008: Enums should have zero value
+dotnet_diagnostic.CA1008.severity = silent

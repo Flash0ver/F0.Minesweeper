@@ -1,3 +1,4 @@
+@using System.Diagnostics.CodeAnalysis
 @using System.Reflection
 @using System.Runtime.InteropServices
 @using Microsoft.AspNetCore.Components.Forms
@@ -6,14 +7,16 @@
 @using Microsoft.JSInterop
 @using Microsoft.Extensions.DependencyInjection
 @using AngleSharp.Dom
+@using AutoFixture.Xunit2;
 @using Bunit
 @using Bunit.TestDoubles
-@using Bunit.Xunit
 @using F0.Minesweeper.Components
 @using F0.Minesweeper.Components.Abstractions
 @using F0.Minesweeper.Components.Abstractions.Enums
 @using F0.Minesweeper.Components.Events
 @using F0.Minesweeper.Components.Layout
+@using F0.Minesweeper.Components.Logic.Cell
+@using F0.Minesweeper.Components.Logic.Game
 @using F0.Minesweeper.Components.Pages.Game
 @using F0.Minesweeper.Components.Pages.Game.Modules
 @using F0.Minesweeper.Components.Pages.Help

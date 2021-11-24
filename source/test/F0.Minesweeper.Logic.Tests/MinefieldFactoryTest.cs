@@ -7,30 +7,33 @@ namespace F0.Minesweeper.Logic.Tests
 {
 	public class MinefieldFactoryTest
 	{
+		[Fact]
+		public void Create_Null_Throws()
+		{
+			MinefieldFactory minefieldFactoryUnderTest = new();
+			Func<IMinefield> create = () => minefieldFactoryUnderTest.Create(null!);
+			create.Should().ThrowExactly<ArgumentNullException>();
+		}
+
 		[Theory]
-		[MemberData(nameof(MinefieldFactoryTestData.TestData), MemberType = typeof(MinefieldFactoryTestData))]
+		[MemberData(nameof(TestData))]
 		public void Create_WithAllPossibleEnumValues_GeneratesValidMinefields(MinefieldOptions options)
 		{
-			MinefieldFactory minefieldFactoryUnderTest = new MinefieldFactory();
+			MinefieldFactory minefieldFactoryUnderTest = new();
 			IMinefield? result = null;
 			Action create = () => result = minefieldFactoryUnderTest.Create(options);
 			create.Should().NotThrow();
 			result.Should().NotBeNull();
 		}
 
-		public class MinefieldFactoryTestData
+		private static TheoryData<MinefieldOptions> TestData()
 		{
-			public static TheoryData<MinefieldOptions> TestData => GenerateTestData();
-		}
-
-		private static TheoryData<MinefieldOptions> GenerateTestData()
-		{
-			TheoryData<MinefieldOptions> resultData = new TheoryData<MinefieldOptions>();
+			TheoryData<MinefieldOptions> resultData = new();
 			uint[] allWidthHeights = { 5, 7, 10 };
 			uint[] allCountMines = { 15, 17, 20 };
-			foreach (var widthHeight in allWidthHeights)
+			foreach (uint widthHeight in allWidthHeights)
 			{
-				foreach (var countMines in allCountMines)
+				foreach (uint countMines in allCountMines)
 				{
 					foreach (MinefieldFirstUncoverBehavior firstUncoverBehaviour in Enum.GetValues(typeof(MinefieldFirstUncoverBehavior)))
 					{
