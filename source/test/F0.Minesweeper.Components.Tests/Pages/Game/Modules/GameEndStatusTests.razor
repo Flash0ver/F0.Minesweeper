@@ -16,12 +16,7 @@
 		// Arrange
 		RenderFragment expectedMarkup = @<div id='f0-gameendstatus'><p class='f0-end-text-invisible' /></div>;
 
-		eventAggregatorMock
-			.Setup(agg => agg.GetEvent<DifficultyLevelChangedEvent>())
-			.Returns(new DifficultyLevelChangedEvent());
-		eventAggregatorMock
-			.Setup(agg => agg.GetEvent<GameFinishedEvent>())
-			.Returns(new GameFinishedEvent());
+		SetupEventAggregator();
 
 		// Act
 		IRenderedComponent<GameEndStatus> componentUnderTest = RenderComponent<GameEndStatus>();
@@ -37,12 +32,7 @@
 		string expectedText = "Random Text" + Guid.NewGuid();
 		RenderFragment expectedMarkup = @<div id='f0-gameendstatus'><p class='f0-end-text-visible'>@expectedText</p></div>;
 
-		eventAggregatorMock
-			.Setup(agg => agg.GetEvent<DifficultyLevelChangedEvent>())
-			.Returns(new DifficultyLevelChangedEvent());
-		eventAggregatorMock
-			.Setup(agg => agg.GetEvent<GameFinishedEvent>())
-			.Returns(new GameFinishedEvent());
+		SetupEventAggregator();
 
 		IRenderedComponent<GameEndStatus> componentUnderTest = RenderComponent<GameEndStatus>();
 
@@ -59,12 +49,7 @@
 		// Arrange
 		RenderFragment expectedMarkup = @<div id='f0-gameendstatus'><p class='f0-end-text-invisible' /></div>;
 
-		eventAggregatorMock
-			.Setup(agg => agg.GetEvent<DifficultyLevelChangedEvent>())
-			.Returns(new DifficultyLevelChangedEvent());
-		eventAggregatorMock
-			.Setup(agg => agg.GetEvent<GameFinishedEvent>())
-			.Returns(new GameFinishedEvent());
+		SetupEventAggregator();
 
 		IRenderedComponent<GameEndStatus> componentUnderTest = RenderComponent<GameEndStatus>();
 
@@ -74,5 +59,36 @@
 
 		// Assert
 		componentUnderTest.MarkupMatches(expectedMarkup);
+	}
+
+	[Fact]
+	public void OnRestartGame_GameEndTextIsHidden()
+	{
+		// Arrange
+		RenderFragment expectedMarkup = @<div id='f0-gameendstatus'><p class='f0-end-text-invisible' /></div>;
+
+		SetupEventAggregator();
+
+		IRenderedComponent<GameEndStatus> componentUnderTest = RenderComponent<GameEndStatus>();
+
+		// Act
+		componentUnderTest.InvokeAsync(() => eventAggregatorMock.Object.GetEvent<GameFinishedEvent>().Publish("Game Over"));
+		componentUnderTest.InvokeAsync(() => eventAggregatorMock.Object.GetEvent<RestartGameEvent>().Publish());
+
+		// Assert
+		componentUnderTest.MarkupMatches(expectedMarkup);
+	}
+
+	private void SetupEventAggregator()
+	{
+		eventAggregatorMock
+			.Setup(agg => agg.GetEvent<DifficultyLevelChangedEvent>())
+			.Returns(new DifficultyLevelChangedEvent());
+		eventAggregatorMock
+			.Setup(agg => agg.GetEvent<GameFinishedEvent>())
+			.Returns(new GameFinishedEvent());
+		eventAggregatorMock
+			.Setup(agg => agg.GetEvent<RestartGameEvent>())
+			.Returns(new RestartGameEvent());
 	}
 }
