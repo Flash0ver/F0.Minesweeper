@@ -15,9 +15,9 @@ namespace F0.Minesweeper.Logic.Tests
 			this.shouldRepeat = shouldRepeat;
 		}
 
-		public int NextNumber() => NextNumber(int.MaxValue);
+		public int Next() => Next(int.MaxValue);
 
-		public int NextNumber(int maxValue)
+		public int Next(int maxValue)
 		{
 			int nextToReturn;
 			if (shouldRepeat)
@@ -28,7 +28,7 @@ namespace F0.Minesweeper.Logic.Tests
 			{
 				if (count >= nextNumbers.Length)
 				{
-					throw new InvalidOperationException($"Tried to get more Next numbers than this instance is initialized with.");
+					throw new InvalidOperationException($"Tried to get more {nameof(Next)} numbers than this instance is initialized with.");
 				}
 
 				nextToReturn = nextNumbers[count];
@@ -36,7 +36,7 @@ namespace F0.Minesweeper.Logic.Tests
 
 			if (nextToReturn >= maxValue)
 			{
-				throw new InvalidOperationException("Next number is bigger then the maximum allowed.");
+				throw new InvalidOperationException($"{nameof(Next)} number is bigger then the maximum allowed.");
 			}
 
 			count++;
