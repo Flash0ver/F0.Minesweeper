@@ -1,10 +1,11 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="24" height="24" fill="#C6C6C6"/>
-<rect x="6" y="17" width="12" height="2" fill="black"/>
-<rect x="8" y="15" width="8" height="2" fill="black"/>
-<rect x="12" y="8" width="2" height="7" fill="black"/>
-<path d="M14 5V13L6 9L14 5Z" fill="#FF0000"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M24 0H0V24L3 21V3H21L24 0Z" fill="white"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M0 24L24 24L24 0L21 3L21 21L3 21L0 24Z" fill="#808080"/>
-<rect width="24" height="24" fill="#FF0000" fill-opacity="0.16"/>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="16" height="16" fill="#C0C0C0"/>
+<path d="M0 16H1V1H16V0H0V16Z" fill="#808080"/>
+<path d="M9 2H8V4H6V5H5V6H4V8H2V9H4V11H5V12H6V13H8V15H9V13H11V12H12V11H13V9H15V8H13V6H12V5H11V4H9V2Z" fill="black"/>
+<rect x="6" y="6" width="2" height="2" fill="white"/>
+<rect x="12" y="4" width="1" height="1" fill="black"/>
+<rect x="12" y="12" width="1" height="1" fill="black"/>
+<rect x="4" y="4" width="1" height="1" fill="black"/>
+<rect x="4" y="12" width="1" height="1" fill="black"/>
+<path d="M4 3H2V4H3V5H4V6H5V7H6V8H7V10H6V11H5V12H4V13H3V14H2V15H4V14H5V13H6V12H7V11H8V10H9V11H10V12H11V13H12V14H13V15H15V14H14V13H13V12H12V11H11V10H10V8H11V7H12V6H13V5H14V4H15V3H13V4H12V5H11V6H10V7H9V8H8V7H7V6H6V5H5V4H4V3Z" fill="#FF0000"/>
 </svg>
