@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Components.Events;
@@ -127,7 +125,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			}
 
 			internal Task OnUpdateAsyncExposed(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation)
-				=> this.OnUpdateAsync(uncoverableCells, clickedLocation);
+				=> OnUpdateAsync(uncoverableCells, clickedLocation);
 		}
 	}
 }

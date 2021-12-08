@@ -1,4 +1,3 @@
-using System;
 using F0.Minesweeper.Components.Logic.Game;
 using F0.Minesweeper.Logic.Abstractions;
 using FluentAssertions;

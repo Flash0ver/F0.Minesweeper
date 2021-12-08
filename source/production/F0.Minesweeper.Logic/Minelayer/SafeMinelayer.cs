@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.LocationShuffler;
 
@@ -17,6 +14,5 @@ namespace F0.Minesweeper.Logic.Minelayer
 			=> LocationShuffler.ShuffleAndTake(
 				possibleLocations.Where(l => l != clickedLocation),
 				(int)mineCount);
-			
 	}
 }

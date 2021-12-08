@@ -1,4 +1,3 @@
-using System;
 using F0.Minesweeper.Components.Abstractions.Enums;
 
 namespace F0.Minesweeper.Components.Logic.Cell
@@ -8,7 +7,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 		private readonly CellStatusType processState;
 		private readonly CellStatusTransitionCommand command;
 
-		public CellStatusTransition(CellStatusType processState, CellStatusTransitionCommand command) 
+		public CellStatusTransition(CellStatusType processState, CellStatusTransitionCommand command)
 		{
 			this.processState = processState;
 			this.command = command;

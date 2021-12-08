@@ -27,7 +27,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[Fact]
 		public void NewLocation_MaxIntParameterOnX()
 		{
-			uint testValue = int.MaxValue;
+			uint testValue = Int32.MaxValue;
 			Location locationUnderTest = new(testValue, 7);
 
 			locationUnderTest.X.Should().Be(testValue);
@@ -36,7 +36,7 @@ namespace F0.Minesweeper.Logic.Tests
 		[Fact]
 		public void NewLocation_MaxIntParameterOnY()
 		{
-			uint testValue = int.MaxValue;
+			uint testValue = Int32.MaxValue;
 			Location locationUnderTest = new(5, testValue);
 
 			locationUnderTest.Y.Should().Be(testValue);

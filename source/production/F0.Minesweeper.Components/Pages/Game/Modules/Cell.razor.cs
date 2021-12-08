@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Components.Logic.Cell;
@@ -106,7 +103,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		private void OnRightClick()
 		{
-			TryUpdateStatus(CellInteractionType.RightClick);
+			_ = TryUpdateStatus(CellInteractionType.RightClick);
 		}
 
 		private bool TryUpdateStatus(CellInteractionType inputCommand, bool? isMine = null, byte? adjacentMineCount = null)

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.LocationShuffler;
 

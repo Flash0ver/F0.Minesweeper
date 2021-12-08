@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 
@@ -58,12 +56,12 @@ namespace F0.Minesweeper.Components.Logic.Cell
 		{
 			var getNextResult = GetNext(command, isMine);
 
-			if(!getNextResult.CanMoveNext)
+			if (!getNextResult.CanMoveNext)
 			{
 				throw new InvalidOperationException($"No transition from cell status '{CurrentStatus}' registered for command '{command}'.");
 			}
 
-			if(getNextResult.NextStatus == CellStatusType.Undefined)
+			if (getNextResult.NextStatus == CellStatusType.Undefined)
 			{
 				throw new InvalidOperationException($"The transition from cell status '{CurrentStatus}' is not allowed for {nameof(isMine)} value '{isMine}'.");
 			}

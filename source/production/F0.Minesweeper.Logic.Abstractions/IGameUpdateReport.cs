@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace F0.Minesweeper.Logic.Abstractions
 {
 	public interface IGameUpdateReport

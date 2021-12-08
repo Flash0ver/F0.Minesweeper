@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.LocationShuffler;
 
@@ -21,7 +18,7 @@ namespace F0.Minesweeper.Logic.Minelayer
 		private static IEnumerable<Location> RemoveClickedLocationArea(IList<Location> locations, Location clickLocation)
 		{
 			IEnumerable<Location> locationsToDelete = Utilities.GetLocationsAreaAroundLocation(locations, clickLocation, false);
-			foreach (var locationToDelete in locationsToDelete)
+			foreach (Location locationToDelete in locationsToDelete)
 			{
 				locations.Remove(locationToDelete);
 			}

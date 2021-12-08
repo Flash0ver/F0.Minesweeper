@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.LocationShuffler;
