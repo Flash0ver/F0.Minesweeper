@@ -1,9 +1,6 @@
 using F0.Minesweeper.Components.Logic.Game;
 using F0.Minesweeper.Logic.Abstractions;
-using FluentAssertions;
-using Moq;
 using Prism.Events;
-using Xunit;
 
 namespace F0.Minesweeper.Components.Tests.Logic.Game
 {

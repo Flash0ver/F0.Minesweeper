@@ -1,7 +1,5 @@
 using System.Globalization;
 using F0.Minesweeper.Components.Logic.Cell;
-using FluentAssertions;
-using Xunit;
 
 namespace F0.Minesweeper.Components.Tests.Logic.Cell
 {

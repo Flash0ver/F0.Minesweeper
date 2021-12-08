@@ -17,4 +17,10 @@
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" PrivateAssets="all" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(ImplicitUsings)' == 'true' Or '$(ImplicitUsings)' == 'enable'">
+		<Using Include="FluentAssertions" />
+		<Using Include="Moq" />
+		<Using Include="Xunit" />
+	</ItemGroup>
+
 </Project>

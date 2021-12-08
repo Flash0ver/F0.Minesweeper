@@ -2,8 +2,6 @@ using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Components.Logic.Game;
 using F0.Minesweeper.Logic.Abstractions;
-using Moq;
-using Xunit;
 
 namespace F0.Minesweeper.Components.Tests.Logic.Game
 {

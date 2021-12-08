@@ -3,9 +3,7 @@ using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Components.Events;
 using F0.Minesweeper.Components.Logic.Game;
 using F0.Minesweeper.Logic.Abstractions;
-using Moq;
 using Prism.Events;
-using Xunit;
 
 namespace F0.Minesweeper.Components.Tests.Logic.Game
 {

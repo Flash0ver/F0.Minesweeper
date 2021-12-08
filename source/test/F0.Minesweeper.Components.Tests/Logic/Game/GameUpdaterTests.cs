@@ -1,10 +1,7 @@
 using Bunit;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Logic.Abstractions;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using Xunit;
 
 using GameCell = F0.Minesweeper.Components.Pages.Game.Modules.Cell;
 

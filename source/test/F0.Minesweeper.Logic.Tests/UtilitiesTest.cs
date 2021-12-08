@@ -1,6 +1,4 @@
 using F0.Minesweeper.Logic.Abstractions;
-using FluentAssertions;
-using Xunit;
 
 namespace F0.Minesweeper.Logic.Tests
 {
