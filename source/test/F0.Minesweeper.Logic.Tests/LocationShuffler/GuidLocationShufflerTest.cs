@@ -1,7 +1,7 @@
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.LocationShuffler;
 
-namespace F0.Minesweeper.Logic.Tests
+namespace F0.Minesweeper.Logic.Tests.LocationShuffler
 {
 	public class GuidLocationShufflerTest
 	{
