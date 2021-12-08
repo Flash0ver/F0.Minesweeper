@@ -19,7 +19,6 @@ $RepositoryRootPath = (Get-Item -Path $PSScriptRoot).Parent
 $NuGetConfigurationFile = Join-Path -Path $RepositoryRootPath -ChildPath 'nuget.config'
 $SolutionFile = Join-Path -Path $RepositoryRootPath -ChildPath 'source' -AdditionalChildPath 'F0.Minesweeper.sln'
 $TestResultsDirectory = Join-Path -Path $RepositoryRootPath -ChildPath 'source' -AdditionalChildPath 'test', 'TestResults'
-$TestProjectFile = Join-Path -Path $RepositoryRootPath -ChildPath 'source' -AdditionalChildPath 'test', 'F0.Minesweeper.Logic.Tests', 'F0.Minesweeper.Logic.Tests.csproj'
 $CoverageReportTargetDirectory = Join-Path -Path $TestResultsDirectory -ChildPath 'coveragereport'
 $CoverageReportTargetFile = Join-Path -Path $CoverageReportTargetDirectory -ChildPath 'index.html'
 $StrykerConfigurationFile = Join-Path -Path $RepositoryRootPath -ChildPath 'source' -AdditionalChildPath 'test', 'stryker-config.json'
@@ -39,8 +38,7 @@ dotnet test $SolutionFile --configuration $Configuration --no-build --nologo --r
 
 dotnet tool run reportgenerator "-reports:$RepositoryRootPath/**/coverage.cobertura.xml" "-targetdir:$CoverageReportTargetDirectory" -reporttypes:HtmlInline_AzurePipelines
 
-$TestProjectFile = $($TestProjectFile.Replace('\', '/'))
-dotnet tool run dotnet-stryker --solution-path $SolutionFile --test-projects "['$TestProjectFile']" --config-file-path $StrykerConfigurationFile --language-version preview
+dotnet tool run dotnet-stryker --solution $SolutionFile --config-file $StrykerConfigurationFile
 
 if ($OpenReports) {
     Invoke-Item $CoverageReportTargetFile
