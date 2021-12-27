@@ -1,19 +1,20 @@
 @inherits TestContext
 
 @code {
-	private readonly Mock<IMinefieldFactory> minefieldFactoryMock;
-	private readonly Mock<IMinefield> minefieldMock;
-	private readonly Mock<IGameUpdateFactory> gameUpdateFactoryMock;
+    private readonly Mock<IMinefieldFactory> minefieldFactoryMock;
+    private readonly Mock<IMinefield> minefieldMock;
+    private readonly Mock<IGameUpdateFactory> gameUpdateFactoryMock;
 
-	public MinefieldTests()
-	{
-		minefieldFactoryMock = new Mock<IMinefieldFactory>(MockBehavior.Strict);
-		minefieldMock = new Mock<IMinefield>(MockBehavior.Strict);
-		gameUpdateFactoryMock = new Mock<IGameUpdateFactory>(MockBehavior.Strict);
-		Services.AddSingleton(minefieldFactoryMock.Object);
-		Services.AddSingleton<ICellStatusManager>(new CellStatusManager());
-		Services.AddSingleton(gameUpdateFactoryMock.Object);
-	}
+    public MinefieldTests()
+    {
+        minefieldFactoryMock = new Mock<IMinefieldFactory>(MockBehavior.Strict);
+        minefieldMock = new Mock<IMinefield>(MockBehavior.Strict);
+        gameUpdateFactoryMock = new Mock<IGameUpdateFactory>(MockBehavior.Strict);
+        Services.AddSingleton(minefieldFactoryMock.Object);
+        Services.AddSingleton<ICellStatusManager>(new CellStatusManager());
+        Services.AddSingleton(gameUpdateFactoryMock.Object);
+        Services.AddSingleton<ICellVisualisationManager>(new CellVisualisationManager());
+    }
 
 	protected override void Dispose(bool disposing)
 	{
@@ -25,7 +26,8 @@
 	public void Rendering_NoSizeProvided_ShowsErrorLabel()
 	{
 		// Arrange
-		RenderFragment expectedMarkup = @<div id='f0-minefield'><label diff:ignore /></div>;
+		RenderFragment expectedMarkup = 
+    @<div id='f0-minefield'><label diff:ignore /></div>;
 
 		// Act
 		IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>();
