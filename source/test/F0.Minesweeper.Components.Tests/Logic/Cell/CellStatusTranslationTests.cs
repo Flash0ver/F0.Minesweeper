@@ -35,8 +35,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 
 			// Act && Assert
 			Action actionToTest = () => instanceUnderTest.GetDisplayValue(null);
-			actionToTest.Should().ThrowExactly<ArgumentNullException>()
-				.And.ParamName.Should().Be("adjacentMineCount");
+			actionToTest.Should().ThrowExactly<ArgumentNullException>();
 		}
 
 		[Theory]
