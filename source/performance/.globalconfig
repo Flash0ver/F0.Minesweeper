@@ -1,11 +1,8 @@
 # AnalyzerConfig
 is_global = true
 
-# CA1051: Do not declare visible instance fields
-dotnet_diagnostic.CA1051.severity = silent
-
-# CA1708: Identifiers should differ by more than case
-dotnet_diagnostic.CA1708.severity = silent
+# CA1034: Nested types should not be visible
+dotnet_diagnostic.CA1034.severity = silent
 
 # CA1812: Avoid uninstantiated internal classes
 dotnet_diagnostic.CA1812.severity = silent
