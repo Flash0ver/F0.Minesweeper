@@ -16,11 +16,11 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 
 			// Act && Assert
 			Func<CellVisualisation> methodUnderTest = () => instanceUnderTest.GetVisualisation(CellStatusType.Uncovered);
-			methodUnderTest.Should().Throw<ArgumentNullException>();
+			methodUnderTest.Should().ThrowExactly<ArgumentNullException>();
 		}
 
 		[Theory]
-		[MemberData(nameof(CellVisualisationManagerTestData.TestData), MemberType = typeof(CellVisualisationManagerTestData))]
+		[MemberData(nameof(TestData), MemberType = typeof(CellVisualisationManagerTests))]
 		public void GetVisualisation_CorrectParameters_ReturnsCorrectVisualisation(VisualisationData visualisationData)
 		{
 			// Arrange
@@ -33,10 +33,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 			visualisation.Content.Should().Be(visualisationData.ExpectedContent);
 			visualisation.CssClass.Should().NotBeNull();
 		}
-	}
 
-	public static class CellVisualisationManagerTestData
-	{
 		public static TheoryData<VisualisationData> TestData => GenerateTestData();
 
 		private static TheoryData<VisualisationData> GenerateTestData()

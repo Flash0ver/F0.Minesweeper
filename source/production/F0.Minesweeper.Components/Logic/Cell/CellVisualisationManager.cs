@@ -9,12 +9,14 @@ namespace F0.Minesweeper.Components.Logic.Cell
 	internal class CellVisualisationManager : ICellVisualisationManager
 	{
 		private static readonly Dictionary<CellStatusType, (char? content, string cssClass)> visualisationTemplates = InitializeTranslations();
+		private const byte zeroCharacter = 48;
+
 		public CellVisualisation GetVisualisation(CellStatusType cellStatus) => GetVisualisation(cellStatus, null);
 		public CellVisualisation GetVisualisation(CellStatusType cellStatus, byte? adjacentMineCount)
 		{
 			(char? content, string cssClass) template = GetVisualisationTemplateOrDefault(cellStatus);
 
-			string cssClass = string.Format(CultureInfo.InvariantCulture, template.cssClass, adjacentMineCount);
+			string cssClass = String.Format(CultureInfo.InvariantCulture, template.cssClass, adjacentMineCount);
 
 			if(template.content is null && adjacentMineCount is null)
 			{
@@ -31,7 +33,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 			return adjacentMineCount switch
 			{
 				0 => ' ',
-				_ => adjacentMineCount.ToString(CultureInfo.InvariantCulture)[0]
+				_ => Convert.ToChar(zeroCharacter + adjacentMineCount)
 			};
 		}
 

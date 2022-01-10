@@ -54,9 +54,8 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 		public Cell()
 		{
 			statusManager = DefaultCellStatusManager.Instance;
-			DefaultCellVisualisation visualisation = new();
-			statusText = visualisation.Content;
-			cssClass = visualisation.CssClass;
+			statusText = CellVisualisation.Default.Content;
+			cssClass = CellVisualisation.Default.CssClass;
 		}
 
 		protected override void OnParametersSet()
@@ -111,7 +110,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 			CellStatusType newStatus = statusManager.MoveNext(inputCommand, isMine);
 
-			Debug.Assert(visualisationManager is not null, $"The '{nameof(visualisationManager)}' is injected on Cell generation.");
+			Debug.Assert(visualisationManager is not null, $"The '{nameof(visualisationManager)}' is injected on '{nameof(Cell)}' generation.");
 			CellVisualisation visualisation = visualisationManager.GetVisualisation(newStatus, adjacentMineCount);
 			StatusText = visualisation.Content;
 			CssClass = visualisation.CssClass;
