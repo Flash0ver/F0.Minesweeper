@@ -1,8 +1,5 @@
-using System.Collections.Generic;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.Minelayer;
-using FluentAssertions;
-using Xunit;
 
 namespace F0.Minesweeper.Logic.Tests.Minelayer
 {

@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Bunit;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Logic.Abstractions;
-using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using Xunit;
 
 using GameCell = F0.Minesweeper.Components.Pages.Game.Modules.Cell;
 
@@ -111,6 +104,6 @@ namespace F0.Minesweeper.Components.Logic.Game
 			}
 		}
 
-		private record UncoveredCellForTests(Location Location, bool IsMine, byte AdjacentMineCount) : IUncoveredCell;
+		private record class UncoveredCellForTests(Location Location, bool IsMine, byte AdjacentMineCount) : IUncoveredCell;
 	}
 }

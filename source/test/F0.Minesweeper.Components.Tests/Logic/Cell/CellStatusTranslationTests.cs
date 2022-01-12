@@ -1,8 +1,5 @@
-using System;
 using System.Globalization;
 using F0.Minesweeper.Components.Logic.Cell;
-using FluentAssertions;
-using Xunit;
 
 namespace F0.Minesweeper.Components.Tests.Logic.Cell
 {
@@ -38,7 +35,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 
 			// Act && Assert
 			Action actionToTest = () => instanceUnderTest.GetDisplayValue(null);
-			actionToTest.Should().Throw<ArgumentNullException>();
+			actionToTest.Should().ThrowExactly<ArgumentNullException>();
 		}
 
 		[Theory]

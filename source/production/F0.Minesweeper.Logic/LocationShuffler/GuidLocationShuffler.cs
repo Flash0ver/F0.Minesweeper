@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using F0.Minesweeper.Logic.Abstractions;
 
 namespace F0.Minesweeper.Logic.LocationShuffler
@@ -9,7 +6,7 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 	{
 		IReadOnlyCollection<Location> ILocationShuffler.ShuffleAndTake(IEnumerable<Location> allLocations, int count)
 		{
-			_ = allLocations ?? throw new ArgumentNullException(nameof(allLocations));
+			ArgumentNullException.ThrowIfNull(allLocations);
 
 			Location[] shuffledLocations = allLocations
 				  .OrderBy(_ => Guid.NewGuid())

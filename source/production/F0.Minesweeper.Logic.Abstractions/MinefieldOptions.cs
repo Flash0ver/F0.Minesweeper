@@ -1,6 +1,6 @@
 namespace F0.Minesweeper.Logic.Abstractions
 {
-	public sealed record MinefieldOptions(uint Width, uint Height, uint MineCount, MinefieldFirstUncoverBehavior GenerationOption, LocationShuffler LocationShuffler)
+	public sealed record class MinefieldOptions(uint Width, uint Height, uint MineCount, MinefieldFirstUncoverBehavior GenerationOption, LocationShuffler LocationShuffler)
 	{
 		public static MinefieldOptions Easy
 			=> new(10, 8, 10, MinefieldFirstUncoverBehavior.WithoutAdjacentMines, LocationShuffler.FisherYates);

@@ -1,11 +1,7 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Components.Logic.Game;
 using F0.Minesweeper.Logic.Abstractions;
-using Moq;
-using Xunit;
 
 namespace F0.Minesweeper.Components.Tests.Logic.Game
 {
@@ -35,7 +31,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 				.Setup(cell => cell.SetUncoveredStatus(CellInteractionType.LeftClick, expectedIsMine, expectedAdjacentMineCount));
 
 			// Act && Assert
-			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Minesweeper.Logic.Abstractions.Location(expectedX, expectedY));
+			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Location(expectedX, expectedY));
 		}
 
 		[Fact]
@@ -60,7 +56,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 				.Setup(cell => cell.SetUncoveredStatus(CellInteractionType.Automatic, expectedIsMine, expectedAdjacentMineCount));
 
 			// Act && Assert
-			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Minesweeper.Logic.Abstractions.Location(2, 2));
+			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Location(2, 2));
 		}
 
 		[Fact]
@@ -92,7 +88,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 				.Setup(cell => cell.SetUncoveredStatus(CellInteractionType.Automatic, false, 1));
 
 			// Act && Assert
-			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Minesweeper.Logic.Abstractions.Location(1, 1));
+			await instanceUnderTest.OnUpdateAsyncExposed(uncoverableCells, new Location(1, 1));
 		}
 
 
@@ -102,8 +98,8 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			{
 			}
 
-			internal Task OnUpdateAsyncExposed(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation)
-				=> this.OnUpdateAsync(uncoverableCells, clickedLocation);
+			internal Task OnUpdateAsyncExposed(IEnumerable<UncoverableCell> uncoverableCells, Location clickedLocation)
+				=> OnUpdateAsync(uncoverableCells, clickedLocation);
 		}
 	}
 }

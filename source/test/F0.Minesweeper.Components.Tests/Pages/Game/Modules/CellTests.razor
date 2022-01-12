@@ -20,7 +20,7 @@
 	public void Rendering_NoLocationProvided_Throws()
 	{
 		Action renderAction = () => RenderComponent<Cell>();
-		renderAction.Should().Throw<ArgumentNullException>();
+		renderAction.Should().ThrowExactly<ArgumentNullException>();
 	}
 
 	[Theory]
@@ -200,7 +200,7 @@
 	{
 		// Arrange
 		RenderFragment expectedMarkup = @<div><button class="@expectedCssClass">@expectedStatusChar</button></div>;
-			
+
 		cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(cellInteraction, isMine)).Returns(true);
 		cellStatusManagerMock.Setup((manager) => manager.MoveNext(cellInteraction, isMine)).Returns(newStatus);
 

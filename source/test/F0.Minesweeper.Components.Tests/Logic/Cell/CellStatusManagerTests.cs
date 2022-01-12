@@ -1,9 +1,6 @@
-using System;
 using System.Reflection;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Components.Logic.Cell;
-using FluentAssertions;
-using Xunit;
 
 namespace F0.Minesweeper.Components.Tests.Logic.Cell
 {

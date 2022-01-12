@@ -1,12 +1,17 @@
 {
 	"stryker-config": {
+		"test-projects": [
+			"../source/test/F0.Minesweeper.Logic.Tests/F0.Minesweeper.Logic.Tests.csproj"
+		],
 		"reporters": [
 			"html",
 			"cleartext"
 		],
-		"threshold-high": 80,
-		"threshold-low": 60,
-		"threshold-break": 0,
+		"thresholds": {
+			"high": 80,
+			"low": 60,
+			"break": 0
+		},
 		"ignore-methods": [
 			"Assert",
 			"ConfigureAwait"

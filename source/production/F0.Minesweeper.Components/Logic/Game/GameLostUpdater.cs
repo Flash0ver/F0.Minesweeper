@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Components.Events;
@@ -20,7 +18,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 		{
 			foreach (UncoverableCell uncoverableCell in uncoverableCells)
 			{
-				var interaction = CellInteractionType.GameLost;
+				CellInteractionType interaction = CellInteractionType.GameLost;
 
 				if (uncoverableCell.Cell.Location == clickedLocation)
 				{

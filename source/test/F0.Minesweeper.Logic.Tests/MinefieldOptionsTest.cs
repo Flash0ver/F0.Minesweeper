@@ -1,6 +1,4 @@
 using F0.Minesweeper.Logic.Abstractions;
-using FluentAssertions;
-using Xunit;
 
 namespace F0.Minesweeper.Logic.Tests
 {
@@ -32,11 +30,13 @@ namespace F0.Minesweeper.Logic.Tests
 		{
 			MinefieldOptions.Easy.GenerationOption.Should().Be(MinefieldFirstUncoverBehavior.WithoutAdjacentMines);
 		}
+
 		[Fact]
 		public void MediumDifficultyLevel_Should_HaveTheCorrectMinefieldFirstUncoverBehavior()
 		{
 			MinefieldOptions.Medium.GenerationOption.Should().Be(MinefieldFirstUncoverBehavior.CannotYieldMine);
 		}
+
 		[Fact]
 		public void HardDifficultyLevel_Should_HaveTheCorrectMinefieldFirstUncoverBehavior()
 		{
