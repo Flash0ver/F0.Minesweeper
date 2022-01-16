@@ -6,15 +6,15 @@ using F0.Minesweeper.Components.Abstractions.Enums;
 
 namespace F0.Minesweeper.Components.Logic.Cell
 {
-	internal class CellVisualisationManager : ICellVisualisationManager
+	internal class CellVisualizationManager : ICellVisualizationManager
 	{
-		private static readonly Dictionary<CellStatusType, (char? content, string cssClass)> visualisationTemplates = InitializeTranslations();
+		private static readonly Dictionary<CellStatusType, (char? content, string cssClass)> visualizationTemplates = InitializeTranslations();
 		private const byte zeroCharacter = 48;
 
-		public CellVisualisation GetVisualisation(CellStatusType cellStatus) => GetVisualisation(cellStatus, null);
-		public CellVisualisation GetVisualisation(CellStatusType cellStatus, byte? adjacentMineCount)
+		public CellVisualization GetVisualization(CellStatusType cellStatus) => GetVisualization(cellStatus, null);
+		public CellVisualization GetVisualization(CellStatusType cellStatus, byte? adjacentMineCount)
 		{
-			(char? content, string cssClass) template = GetVisualisationTemplateOrDefault(cellStatus);
+			(char? content, string cssClass) template = GetVisualizationTemplateOrDefault(cellStatus);
 
 			string cssClass = String.Format(CultureInfo.InvariantCulture, template.cssClass, adjacentMineCount);
 
@@ -37,9 +37,9 @@ namespace F0.Minesweeper.Components.Logic.Cell
 			};
 		}
 
-		private static (char? content, string cssClass) GetVisualisationTemplateOrDefault(CellStatusType status)
+		private static (char? content, string cssClass) GetVisualizationTemplateOrDefault(CellStatusType status)
 		{
-			if (visualisationTemplates.TryGetValue(status, out (char?, string) translation))
+			if (visualizationTemplates.TryGetValue(status, out (char?, string) translation))
 			{
 				return translation;
 			}

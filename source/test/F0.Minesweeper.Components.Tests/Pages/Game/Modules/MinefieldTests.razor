@@ -13,7 +13,7 @@
 		Services.AddSingleton(minefieldFactoryMock.Object);
 		Services.AddSingleton<ICellStatusManager>(new CellStatusManager());
 		Services.AddSingleton(gameUpdateFactoryMock.Object);
-		Services.AddSingleton<ICellVisualisationManager>(new CellVisualisationManager());
+		Services.AddSingleton<ICellVisualizationManager>(new CellVisualizationManager());
 	}
 
 	protected override void Dispose(bool disposing)

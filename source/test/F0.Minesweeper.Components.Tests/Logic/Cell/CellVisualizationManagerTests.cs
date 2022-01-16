@@ -6,39 +6,39 @@ using Xunit;
 
 namespace F0.Minesweeper.Components.Tests.Logic.Cell
 {
-	public class CellVisualisationManagerTests
+	public class CellVisualizationManagerTests
 	{
 		[Fact]
-		public void GetVisualisation_UncoveredWithoutAdjacentMineCount_Throws()
+		public void GetVisualization_UncoveredWithoutAdjacentMineCount_Throws()
 		{
 			// Arrange
-			CellVisualisationManager instanceUnderTest = new();
+			CellVisualizationManager instanceUnderTest = new();
 
 			// Act && Assert
-			Func<CellVisualisation> methodUnderTest = () => instanceUnderTest.GetVisualisation(CellStatusType.Uncovered);
+			Func<CellVisualization> methodUnderTest = () => instanceUnderTest.GetVisualization(CellStatusType.Uncovered);
 			methodUnderTest.Should().ThrowExactly<ArgumentNullException>();
 		}
 
 		[Theory]
-		[MemberData(nameof(TestData), MemberType = typeof(CellVisualisationManagerTests))]
-		public void GetVisualisation_CorrectParameters_ReturnsCorrectVisualisation(VisualisationData visualisationData)
+		[MemberData(nameof(TestData), MemberType = typeof(CellVisualizationManagerTests))]
+		public void GetVisualization_CorrectParameters_ReturnsCorrectVisualization(VisualizationData visualizationData)
 		{
 			// Arrange
-			CellVisualisationManager instanceUnderTest = new();
+			CellVisualizationManager instanceUnderTest = new();
 
 			// Act 
-			CellVisualisation visualisation = instanceUnderTest.GetVisualisation(visualisationData.CellStatusType, visualisationData.AdjacentMineCount);
+			CellVisualization visualization = instanceUnderTest.GetVisualization(visualizationData.CellStatusType, visualizationData.AdjacentMineCount);
 
 			// Assert
-			visualisation.Content.Should().Be(visualisationData.ExpectedContent);
-			visualisation.CssClass.Should().NotBeNull();
+			visualization.Content.Should().Be(visualizationData.ExpectedContent);
+			visualization.CssClass.Should().NotBeNull();
 		}
 
-		public static TheoryData<VisualisationData> TestData => GenerateTestData();
+		public static TheoryData<VisualizationData> TestData => GenerateTestData();
 
-		private static TheoryData<VisualisationData> GenerateTestData()
+		private static TheoryData<VisualizationData> GenerateTestData()
 		{
-			TheoryData<VisualisationData> resultData = new();
+			TheoryData<VisualizationData> resultData = new();
 
 			resultData.Add(new(CellStatusType.Uncovered, 0, ' '));
 			resultData.Add(new(CellStatusType.Uncovered, 1, '1'));
@@ -59,5 +59,5 @@ namespace F0.Minesweeper.Components.Tests.Logic.Cell
 		}
 	}
 
-	public record VisualisationData(CellStatusType CellStatusType, byte? AdjacentMineCount, char ExpectedContent);
+	public record VisualizationData(CellStatusType CellStatusType, byte? AdjacentMineCount, char ExpectedContent);
 }
