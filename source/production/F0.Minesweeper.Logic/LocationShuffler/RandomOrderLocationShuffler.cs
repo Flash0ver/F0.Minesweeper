@@ -1,15 +1,23 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using F0.Minesweeper.Logic.Abstractions;
 
 namespace F0.Minesweeper.Logic.LocationShuffler
 {
-	internal class GuidLocationShuffler : ILocationShuffler
+	internal class RandomOrderLocationShuffler : ILocationShuffler
 	{
+		private readonly IRandom randomNumberGenerator;
+
+		internal RandomOrderLocationShuffler(IRandom? randomNumberGenerator = null)
+			=> this.randomNumberGenerator = randomNumberGenerator ?? new DefaultRandom();
+
 		IReadOnlyCollection<Location> ILocationShuffler.ShuffleAndTake(IEnumerable<Location> allLocations, int count)
 		{
-			ArgumentNullException.ThrowIfNull(allLocations);
+			_ = allLocations ?? throw new ArgumentNullException(nameof(allLocations));
 
 			Location[] shuffledLocations = allLocations
-				  .OrderBy(_ => Guid.NewGuid())
+				  .OrderBy(_ => randomNumberGenerator.Next())
 				  .Take(count)
 				  .ToArray();
 

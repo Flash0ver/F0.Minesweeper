@@ -12,6 +12,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 	public partial class Cell : ICell
 	{
 		[Parameter]
+		[EditorRequired]
 		public Location? Location { get; set; }
 
 		public Func<Location, Task>? UncoveredAsync { get; set; }
@@ -60,10 +61,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		protected override void OnParametersSet()
 		{
-			if (Location is null)
-			{
-				throw new ArgumentNullException(nameof(Location));
-			}
+			ArgumentNullException.ThrowIfNull(Location);
 		}
 
 		public void SetUncoveredStatus(CellInteractionType cellInteraction, bool isMine, byte adjacentMineCount)
@@ -93,7 +91,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		private void OnRightClick()
 		{
-			TryUpdateStatus(CellInteractionType.RightClick);
+			_ = TryUpdateStatus(CellInteractionType.RightClick);
 		}
 
 		private bool TryUpdateStatus(CellInteractionType inputCommand, bool? isMine = null, byte? adjacentMineCount = null)

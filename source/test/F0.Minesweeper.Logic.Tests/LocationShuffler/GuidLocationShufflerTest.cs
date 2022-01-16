@@ -1,14 +1,20 @@
-using System;
-using System.Collections.Generic;
 using F0.Minesweeper.Logic.Abstractions;
 using F0.Minesweeper.Logic.LocationShuffler;
-using FluentAssertions;
-using Xunit;
 
-namespace F0.Minesweeper.Logic.Tests
+namespace F0.Minesweeper.Logic.Tests.LocationShuffler
 {
 	public class GuidLocationShufflerTest
 	{
+		[Fact]
+		public void ThrowIfNull()
+		{
+			ILocationShuffler locationShufflerUnderTest = new GuidLocationShuffler();
+
+			Func<IReadOnlyCollection<Location>> act = () => locationShufflerUnderTest.ShuffleAndTake(null!, 0);
+
+			act.Should().ThrowExactly<ArgumentNullException>();
+		}
+
 		[Theory]
 		[InlineData(1)]
 		[InlineData(2)]

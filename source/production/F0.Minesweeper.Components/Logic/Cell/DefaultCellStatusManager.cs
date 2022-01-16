@@ -1,4 +1,3 @@
-using System;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 
@@ -6,7 +5,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 {
 	internal class DefaultCellStatusManager : ICellStatusManager
 	{
-		private static Lazy<DefaultCellStatusManager> lazyInstance = new(() => new DefaultCellStatusManager());
+		private static readonly Lazy<DefaultCellStatusManager> lazyInstance = new(() => new DefaultCellStatusManager());
 
 		private DefaultCellStatusManager()
 		{

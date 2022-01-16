@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.AspNetCore.Components;
@@ -31,7 +28,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		public Minefield()
 		{
-			Options = new MinefieldOptions(0, 0, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+			Options = new MinefieldOptions(0, 0, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.FisherYates);
 			cells = new List<Cell>();
 		}
 

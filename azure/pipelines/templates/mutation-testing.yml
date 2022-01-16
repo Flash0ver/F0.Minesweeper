@@ -13,8 +13,8 @@ jobs:
   variables:
     NuGet_Configuration_File: $(System.DefaultWorkingDirectory)/nuget.config
     Tool_Manifest_File: $(System.DefaultWorkingDirectory)/.config/dotnet-tools.json
-    Test_Project_Directory: $(System.DefaultWorkingDirectory)/source/test/F0.Minesweeper.Logic.Tests
     Stryker_Configuration_File: $(System.DefaultWorkingDirectory)/source/test/stryker-config.json
+    Stryker_Working_Directory: $(System.DefaultWorkingDirectory)/scripts
 
   steps:
   - checkout: self
@@ -37,8 +37,8 @@ jobs:
     inputs:
       command: 'custom'
       custom: 'stryker'
-      arguments: '--config-file-path $(Stryker_Configuration_File) --language-version preview'
-      workingDirectory: '$(Test_Project_Directory)'
+      arguments: '--config-file $(Stryker_Configuration_File)'
+      workingDirectory: '$(Stryker_Working_Directory)'
   - task: PublishMutationReport@0
     displayName: Publish Mutation Test Report
     inputs:

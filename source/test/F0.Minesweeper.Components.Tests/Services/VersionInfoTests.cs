@@ -2,9 +2,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using F0.Minesweeper.Components.Services;
-using FluentAssertions;
 using NuGet.Versioning;
-using Xunit;
 
 [assembly: AssemblyInformationalVersion($"{Information.VersionPrefix}-{Information.VersionSuffix}+{Information.SourceRevisionId}")]
 

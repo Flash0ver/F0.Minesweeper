@@ -1,4 +1,3 @@
-using System;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Components.Events;
 using Microsoft.AspNetCore.Components;

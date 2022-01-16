@@ -23,7 +23,7 @@
 	public void Rendering_NoLocationProvided_Throws()
 	{
 		Action renderAction = () => RenderComponent<Cell>();
-		renderAction.Should().Throw<ArgumentNullException>();
+		renderAction.Should().ThrowExactly<ArgumentNullException>();
 	}
 
 	[Theory]

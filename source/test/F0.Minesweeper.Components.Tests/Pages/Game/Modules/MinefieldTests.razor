@@ -45,7 +45,7 @@
 		// Arrange
 		RenderFragment expectedMarkup = @<div id='f0-minefield'><label diff:ignore /></div>;
 
-		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), new MinefieldOptions(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler));
+		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Minefield.Options), new MinefieldOptions(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GloballyUniqueIdentifier));
 
 		// Act
 		IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>(parameter);
@@ -63,7 +63,7 @@
 	public void Rendering_SupportedSizeProvided_ShowsCorrectAmountOfCells(uint width, uint height)
 	{
 		// Arrange
-		MinefieldOptions options = new(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+		MinefieldOptions options = new(width, height, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GloballyUniqueIdentifier);
 		int expectedCellAmount = (int)(width * height);
 
 		minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
@@ -83,7 +83,7 @@
 		// Arrange
 		RenderFragment expectedMarkup = @<div id='f0-minefield'><table><tr><td><div diff:ignore /></td></tr></table></div>;
 
-		MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+		MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GloballyUniqueIdentifier);
 
 		minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
 
@@ -100,7 +100,7 @@
 	public void OnCellUncoveredAsync_MinefieldWasNotCreated_Throws()
 	{
 		// Arrange
-		MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+		MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GloballyUniqueIdentifier);
 
 		minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns<IMinefield>(null);
 
@@ -118,7 +118,7 @@
 	private void OnCellUncoveredAsync_ReportVariations_DoesNotThrow(GameUpdateReportForTests report)
 	{
 		// Arrange
-		MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+		MinefieldOptions options = new(1, 1, 2, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GloballyUniqueIdentifier);
 
 		minefieldFactoryMock.Setup(factory => factory.Create(options)).Returns(minefieldMock.Object);
 		minefieldMock.Setup(field => field.Uncover(It.Is<Location>(s => s == new Location(0, 0)))).Returns(report);
@@ -137,7 +137,7 @@
 	public void RepopulateMinefield_SecondRendering_OldCellsReplacedByNewCells()
 	{
 		// Arrange
-		MinefieldOptions options = new(1, 1, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GuidLocationShuffler);
+		MinefieldOptions options = new(1, 1, 0, MinefieldFirstUncoverBehavior.MayYieldMine, LocationShuffler.GloballyUniqueIdentifier);
 		GameUpdateReportForTests report = new(GameStatus.IsWon, new[]
 		{
 			new UncoveredCellForTests(new (0,0),false,0)
