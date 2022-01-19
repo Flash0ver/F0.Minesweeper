@@ -9,8 +9,7 @@ namespace F0.Minesweeper.Logic.Tests
 		{
 			MinefieldFactory minefieldFactoryUnderTest = new();
 			Func<IMinefield> create = () => minefieldFactoryUnderTest.Create(null!);
-			create.Should().ThrowExactly<ArgumentNullException>()
-				.And.ParamName.Should().Be("options");
+			create.Should().ThrowExactly<ArgumentNullException>();
 		}
 
 		[Theory]
