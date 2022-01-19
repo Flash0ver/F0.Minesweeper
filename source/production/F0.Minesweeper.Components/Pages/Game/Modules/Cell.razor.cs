@@ -1,3 +1,6 @@
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Components.Logic.Cell;
@@ -16,6 +19,9 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		[Inject]
 		private ICellStatusManager statusManager { get; set; }
+
+		[Inject]
+		private ICellVisualizationManager? visualizationManager { get; set; }
 
 		private char StatusText
 		{
@@ -43,16 +49,14 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		private bool IsDisabled { get; set; }
 
-		private static readonly Dictionary<CellStatusType, CellStatusTranslation> translations = InitializeTranslations();
 		private char statusText;
 		private string cssClass;
 
 		public Cell()
 		{
-			CellStatusTranslation translation = GetTranslationOrDefault(CellStatusType.Covered);
-			statusText = translation.GetDisplayValue(null);
-			cssClass = translation.CssClass;
 			statusManager = DefaultCellStatusManager.Instance;
+			statusText = CellVisualization.Default.Content;
+			cssClass = CellVisualization.Default.CssClass;
 		}
 
 		protected override void OnParametersSet()
@@ -75,22 +79,6 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 		{
 			IsDisabled = true;
 			StateHasChanged();
-		}
-
-		private static Dictionary<CellStatusType, CellStatusTranslation> InitializeTranslations()
-		{
-			const string cellLayout = "f0-cell";
-
-			return new Dictionary<CellStatusType, CellStatusTranslation>
-				{
-					{ CellStatusType.Covered, new ('C', $"{cellLayout} f0-cell-covered") },
-					{ CellStatusType.Flagged, new ('⚐', $"{cellLayout} f0-cell-covered") },
-					{ CellStatusType.FlaggedWrong, new ('⚐', $"{cellLayout} f0-cell-flagged-wrong") },
-					{ CellStatusType.Uncovered, new ($"{cellLayout} f0-cell-uncovered") },
-					{ CellStatusType.Unsure, new ('?', $"{cellLayout} f0-cell-covered") },
-					{ CellStatusType.Mine, new ('☢', $"{cellLayout} f0-cell-uncovered") },
-					{ CellStatusType.MineExploded, new ('☢', $"{cellLayout} f0-cell-mine-exploded") }
-				};
 		}
 
 		private async Task OnClickAsync()
@@ -120,22 +108,13 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 			CellStatusType newStatus = statusManager.MoveNext(inputCommand, isMine);
 
-			CellStatusTranslation translation = GetTranslationOrDefault(newStatus);
-			StatusText = translation.GetDisplayValue(adjacentMineCount);
-			CssClass = translation.CssClass.ToString();
+			Debug.Assert(visualizationManager is not null, $"The '{nameof(visualizationManager)}' is injected on '{nameof(Cell)}' generation.");
+			CellVisualization visualization = visualizationManager.GetVisualization(newStatus, adjacentMineCount);
+			StatusText = visualization.Content;
+			CssClass = visualization.CssClass;
 			StateHasChanged();
 
 			return true;
-		}
-
-		private static CellStatusTranslation GetTranslationOrDefault(CellStatusType status)
-		{
-			if (translations.TryGetValue(status, out CellStatusTranslation? translation))
-			{
-				return translation;
-			}
-
-			return new CellStatusTranslation('!', "f0-cell f0-cell-undefinedstatus");
 		}
 	}
 }

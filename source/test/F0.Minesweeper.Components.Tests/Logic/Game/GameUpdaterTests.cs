@@ -66,6 +66,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 			{
 				using TestContext testContext = new();
 				testContext.Services.AddSingleton<ICellStatusManager>(new Mock<ICellStatusManager>(MockBehavior.Strict).Object);
+				testContext.Services.AddSingleton<ICellVisualizationManager>(new Mock<ICellVisualizationManager>(MockBehavior.Strict).Object);
 
 				for (uint i = 0; i < x; i++)
 				{

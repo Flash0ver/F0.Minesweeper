@@ -13,6 +13,7 @@
 		Services.AddSingleton(minefieldFactoryMock.Object);
 		Services.AddSingleton<ICellStatusManager>(new CellStatusManager());
 		Services.AddSingleton(gameUpdateFactoryMock.Object);
+		Services.AddSingleton<ICellVisualizationManager>(new CellVisualizationManager());
 	}
 
 	protected override void Dispose(bool disposing)
@@ -25,7 +26,8 @@
 	public void Rendering_NoSizeProvided_ShowsErrorLabel()
 	{
 		// Arrange
-		RenderFragment expectedMarkup = @<div id='f0-minefield'><label diff:ignore /></div>;
+		RenderFragment expectedMarkup = 
+    @<div id='f0-minefield'><label diff:ignore /></div>;
 
 		// Act
 		IRenderedComponent<Minefield> componentUnderTest = RenderComponent<Minefield>();

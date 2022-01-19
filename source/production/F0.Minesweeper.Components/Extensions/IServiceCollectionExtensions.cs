@@ -13,6 +13,7 @@ namespace F0.Minesweeper.Components.Extensions
 			serviceCollection.AddSingleton<IEventAggregator, EventAggregator>();
 			serviceCollection.AddTransient(CellStatusManagerFactory.GetManager);
 			serviceCollection.AddSingleton<IGameUpdateFactory>((serviceProvider) => new GameUpdateFactory(serviceProvider.GetRequiredService<IEventAggregator>()));
+			serviceCollection.AddSingleton<ICellVisualizationManager, CellVisualizationManager>();
 			return serviceCollection;
 		}
 	}

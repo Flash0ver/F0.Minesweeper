@@ -1,18 +1,21 @@
 @inherits TestContext
 
 @code {
+
 	private readonly Mock<ICellStatusManager> cellStatusManagerMock;
+	private readonly Mock<ICellVisualizationManager> cellVisualizationManagerMock;
 
 	public CellTests()
 	{
-		// todo: Make strict
 		cellStatusManagerMock = new Mock<ICellStatusManager>(MockBehavior.Strict);
+		cellVisualizationManagerMock = new Mock<ICellVisualizationManager>(MockBehavior.Strict);
 		Services.AddSingleton(cellStatusManagerMock.Object);
+		Services.AddSingleton(cellVisualizationManagerMock.Object);
 	}
 
 	protected override void Dispose(bool disposing)
 	{
-		Mock.VerifyAll(cellStatusManagerMock);
+		Mock.VerifyAll(cellStatusManagerMock, cellVisualizationManagerMock);
 		base.Dispose(disposing);
 	}
 
@@ -31,7 +34,8 @@
 	public void Rendering_LocationProvided_ShowsCell(uint x, uint y)
 	{
 		// Arrange
-		RenderFragment expectedMarkup = @<div><button class="f0-cell f0-cell-covered">C</button></div>;
+		RenderFragment expectedMarkup = 
+	@<div><button class="f0-cell f0-cell-covered"> </button></div>;
 
 		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(x, y));
 
@@ -119,32 +123,14 @@
 	}
 
 	[Fact]
-	public void OnRightClick_StatusManagerReturnsFlagged_ChangesTextToFlagged()
-	{
-		// Arrange
-		RenderFragment expectedMarkup = @<div><button class="f0-cell f0-cell-covered">⚐</button></div>;
-
-		cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.RightClick, null)).Returns(true);
-		cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.RightClick, null)).Returns(CellStatusType.Flagged);
-
-		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
-		IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
-
-		// Act
-		componentUnderTest.Find("button").ContextMenu();
-
-		// Assert
-		componentUnderTest.MarkupMatches(expectedMarkup);
-	}
-
-	[Fact]
-	public void OnRightClick_StatusManagerReturnsUnsure_ChangesTextToQuestionMark()
+	public void OnRightClick_StatusManagerReturnsNewStatus_ChangesTextToCorrectVisualizationFromVisualizationManager()
 	{
 		// Arrange
 		RenderFragment expectedMarkup = @<div><button class="f0-cell f0-cell-covered">?</button></div>;
 
 		cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.RightClick, null)).Returns(true);
 		cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.RightClick, null)).Returns(CellStatusType.Unsure);
+		cellVisualizationManagerMock.Setup((manager) => manager.GetVisualization(CellStatusType.Unsure, null)).Returns(new CellVisualization('?', "f0-cell f0-cell-covered"));
 
 		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 		IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
@@ -157,52 +143,20 @@
 	}
 
 	[Fact]
-	public void OnRightClick_StatusManagerReturnsUndefined_ChangesTextToSpecialUndefinedValue()
+	public void SetUncoveredStatus_StatusManagerCanMoveNext_ChangesTextToCorrectVisualization()
 	{
 		// Arrange
-		RenderFragment expectedMarkup = @<div><button class="f0-cell f0-cell-undefinedstatus">!</button></div>;
+		CellInteractionType cellInteraction = CellInteractionType.LeftClick;
+		bool isMine = true;
+		CellStatusType newStatus = CellStatusType.MineExploded;
+		byte adjacentMineCount = 3;
+		char expectedStatusChar = '☢';
+		string expectedCssClass = "f0-cell f0-cell-mine-exploded";
 
-		cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.RightClick, null)).Returns(true);
-		cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.RightClick, null)).Returns(CellStatusType.Undefined);
-
-		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
-		IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
-
-		// Act
-		componentUnderTest.Find("button").ContextMenu();
-
-		// Assert
-		componentUnderTest.MarkupMatches(expectedMarkup);
-	}
-
-	[Theory]
-	[InlineData(CellInteractionType.LeftClick, true, CellStatusType.MineExploded, 3, '☢', "f0-cell f0-cell-mine-exploded")]
-	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 0, '0', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 1, '1', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 2, '2', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 3, '3', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 4, '4', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 5, '5', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 6, '6', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 7, '7', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.LeftClick, false, CellStatusType.Uncovered, 8, '8', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 0, '0', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 1, '1', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 2, '2', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 3, '3', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 4, '4', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 5, '5', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 6, '6', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 7, '7', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.Automatic, false, CellStatusType.Uncovered, 8, '8', "f0-cell f0-cell-uncovered")]
-	[InlineData(CellInteractionType.GameLost, true, CellStatusType.Mine, 8, '☢', "f0-cell f0-cell-uncovered")]
-	public void SetUncoveredStatus_StatusManagerCanMoveNext_ChangesTextToCorrectTranslation(CellInteractionType cellInteraction, bool isMine, CellStatusType newStatus, byte adjacentMineCount, char expectedStatusChar, string expectedCssClass)
-	{
-		// Arrange
 		RenderFragment expectedMarkup = @<div><button class="@expectedCssClass">@expectedStatusChar</button></div>;
-
 		cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(cellInteraction, isMine)).Returns(true);
 		cellStatusManagerMock.Setup((manager) => manager.MoveNext(cellInteraction, isMine)).Returns(newStatus);
+		cellVisualizationManagerMock.Setup((manager) => manager.GetVisualization(newStatus, adjacentMineCount)).Returns(new CellVisualization(expectedStatusChar, expectedCssClass));
 
 		ComponentParameter parameter = ComponentParameterFactory.Parameter(nameof(Cell.Location), new Location(1, 1));
 		IRenderedComponent<Cell> componentUnderTest = RenderComponent<Cell>(parameter);
@@ -302,12 +256,14 @@
 	public void OnClick_HasAdjacentMinesToUncover_UncoversAllCells()
 	{
 		// Arrange
-		RenderFragment expectedMarkup = @<div><button class="f0-cell f0-cell-uncovered">0</button></div>;
+		RenderFragment expectedMarkup = 
+	@<div><button class="f0-cell f0-cell-uncovered"> </button></div>;
 		Location expectedLocationClickedCell = new(1, 1);
 
 		cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.LeftClick, null)).Returns(true);
 		cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.LeftClick, false)).Returns(true);
 		cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.LeftClick, false)).Returns(CellStatusType.Uncovered);
+		cellVisualizationManagerMock.Setup((manager) => manager.GetVisualization(CellStatusType.Uncovered, 0)).Returns(new CellVisualization(' ', "f0-cell f0-cell-uncovered"));
 
 		ComponentParameter parameterClickedCell = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocationClickedCell);
 		IRenderedComponent<Cell> clickedComponentUnderTest = RenderComponent<Cell>(parameterClickedCell);
@@ -316,6 +272,7 @@
 
 		cellStatusManagerMock.Setup((manager) => manager.CanMoveNext(CellInteractionType.Automatic, false)).Returns(true);
 		cellStatusManagerMock.Setup((manager) => manager.MoveNext(CellInteractionType.Automatic, false)).Returns(CellStatusType.Uncovered);
+		cellVisualizationManagerMock.Setup((manager) => manager.GetVisualization(CellStatusType.Uncovered, 0)).Returns(new CellVisualization(' ', "f0-cell f0-cell-uncovered"));
 
 		ComponentParameter parameterAutoUncoveredCell = ComponentParameterFactory.Parameter(nameof(Cell.Location), expectedLocationAutoUncoveredCell);
 		IRenderedComponent<Cell> autoUncoveredComponentUnderTest = RenderComponent<Cell>(parameterAutoUncoveredCell);

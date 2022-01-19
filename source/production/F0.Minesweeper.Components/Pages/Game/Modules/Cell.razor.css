@@ -1,33 +1,67 @@
 .f0-cell {
-    min-height: 25px;
-    min-width: 25px;
-    color:rgba(0, 0, 0, 1);
+	height: 25px;
+	width: 25px;
+	color: rgba(0, 0, 0, 1);
 }
 
-.f0-cell-covered, .f0-cell-covered:disabled  {
+.f0-cell-covered, .f0-cell-covered:disabled {
 	background-color: rgba(239, 239, 239, 1);
-    border-width: thin;
+	border-width: thin;
 }
 
 .f0-cell-flagged-wrong, .f0-cell-flagged-wrong:disabled {
 	background-color: rgba(255, 0, 0, 0.3);
-    border-width: thin;
+	border-width: thin;
 }
 
 .f0-cell-mine-exploded, .f0-cell-mine-exploded:disabled {
 	background-color: rgba(255, 0, 0, 1);
-    border: none;
+	border: none;
 }
 
 .f0-cell-uncovered, .f0-cell-uncovered:disabled {
-    background-color: rgba(239, 239, 239, 1);
-    border: none;
-    min-height: 25px;
-    min-width: 25px;
+	background-color: rgba(239, 239, 239, 1);
+	border: none;
 }
 
 .f0-cell-undefinedstatus, .f0-cell-undefinedstatus:disabled {
-    background-color: black;
-    color: aqua;
-    border-width: thin;
+	background-color: black;
+	color: aqua;
+	border-width: thin;
+}
+
+/* empty class necessary for simpler logic */
+.f0-cell-0-adjacent-mines {
+}
+
+.f0-cell-1-adjacent-mines {
+	color: rgba(0, 0, 252, 1);
+}
+
+.f0-cell-2-adjacent-mines {
+	color: rgba(2, 128, 1, 1);
+}
+
+.f0-cell-3-adjacent-mines {
+	color: rgba(254, 0, 1, 1);
+}
+
+.f0-cell-4-adjacent-mines {
+	color: rgba(1, 1, 128, 1);
+}
+
+.f0-cell-5-adjacent-mines {
+	color: rgba(127, 3, 0, 1);
+}
+
+.f0-cell-6-adjacent-mines {
+	color: rgba(0, 128, 128, 1);
+}
+
+.f0-cell-7-adjacent-mines {
+	color: rgba(0, 0, 0, 1);
+}
+
+.f0-cell-8-adjacent-mines {
+	color: rgba(128, 128, 128, 1);
 }
