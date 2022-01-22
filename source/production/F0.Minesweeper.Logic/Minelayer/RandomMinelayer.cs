@@ -14,5 +14,6 @@ namespace F0.Minesweeper.Logic.Minelayer
 			=> LocationShuffler.ShuffleAndTake(
 				possibleLocations,
 				(int)mineCount);
+		public Dictionary<Location, Cell> PlaceMinesAlternate(uint width, uint height, uint mineCount, Location clickedLocation) => throw new NotImplementedException();
 	}
 }

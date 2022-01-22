@@ -8,8 +8,8 @@ namespace F0.Minesweeper.Logic
 		private readonly uint width, height, mineCount;
 		private readonly IMinelayer minelayer;
 		private bool isFirstUncover = true;
-		private readonly List<Cell> minefield;
-		private IEnumerable<Location> GetAllLocations() => minefield.Select(m => m.Location);
+		private Dictionary<Location, Cell> minefield;
+		private IEnumerable<Location> GetAllLocations() => minefield.Keys;
 
 		internal Minefield(uint width, uint height, uint mineCount, IMinelayer minelayer)
 		{
@@ -22,7 +22,7 @@ namespace F0.Minesweeper.Logic
 			this.height = height;
 			this.mineCount = mineCount;
 			this.minelayer = minelayer;
-			minefield = new List<Cell>();
+			minefield = new Dictionary<Location, Cell>();
 		}
 
 		public IGameUpdateReport Uncover(uint x, uint y) => Uncover(new Location(x, y));
@@ -30,7 +30,7 @@ namespace F0.Minesweeper.Logic
 		{
 			if (isFirstUncover)
 			{
-				GenerateMinefield(location);
+				GenerateMinefieldAlternate(location);
 				isFirstUncover = false;
 			}
 
@@ -45,7 +45,7 @@ namespace F0.Minesweeper.Logic
 
 			if (gameStatus != GameStatus.InProgress)
 			{
-				return new GameUpdateReport(gameStatus, minefield.ToArray());
+				return new GameUpdateReport(gameStatus, minefield.Values.ToArray());
 			}
 
 			return new GameUpdateReport(gameStatus, allUncoveredCells);
@@ -53,14 +53,14 @@ namespace F0.Minesweeper.Logic
 
 		private GameStatus GetGameStatus()
 		{
-			if (minefield.Any(cell => cell.IsMine && cell.Uncovered))
+			if (minefield.Any(cell => cell.Value.IsMine && cell.Value.Uncovered))
 			{
 				return GameStatus.IsLost;
 			}
 
 			if (minefield
-				.Where(cell => !cell.IsMine)
-				.All(nonMineCell => nonMineCell.Uncovered))
+				.Where(cell => !cell.Value.IsMine)
+				.All(nonMineCell => nonMineCell.Value.Uncovered))
 			{
 				return GameStatus.IsWon;
 			}
@@ -71,7 +71,7 @@ namespace F0.Minesweeper.Logic
 		private List<Cell> UncoverCells(Location location)
 		{
 			List<Cell> returnCellList = new();
-			Cell uncoveredCell = minefield.Single(cell => cell.Location == location);
+			Cell uncoveredCell = minefield[location];
 
 			if (uncoveredCell.Uncovered)
 			{
@@ -104,13 +104,13 @@ namespace F0.Minesweeper.Logic
 				for (uint y = 0; y < height; y++)
 				{
 					allLocations.Add(new Location(x, y));
-					minefield.Add(new Cell(new Location(x, y), false, 0, false));
+					minefield.Add(new Location(x, y), new Cell(new Location(x, y), false, 0, false));
 				}
 			}
 
 			IReadOnlyCollection<Location> mineLocations = minelayer.PlaceMines(allLocations, mineCount, clickedLocation);
 
-			foreach (Cell minefieldCell in minefield)
+			foreach (Cell minefieldCell in minefield.Values)
 			{
 				if (mineLocations.Contains(minefieldCell.Location))
 				{
@@ -120,12 +120,36 @@ namespace F0.Minesweeper.Logic
 
 				IEnumerable<Location> locationsArea = Utilities.GetLocationsAreaAroundLocation(allLocations, minefieldCell.Location, true);
 
-				byte countAdjactentMines = (byte)mineLocations
+				byte countAdjacentMines = (byte)mineLocations
 					.Intersect(locationsArea)
 					.Count();
 
-				minefieldCell.AdjacentMineCount = countAdjactentMines;
+				minefieldCell.AdjacentMineCount = countAdjacentMines;
 			}
+		}
+
+		private void GenerateMinefieldAlternate(Location clickedLocation)
+		{
+			Dictionary<Location, Cell> allLocations = minelayer.PlaceMinesAlternate(width, height, mineCount, clickedLocation);
+
+			for (uint x = 0; x < width; x++)
+			{
+				for (uint y = 0; y < height; y++)
+				{
+					Location location = new(x, y);
+
+					if(!allLocations.ContainsKey(location))
+					{
+						IEnumerable<Cell> locationsArea = Utilities.GetLocationsAreaAroundLocation(allLocations, location, true);
+
+						byte countAdjacentMines = (byte)locationsArea.Count(cell => cell.IsMine);
+
+						allLocations[location] = new Cell(location, false, countAdjacentMines, false);
+					}
+				}
+			}
+
+			minefield = allLocations;
 		}
 	}
 }

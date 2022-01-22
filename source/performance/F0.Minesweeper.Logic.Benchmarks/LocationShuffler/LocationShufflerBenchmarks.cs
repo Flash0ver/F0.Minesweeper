@@ -11,6 +11,7 @@ namespace F0.Minesweeper.Logic.Benchmarks.LocationShuffler
 		private readonly ILocationShuffler fisherYates = new FisherYatesLocationShuffler();
 
 		private IEnumerable<Location> minefield = null!;
+		private IReadOnlyList<Location> minefieldRO = null!;
 
 		[ParamsSource(nameof(Parameters))]
 		public Param Parameter { get; set; } = null!;
@@ -18,19 +19,8 @@ namespace F0.Minesweeper.Logic.Benchmarks.LocationShuffler
 		[GlobalSetup]
 		public void GlobalSetup()
 		{
-			uint size = Parameter.Width * Parameter.Height;
-			List<Location> locations = new((int)size);
-
-			for (uint width = 0; width < Parameter.Width; width++)
-			{
-				for (uint height = 0; height < Parameter.Height; height++)
-				{
-					locations.Add(new Location(width, height));
-				}
-			}
-
-			Debug.Assert(locations.Count == size);
-			minefield = locations;
+			minefield = MinefieldTestUtilities.CreateMinefield(Parameter.Height, Parameter.Width);
+			minefieldRO = MinefieldTestUtilities.CreateMinefield(Parameter.Height, Parameter.Width).ToList();
 		}
 
 		[Benchmark]
@@ -44,6 +34,18 @@ namespace F0.Minesweeper.Logic.Benchmarks.LocationShuffler
 		[Benchmark]
 		public IReadOnlyCollection<Location> FisherYates()
 			=> fisherYates.ShuffleAndTake(minefield, (int)Parameter.MineCount);
+
+		//[Benchmark]
+		//public IReadOnlyCollection<Location> GloballyUniqueIdentifierAlt()
+		//	=> globallyUniqueIdentifier.ShuffleAndTakeAlternate(minefieldRO, (int)Parameter.MineCount).Keys;
+
+		//[Benchmark]
+		//public IReadOnlyCollection<Location> RandomOrderAlt()
+		//	=> randomOrder.ShuffleAndTakeAlternate(minefieldRO, (int)Parameter.MineCount).Keys;
+
+		//[Benchmark]
+		//public IReadOnlyCollection<Location> FisherYatesAlt()
+		//	=> fisherYates.ShuffleAndTakeAlternate(minefieldRO, (int)Parameter.MineCount).Keys;
 
 		public static IEnumerable<Param> Parameters()
 		{

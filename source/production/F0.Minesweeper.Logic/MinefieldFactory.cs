@@ -42,7 +42,8 @@ namespace F0.Minesweeper.Logic
 				_ => throw new InvalidEnumArgumentException(nameof(options.GenerationOption), (int)options.GenerationOption, typeof(MinefieldFirstUncoverBehavior)),
 			};
 
-			return new Minefield(options.Width, options.Height, options.MineCount, minelayer);
+			var testLayer = new SafeMinelayer(new FisherYatesLocationShuffler());
+			return new Minefield(options.Width, options.Height, options.MineCount, testLayer);
 		}
 	}
 }

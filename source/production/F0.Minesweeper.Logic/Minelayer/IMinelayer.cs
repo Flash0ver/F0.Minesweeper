@@ -13,5 +13,6 @@ namespace F0.Minesweeper.Logic.Minelayer
 		/// <param name="clickedLocation">The location where the user clicked.</param>
 		/// <returns>A collection of locations where mines are.</returns>
 		internal IReadOnlyCollection<Location> PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation);
+		Dictionary<Location, Cell> PlaceMinesAlternate(uint width, uint height, uint mineCount, Location clickedLocation);
 	}
 }
