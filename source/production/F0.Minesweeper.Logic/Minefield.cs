@@ -86,11 +86,22 @@ namespace F0.Minesweeper.Logic
 				return returnCellList;
 			}
 
-			IEnumerable<Location> locationsAroundCell = Utilities.GetLocationsAreaAroundLocation(GetAllLocations(), location, true);
+			IEnumerable<Cell> locationsAroundCell = Utilities.GetLocationsAreaAroundLocation(minefield, location, true, width, height);
+			//IEnumerable<Location> locationsAroundCell = Utilities.GetLocationsAreaAroundLocation(GetAllLocations(), location, true);
 
-			foreach (Location l in locationsAroundCell)
+			// todo: potential improvement by making adjacentminecount nullable
+			// todo: and only set it when we really know what the value is.
+			// todo: so in case the count is 0 we won't have to recalculate adjacent mine count
+			uncoveredCell.AdjacentMineCount = (byte)locationsAroundCell.Where(s => s.IsMine).Count();
+
+			if(uncoveredCell.AdjacentMineCount > 0)
 			{
-				returnCellList.AddRange(UncoverCells(l));
+				return returnCellList;
+			}
+
+			foreach (Cell l in locationsAroundCell)
+			{
+				returnCellList.AddRange(UncoverCells(l.Location));
 			}
 
 			return returnCellList;
@@ -130,26 +141,34 @@ namespace F0.Minesweeper.Logic
 
 		private void GenerateMinefieldAlternate(Location clickedLocation)
 		{
-			Dictionary<Location, Cell> allLocations = minelayer.PlaceMinesAlternate(width, height, mineCount, clickedLocation);
+			Dictionary<Location, Cell> allLocations = new((int)(width * height));
 
 			for (uint x = 0; x < width; x++)
 			{
 				for (uint y = 0; y < height; y++)
 				{
 					Location location = new(x, y);
-
-					if(!allLocations.ContainsKey(location))
-					{
-						IEnumerable<Cell> locationsArea = Utilities.GetLocationsAreaAroundLocation(allLocations, location, true);
-
-						byte countAdjacentMines = (byte)locationsArea.Count(cell => cell.IsMine);
-
-						allLocations[location] = new Cell(location, false, countAdjacentMines, false);
-					}
+					allLocations.Add(location, new Cell(location, false, 0, false));
 				}
 			}
 
-			minefield = allLocations;
+			minefield = minelayer.PlaceMinesAlternate(allLocations, clickedLocation, mineCount, width, height);
+			//for (uint x = 0; x < width; x++)
+			//{
+			//	for (uint y = 0; y < height; y++)
+			//	{
+			//		Location location = new(x, y);
+
+			//		if(!allLocations.ContainsKey(location))
+			//		{
+			//			IEnumerable<Cell> locationsArea = Utilities.GetLocationsAreaAroundLocation(allLocations, location, true);
+
+			//			byte countAdjacentMines = (byte)locationsArea.Count(cell => cell.IsMine);
+
+			//			allLocations[location] = new Cell(location, false, countAdjacentMines, false);
+			//		}
+			//	}
+			//}
 		}
 	}
 }

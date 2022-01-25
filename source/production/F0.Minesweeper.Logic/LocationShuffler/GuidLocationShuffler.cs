@@ -4,6 +4,9 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 {
 	internal class GuidLocationShuffler : ILocationShuffler
 	{
+		public IOrderedEnumerable<Location> Shuffle(Dictionary<Location, Cell> allLocations)
+			=> allLocations.Keys.OrderBy(_ => Guid.NewGuid());
+
 		//public Dictionary<Location, Cell> ShuffleAndTakeAlternate(IDictionary<Location, Cell> allLocations, int count)
 		//{
 		//	ArgumentNullException.ThrowIfNull(allLocations);

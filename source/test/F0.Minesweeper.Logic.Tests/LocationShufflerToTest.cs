@@ -18,5 +18,6 @@ namespace F0.Minesweeper.Logic.Tests
 				.Intersect(allLocations)
 				.Take(count)
 				.ToArray();
+		public IOrderedEnumerable<Location> Shuffle(Dictionary<Location, Cell> allLocations) => throw new NotImplementedException();
 	}
 }

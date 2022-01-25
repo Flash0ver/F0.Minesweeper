@@ -13,8 +13,8 @@ namespace F0.Minesweeper.Logic.Tests
 		public MinelayerToTest(params Location[] locationsToPutMines)
 			=> this.locationsToPutMines = locationsToPutMines;
 
-		Dictionary<Location, Cell> IMinelayer.PlaceMinesAlternate(uint width, uint height, uint mineCount, Location clickedLocation) => throw new NotImplementedException();
 		IReadOnlyCollection<Location> IMinelayer.PlaceMines(IEnumerable<Location> possibleLocations, uint mineCount, Location clickedLocation)
 			=> locationsToPutMines;
+		Dictionary<Location, Cell> IMinelayer.PlaceMinesAlternate(Dictionary<Location, Cell> allLocations, Location clickedLocation, uint mineCount, uint width, uint height) => throw new NotImplementedException();
 	}
 }

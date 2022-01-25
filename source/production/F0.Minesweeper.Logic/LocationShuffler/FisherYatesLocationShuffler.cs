@@ -9,6 +9,23 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 		internal FisherYatesLocationShuffler(IRandom? randomNumberGenerator = null)
 			=> this.randomNumberGenerator = randomNumberGenerator ?? new DefaultRandom();
 
+		public IOrderedEnumerable<Location> Shuffle(Dictionary<Location, Cell> allLocations)
+		{
+			_ = allLocations ?? throw new ArgumentNullException(nameof(allLocations));
+
+			Location[] shuffledLocations = allLocations.Keys.ToArray();
+			int n = shuffledLocations.Length;
+
+			while (n > 1)
+			{
+				n--;
+				int k = randomNumberGenerator.Next(n + 1);
+				(shuffledLocations[n], shuffledLocations[k]) = (shuffledLocations[k], shuffledLocations[n]);
+			}
+
+			return shuffledLocations.OrderBy(_ => 1);
+		}
+
 		//public Dictionary<Location, Cell> ShuffleAndTakeAlternate(IDictionary<Location, Cell> allLocations, int count)
 		//{
 		//	ArgumentNullException.ThrowIfNull(allLocations);

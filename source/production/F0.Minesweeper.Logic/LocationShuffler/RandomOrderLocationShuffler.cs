@@ -9,10 +9,13 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 		internal RandomOrderLocationShuffler(IRandom? randomNumberGenerator = null)
 			=> this.randomNumberGenerator = randomNumberGenerator ?? new DefaultRandom();
 
+		public IOrderedEnumerable<Location> Shuffle(Dictionary<Location, Cell> allLocations)
+			=> allLocations.Keys.OrderBy(_ => randomNumberGenerator.Next());
+
 		//public Dictionary<Location, Cell> ShuffleAndTakeAlternate(IDictionary<Location, Cell> allLocations, int count)
 		//{
 		//	ArgumentNullException.ThrowIfNull(allLocations);
-			
+
 		//	if (count > allLocations.Count)
 		//	{
 		//		throw new ArgumentOutOfRangeException(nameof(count), count, $"The take count should not be greater than the number of elements in {nameof(allLocations)}. Element count: {allLocations.Count}");

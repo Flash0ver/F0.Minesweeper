@@ -15,47 +15,31 @@ namespace F0.Minesweeper.Logic.Minelayer
 			=> LocationShuffler.ShuffleAndTake(
 				possibleLocations.Where(l => l != clickedLocation),
 				(int)mineCount);
-		public Dictionary<Location, Cell> PlaceMinesAlternate(uint width, uint height, uint mineCount, Location clickedLocation)
+		public Dictionary<Location, Cell> PlaceMinesAlternate(Dictionary<Location, Cell> allLocations, Location clickedLocation, uint mineCount, uint width, uint height)
 		{
-			Dictionary<Location, Cell> minefield = new();
+			IOrderedEnumerable<Location> shuffledLocations = LocationShuffler.Shuffle(allLocations);
 
-			//for (uint i = 0; i < width; i++)
-			//{
-			//	for (uint y = 0; y < height; y++)
-			//	{
-			//		Location location = new(i, y);
-			//		if (location != clickedLocation)
-			//		{
-			//			locations.Add(location, new Cell(location, true, 0, false);
-			//		}
-			//	}
-			//}
-
-			//return LocationShuffler.ShuffleAndTakeAlternate(locations, (int)mineCount);
-
-			//for (int i = 0; i < mineCount; i++)
-			//{
-			//	int index = RandomNumberGenerator.GetInt32(0, locations.Count - 1);
-			//	var location = locations[index];
-			//	locations.RemoveAt(index);
-			//	minefield[location] = new Cell(location, true, 0, false);
-			//}
-
-			for (int i = 0; i < mineCount; i++)
+			for(int i = 0; i < allLocations.Count; i++)
 			{
-				Location location;
-				do
+				Location location = shuffledLocations.ElementAt(i);
+
+				if(location == clickedLocation)
 				{
-					uint x = (uint)RandomNumberGenerator.GetInt32(0, (int)width);
-					uint y = (uint)RandomNumberGenerator.GetInt32(0, (int)height);
+					continue;
+				}
 
-					location = new(x, y);
-				} while (location == clickedLocation || minefield.ContainsKey(location));
+				Cell current = allLocations[location];
+				current.IsMine = true;
 
-				minefield[location] = new Cell(location, true, 0, false);
+				mineCount--;
+
+				if(mineCount == 0)
+				{
+					break;
+				}
 			}
 
-			return minefield;
+			return allLocations;
 		}
 	}
 }

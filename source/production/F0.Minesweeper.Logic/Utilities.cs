@@ -37,15 +37,15 @@ namespace F0.Minesweeper.Logic
 			return locationArea;
 		}
 
-		internal static IEnumerable<Cell> GetLocationsAreaAroundLocation(Dictionary<Location, Cell> allLocations, Location location, bool exludeGivenLocation)
+		internal static IEnumerable<Cell> GetLocationsAreaAroundLocation(Dictionary<Location, Cell> allLocations, Location location, bool exludeGivenLocation, uint width, uint height)
 		{
 			var locationArea = new List<Cell>();
 			uint x = location.X;
 			uint y = location.Y;
 
-			for (int xi = (int)x - 1; xi <= x + 1; xi++)
+			for (uint xi = (uint)Math.Max((int)x - 1, 0); xi <= (uint)Math.Min((int)x + 1, width - 1); xi++)
 			{
-				for (int yi = (int)y - 1; yi <= y + 1; yi++)
+				for (uint yi = (uint)Math.Max((int)y - 1, 0); yi <= (uint)Math.Min((int)y + 1, height - 1); yi++)
 				{
 					Location locationToLookFor = new((uint)xi, (uint)yi);
 
@@ -55,10 +55,7 @@ namespace F0.Minesweeper.Logic
 						continue;
 					}
 
-					if (allLocations.ContainsKey(locationToLookFor))
-					{
-						locationArea.Add(allLocations[locationToLookFor]);
-					}
+					locationArea.Add(allLocations[locationToLookFor]);
 				}
 			}
 

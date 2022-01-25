@@ -48,13 +48,13 @@ namespace F0.Minesweeper.Logic.Benchmarks
 		[Benchmark]
 		public IList<IUncoveredCell> GetLocationsAreaAroundLocationOptimised_ExcludeGivenLocation()
 		{
-			return Utilities.GetLocationsAreaAroundLocation(minefieldDict, Parameter.ClickedLocation, true).ToList<IUncoveredCell>();
+			return Utilities.GetLocationsAreaAroundLocation(minefieldDict, Parameter.ClickedLocation, true, Parameter.Width, Parameter.Height).ToList<IUncoveredCell>();
 		}
 
 		[Benchmark]
 		public IList<IUncoveredCell> GetLocationsAreaAroundLocationOptimised_DoNotExcludeGivenLocation()
 		{
-			return Utilities.GetLocationsAreaAroundLocation(minefieldDict, Parameter.ClickedLocation, false).ToList<IUncoveredCell>();
+			return Utilities.GetLocationsAreaAroundLocation(minefieldDict, Parameter.ClickedLocation, false, Parameter.Width, Parameter.Height).ToList<IUncoveredCell>();
 		}
 
 		public static IEnumerable<Param> Parameters()
