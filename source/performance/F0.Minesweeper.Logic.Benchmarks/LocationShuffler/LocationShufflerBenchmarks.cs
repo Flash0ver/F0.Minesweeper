@@ -47,7 +47,7 @@ namespace F0.Minesweeper.Logic.Benchmarks.LocationShuffler
 
 		public static IEnumerable<Param> Parameters()
 		{
-			MinefieldOptions[] collection = new[]
+			MinefieldOptions[] collection =
 			{
 				MinefieldOptions.Easy,
 				MinefieldOptions.Medium,
