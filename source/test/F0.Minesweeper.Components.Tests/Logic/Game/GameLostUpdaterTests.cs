@@ -20,7 +20,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			const bool expectedIsMine = true;
 			const byte expectedAdjacentMineCount = 0;
 
-			UncoverableCell[] uncoverableCells = new[]
+			UncoverableCell[] uncoverableCells =
 			{
 				new UncoverableCell(uiCell.Object, expectedIsMine, expectedAdjacentMineCount)
 			};
@@ -52,7 +52,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			const bool expectedIsMine = false;
 			const byte expectedAdjacentMineCount = 1;
 
-			UncoverableCell[] uncoverableCells = new[]
+			UncoverableCell[] uncoverableCells =
 			{
 				new UncoverableCell(uiCell.Object, expectedIsMine, expectedAdjacentMineCount)
 			};
@@ -83,7 +83,7 @@ namespace F0.Minesweeper.Components.Tests.Logic.Game
 			Mock<ICell> uiCellClicked = new(MockBehavior.Strict);
 			Mock<ICell> uiCellAutomatic = new(MockBehavior.Strict);
 
-			UncoverableCell[] uncoverableCells = new[]
+			UncoverableCell[] uncoverableCells =
 			{
 				new UncoverableCell(uiCellClicked.Object, false, 0),
 				new UncoverableCell(uiCellAutomatic.Object, false, 1)

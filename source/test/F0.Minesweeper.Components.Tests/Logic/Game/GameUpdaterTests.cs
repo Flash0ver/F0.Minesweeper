@@ -82,7 +82,8 @@ namespace F0.Minesweeper.Components.Logic.Game
 
 			IUncoveredCell[] GetUncoveredCells()
 			{
-				return new[]{
+				return new[]
+				{
 					new UncoveredCellForTests(new Location(1, 0), false, 1),
 					new UncoveredCellForTests(new Location(1, 1), false, 2),
 					new UncoveredCellForTests(new Location(1, 2), false, 1),
