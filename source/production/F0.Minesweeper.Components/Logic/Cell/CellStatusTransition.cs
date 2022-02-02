@@ -23,9 +23,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 		}
 
 		public static bool operator !=(CellStatusTransition left, CellStatusTransition right)
-		{
-			return !(left == right);
-		}
+			=> !(left == right);
 
 		public override int GetHashCode() => HashCode.Combine(processState, command);
 

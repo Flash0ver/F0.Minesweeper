@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
 using F0.Minesweeper.Components.Logic.Cell;
@@ -18,10 +16,10 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 		public Func<Location, Task>? UncoveredAsync { get; set; }
 
 		[Inject]
-		private ICellStatusManager statusManager { get; set; }
+		private ICellStatusManager StatusManager { get; set; }
 
 		[Inject]
-		private ICellVisualizationManager? visualizationManager { get; set; }
+		private ICellVisualizationManager? VisualizationManager { get; set; }
 
 		private char StatusText
 		{
@@ -54,15 +52,13 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		public Cell()
 		{
-			statusManager = DefaultCellStatusManager.Instance;
+			StatusManager = DefaultCellStatusManager.Instance;
 			statusText = CellVisualization.Default.Content;
 			cssClass = CellVisualization.Default.CssClass;
 		}
 
 		protected override void OnParametersSet()
-		{
-			ArgumentNullException.ThrowIfNull(Location);
-		}
+			=> ArgumentNullException.ThrowIfNull(Location);
 
 		public void SetUncoveredStatus(CellInteractionType cellInteraction, bool isMine, byte adjacentMineCount)
 		{
@@ -70,7 +66,7 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 			{
 				if (cellInteraction != CellInteractionType.Automatic)
 				{
-					throw new InvalidOperationException($"Uncover is not allowed from the status '{statusManager.CurrentStatus}'.");
+					throw new InvalidOperationException($"Uncover is not allowed from the status '{StatusManager.CurrentStatus}'.");
 				}
 			}
 		}
@@ -83,33 +79,31 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		private async Task OnClickAsync()
 		{
-			if (UncoveredAsync != null && Location is not null && statusManager.CanMoveNext(CellInteractionType.LeftClick, null))
+			if (UncoveredAsync != null && Location is not null && StatusManager.CanMoveNext(CellInteractionType.LeftClick, null))
 			{
 				await UncoveredAsync(Location);
 			}
 		}
 
 		private void OnRightClick()
-		{
-			_ = TryUpdateStatus(CellInteractionType.RightClick);
-		}
+			=> _ = TryUpdateStatus(CellInteractionType.RightClick);
 
 		private bool TryUpdateStatus(CellInteractionType inputCommand, bool? isMine = null, byte? adjacentMineCount = null)
 		{
-			if (!statusManager.CanMoveNext(inputCommand, isMine))
+			if (!StatusManager.CanMoveNext(inputCommand, isMine))
 			{
 				return false;
 			}
 
-			if (adjacentMineCount is not null && adjacentMineCount > 8)
+			if (adjacentMineCount is not null and > 8)
 			{
 				return false;
 			}
 
-			CellStatusType newStatus = statusManager.MoveNext(inputCommand, isMine);
+			CellStatusType newStatus = StatusManager.MoveNext(inputCommand, isMine);
 
-			Debug.Assert(visualizationManager is not null, $"The '{nameof(visualizationManager)}' is injected on '{nameof(Cell)}' generation.");
-			CellVisualization visualization = visualizationManager.GetVisualization(newStatus, adjacentMineCount);
+			Debug.Assert(VisualizationManager is not null, $"The '{nameof(VisualizationManager)}' is injected on '{nameof(Cell)}' generation.");
+			CellVisualization visualization = VisualizationManager.GetVisualization(newStatus, adjacentMineCount);
 			StatusText = visualization.Content;
 			CssClass = visualization.CssClass;
 			StateHasChanged();

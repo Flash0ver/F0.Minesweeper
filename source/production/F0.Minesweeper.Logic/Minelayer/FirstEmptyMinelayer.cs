@@ -20,7 +20,7 @@ namespace F0.Minesweeper.Logic.Minelayer
 			IEnumerable<Location> locationsToDelete = Utilities.GetLocationsAreaAroundLocation(locations, clickLocation, false);
 			foreach (Location locationToDelete in locationsToDelete)
 			{
-				locations.Remove(locationToDelete);
+				_ = locations.Remove(locationToDelete);
 			}
 			return locations;
 		}

@@ -48,13 +48,11 @@ namespace F0.Minesweeper.Components.Logic.Cell
 		}
 
 		public bool CanMoveNext(CellInteractionType command, bool? isMine)
-		{
-			return GetNext(command, isMine).CanMoveNext;
-		}
+			=> GetNext(command, isMine).CanMoveNext;
 
 		public CellStatusType MoveNext(CellInteractionType command, bool? isMine)
 		{
-			var getNextResult = GetNext(command, isMine);
+			(bool CanMoveNext, CellStatusType NextStatus) getNextResult = GetNext(command, isMine);
 
 			if (!getNextResult.CanMoveNext)
 			{

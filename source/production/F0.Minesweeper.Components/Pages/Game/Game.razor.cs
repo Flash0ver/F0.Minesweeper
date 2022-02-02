@@ -16,8 +16,8 @@ namespace F0.Minesweeper.Components.Pages.Game
 
 		protected override void OnParametersSet()
 		{
-			EventAggregator?.GetEvent<DifficultyLevelChangedEvent>().Subscribe(OnDifficultyChanged);
-			EventAggregator?.GetEvent<RestartGameEvent>().Subscribe(OnRestartGame);
+			_ = EventAggregator?.GetEvent<DifficultyLevelChangedEvent>().Subscribe(OnDifficultyChanged);
+			_ = EventAggregator?.GetEvent<RestartGameEvent>().Subscribe(OnRestartGame);
 		}
 
 		void IDisposable.Dispose()

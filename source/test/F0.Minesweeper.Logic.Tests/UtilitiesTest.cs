@@ -40,10 +40,10 @@ namespace F0.Minesweeper.Logic.Tests
 			}
 		}
 
-		public static TheoryData<GetLocationsAreaAroundLocationTestData> Data =>
-		new TheoryData<GetLocationsAreaAroundLocationTestData>
+		public static TheoryData<GetLocationsAreaAroundLocationTestData> Data => new()
 		{
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(0, 0),
 				ExcludeSelf = false,
@@ -52,7 +52,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(0, 1), new(1, 1),
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(1, 0),
 				ExcludeSelf = false,
@@ -61,7 +62,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(0, 1), new(1, 1), new(2, 1)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(2, 0),
 				ExcludeSelf = false,
@@ -70,7 +72,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(1, 1), new(2, 1)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(0, 1),
 				ExcludeSelf = false,
@@ -80,7 +83,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(0, 2), new(1, 2)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(1, 1),
 				ExcludeSelf = false,
@@ -90,7 +94,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(0, 2), new(1, 2), new(2, 2)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(2, 1),
 				ExcludeSelf = false,
@@ -100,16 +105,18 @@ namespace F0.Minesweeper.Logic.Tests
 					new(1, 2), new(2, 2)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(0, 2),
 				ExcludeSelf = false,
-					ExpectedResult = new Location[] {
+				ExpectedResult = new Location[] {
 					new(0, 1), new(1, 1),
 					new(0, 2), new(1, 2)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(1, 2),
 				ExcludeSelf = false,
@@ -118,7 +125,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(0, 2), new(1, 2), new(2, 2)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(2, 2),
 				ExcludeSelf = false,
@@ -127,7 +135,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(1, 2), new(2, 2)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(0, 0),
 				ExcludeSelf = true,
@@ -136,7 +145,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(0, 1), new(1, 1),
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(1, 0),
 				ExcludeSelf = true,
@@ -145,7 +155,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(0, 1), new(1, 1), new(2, 1)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(2, 0),
 				ExcludeSelf = true,
@@ -154,7 +165,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(1, 1), new(2, 1)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(0, 1),
 				ExcludeSelf = true,
@@ -164,7 +176,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(0, 2), new(1, 2)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(1, 1),
 				ExcludeSelf = true,
@@ -174,7 +187,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(0, 2), new(1, 2), new(2, 2)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(2, 1),
 				ExcludeSelf = true,
@@ -184,16 +198,18 @@ namespace F0.Minesweeper.Logic.Tests
 					new(1, 2), new(2, 2)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(0, 2),
 				ExcludeSelf = true,
-					ExpectedResult = new Location[] {
+				ExpectedResult = new Location[] {
 					new(0, 1), new(1, 1),
 					new(1, 2)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(1, 2),
 				ExcludeSelf = true,
@@ -202,7 +218,8 @@ namespace F0.Minesweeper.Logic.Tests
 					new(0, 2), new(2, 2)
 				}
 			},
-			new GetLocationsAreaAroundLocationTestData {
+			new GetLocationsAreaAroundLocationTestData
+			{
 				AllLocations = TestField,
 				ClickedLocation = new Location(2, 2),
 				ExcludeSelf = true,

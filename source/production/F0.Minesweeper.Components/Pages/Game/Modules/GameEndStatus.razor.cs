@@ -22,16 +22,16 @@ namespace F0.Minesweeper.Components.Pages.Game.Modules
 
 		protected override void OnParametersSet()
 		{
-			EventAggregator?.GetEvent<GameFinishedEvent>().Subscribe(OnGameFinished);
-			EventAggregator?.GetEvent<DifficultyLevelChangedEvent>().Subscribe(OnDifficultyLevelChanged);
-			EventAggregator?.GetEvent<RestartGameEvent>().Subscribe(OnRestartGame);
+			_ = EventAggregator?.GetEvent<GameFinishedEvent>().Subscribe(OnGameFinished);
+			_ = EventAggregator?.GetEvent<DifficultyLevelChangedEvent>().Subscribe(OnDifficultyLevelChanged);
+			_ = EventAggregator?.GetEvent<RestartGameEvent>().Subscribe(OnRestartGame);
 		}
 
 		void IDisposable.Dispose()
 		{
 			EventAggregator?.GetEvent<GameFinishedEvent>().Unsubscribe(OnGameFinished);
 			EventAggregator?.GetEvent<DifficultyLevelChangedEvent>().Unsubscribe(OnDifficultyLevelChanged);
-			EventAggregator?.GetEvent<RestartGameEvent>().Subscribe(OnRestartGame);
+			EventAggregator?.GetEvent<RestartGameEvent>().Unsubscribe(OnRestartGame);
 		}
 
 		private void OnDifficultyLevelChanged(DifficultyLevel difficultyLevel) => ResetGameEndStatus();

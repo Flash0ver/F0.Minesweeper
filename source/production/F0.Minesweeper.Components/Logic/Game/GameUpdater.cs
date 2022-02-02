@@ -34,11 +34,9 @@ namespace F0.Minesweeper.Components.Logic.Game
 			Debug.Assert(Report is not null, $"'{nameof(WithReport)}' on game updater '{GetType()}' has not been called before '{nameof(GetUncoverableCells)}'.");
 
 			return
-				(
-					from cell in cells
-					join reportCell in Report.Cells on cell.Location equals reportCell.Location
-					select new UncoverableCell(cell, reportCell.IsMine, reportCell.AdjacentMineCount)
-				);
+				from cell in cells
+				join reportCell in Report.Cells on cell.Location equals reportCell.Location
+				select new UncoverableCell(cell, reportCell.IsMine, reportCell.AdjacentMineCount);
 		}
 	}
 }

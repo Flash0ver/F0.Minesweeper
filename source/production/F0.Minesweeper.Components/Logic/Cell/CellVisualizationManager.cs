@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using F0.Minesweeper.Components.Abstractions;
 using F0.Minesweeper.Components.Abstractions.Enums;
@@ -18,7 +16,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 
 			string cssClass = String.Format(CultureInfo.InvariantCulture, template.cssClass, adjacentMineCount);
 
-			if(template.content is null && adjacentMineCount is null)
+			if (template.content is null && adjacentMineCount is null)
 			{
 				throw new ArgumentNullException(nameof(adjacentMineCount));
 			}
@@ -44,7 +42,7 @@ namespace F0.Minesweeper.Components.Logic.Cell
 				return translation;
 			}
 
-			return new ('!', "f0-cell f0-cell-undefinedstatus");
+			return new('!', "f0-cell f0-cell-undefinedstatus");
 		}
 
 		private static Dictionary<CellStatusType, (char?, string)> InitializeTranslations()

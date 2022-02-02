@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using F0.Minesweeper.Logic.Abstractions;
 
 namespace F0.Minesweeper.Logic.LocationShuffler
@@ -17,9 +14,9 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 			_ = allLocations ?? throw new ArgumentNullException(nameof(allLocations));
 
 			Location[] shuffledLocations = allLocations
-				  .OrderBy(_ => randomNumberGenerator.Next())
-				  .Take(count)
-				  .ToArray();
+				.OrderBy(_ => randomNumberGenerator.Next())
+				.Take(count)
+				.ToArray();
 
 			if (count > shuffledLocations.Length)
 			{
