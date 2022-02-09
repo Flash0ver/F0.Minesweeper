@@ -9,9 +9,9 @@ namespace F0.Minesweeper.Logic.LocationShuffler
 			ArgumentNullException.ThrowIfNull(allLocations);
 
 			Location[] shuffledLocations = allLocations
-				  .OrderBy(_ => Guid.NewGuid())
-				  .Take(count)
-				  .ToArray();
+				.OrderBy(_ => Guid.NewGuid())
+				.Take(count)
+				.ToArray();
 
 			if (count > shuffledLocations.Length)
 			{

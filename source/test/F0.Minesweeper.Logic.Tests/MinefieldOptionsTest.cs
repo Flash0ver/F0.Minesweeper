@@ -27,20 +27,14 @@ namespace F0.Minesweeper.Logic.Tests
 
 		[Fact]
 		public void EasyDifficultyLevel_Should_HaveTheCorrectMinefieldFirstUncoverBehavior()
-		{
-			MinefieldOptions.Easy.GenerationOption.Should().Be(MinefieldFirstUncoverBehavior.WithoutAdjacentMines);
-		}
+			=> MinefieldOptions.Easy.GenerationOption.Should().Be(MinefieldFirstUncoverBehavior.WithoutAdjacentMines);
 
 		[Fact]
 		public void MediumDifficultyLevel_Should_HaveTheCorrectMinefieldFirstUncoverBehavior()
-		{
-			MinefieldOptions.Medium.GenerationOption.Should().Be(MinefieldFirstUncoverBehavior.CannotYieldMine);
-		}
+			=> MinefieldOptions.Medium.GenerationOption.Should().Be(MinefieldFirstUncoverBehavior.CannotYieldMine);
 
 		[Fact]
 		public void HardDifficultyLevel_Should_HaveTheCorrectMinefieldFirstUncoverBehavior()
-		{
-			MinefieldOptions.Hard.GenerationOption.Should().Be(MinefieldFirstUncoverBehavior.MayYieldMine);
-		}
+			=> MinefieldOptions.Hard.GenerationOption.Should().Be(MinefieldFirstUncoverBehavior.MayYieldMine);
 	}
 }

@@ -1,11 +1,12 @@
 using Bunit;
 using F0.Minesweeper.Components.Abstractions;
+using F0.Minesweeper.Components.Logic.Game;
 using F0.Minesweeper.Logic.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 using GameCell = F0.Minesweeper.Components.Pages.Game.Modules.Cell;
 
-namespace F0.Minesweeper.Components.Logic.Game
+namespace F0.Minesweeper.Components.Tests.Logic.Game
 {
 	public class GameUpdaterTests
 	{
@@ -21,7 +22,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 			instanceUnderTest.WithReport(gameReport.Object);
 
 			// Assert
-			Action actionUnderAssertion = () => { _ = instanceUnderTest.ExposedReport?.Cells; };
+			Action actionUnderAssertion = () => _ = instanceUnderTest.ExposedReport?.Cells;
 			actionUnderAssertion.Should().Throw<NotImplementedException>();
 		}
 
@@ -32,7 +33,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 			GameUpdaterForTests instanceUnderTest = new();
 
 			// Act & Assert
-			Func<Task> actionUnderTest = async () => await instanceUnderTest.UpdateAsync(Enumerable.Empty<Pages.Game.Modules.Cell>(), new Location(1, 1));
+			Func<Task> actionUnderTest = async () => await instanceUnderTest.UpdateAsync(Enumerable.Empty<GameCell>(), new Location(1, 1));
 			actionUnderTest.Should().Throw<InvalidOperationException>();
 		}
 
@@ -47,7 +48,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 			// x x x x x
 			// 1 2 1 x x
 			// 0 0 2 x x
-			IEnumerable<Pages.Game.Modules.Cell> gameCells = GetCells(5, 3);
+			IEnumerable<GameCell> gameCells = GetCells(5, 3);
 			Mock<IGameUpdateReport> gameReport = new(MockBehavior.Strict);
 			gameReport.Setup(report => report.Cells).Returns(GetUncoveredCells());
 			GameUpdaterForTests instanceUnderTest = new();
@@ -65,8 +66,8 @@ namespace F0.Minesweeper.Components.Logic.Game
 			IEnumerable<GameCell> GetCells(uint x, uint y)
 			{
 				using TestContext testContext = new();
-				testContext.Services.AddSingleton<ICellStatusManager>(new Mock<ICellStatusManager>(MockBehavior.Strict).Object);
-				testContext.Services.AddSingleton<ICellVisualizationManager>(new Mock<ICellVisualizationManager>(MockBehavior.Strict).Object);
+				testContext.Services.AddSingleton(new Mock<ICellStatusManager>(MockBehavior.Strict).Object);
+				testContext.Services.AddSingleton(new Mock<ICellVisualizationManager>(MockBehavior.Strict).Object);
 
 				for (uint i = 0; i < x; i++)
 				{

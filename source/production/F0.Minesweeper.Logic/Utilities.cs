@@ -29,7 +29,7 @@ namespace F0.Minesweeper.Logic
 
 					if (locationInArea is not null)
 					{
-						locationArea.Add(locationInArea);
+						_ = locationArea.Add(locationInArea);
 					}
 				}
 			}

@@ -16,9 +16,9 @@ namespace F0.Minesweeper.App
 			builder.RootComponents.Add<App>("#app");
 			builder.RootComponents.Add<HeadOutlet>("head::after");
 
-			builder.Services.AddMinesweeperComponentsServices();
-			builder.Services.AddSingleton<IMinefieldFactory, MinefieldFactory>();
-			builder.Services.AddSingleton(CreateVersionInfo);
+			_ = builder.Services.AddMinesweeperComponentsServices();
+			_ = builder.Services.AddSingleton<IMinefieldFactory, MinefieldFactory>();
+			_ = builder.Services.AddSingleton(CreateVersionInfo);
 
 			await builder.Build().RunAsync();
 		}

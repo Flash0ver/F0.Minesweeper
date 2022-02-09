@@ -10,9 +10,7 @@ namespace F0.Minesweeper.Components.Logic.Game
 		private readonly IEventAggregator eventAggregator;
 
 		public GameWonUpdater(IEventAggregator eventAggregator)
-		{
-			this.eventAggregator = eventAggregator;
-		}
+			=> this.eventAggregator = eventAggregator;
 
 		protected override Task OnUpdateAsync(IEnumerable<UncoverableCell> uncoverableCells, Minesweeper.Logic.Abstractions.Location clickedLocation)
 		{
