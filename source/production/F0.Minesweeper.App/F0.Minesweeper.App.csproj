@@ -3,6 +3,10 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<RunAOTCompilation>false</RunAOTCompilation>
+		<!--
+		https://swimburger.net/blog/dotnet/fix-blazor-webassembly-pwa-integrity-checks
+		The service-worker-assets.js file is generated during publish and any modification made to the listed files after publish will cause the integrity check to fail.-->
+		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,6 +17,10 @@
 	<ItemGroup>
 		<ProjectReference Include="..\F0.Minesweeper.Components\F0.Minesweeper.Components.csproj" />
 		<ProjectReference Include="..\F0.Minesweeper.Logic\F0.Minesweeper.Logic.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
 	</ItemGroup>
 
 </Project>
