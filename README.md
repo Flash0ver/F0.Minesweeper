@@ -15,3 +15,4 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md).
 - [Live](https://flash0ver.github.io/F0-Games-Minesweeper)
 - [Preview](https://flash0ver.github.io/F0-Games-Minesweeper-Preview)
 - [Development](https://flash0ver.github.io/F0-Games-Minesweeper-Development)
+- [Experimental](https://flash0ver.github.io/F0-Games-Minesweeper-Experimental)
