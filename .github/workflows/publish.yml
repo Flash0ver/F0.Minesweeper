@@ -5,6 +5,7 @@ on:
     branches: [ main, publish ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 env:
   DOTNET_NOLOGO: true
@@ -22,6 +23,7 @@ jobs:
       Is_Live: ${{ github.event_name == 'push' && github.ref == 'refs/heads/publish' }}
       Is_Preview: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       Is_Development: ${{ github.event_name == 'pull_request' }}
+      Is_Experimental: ${{ github.event_name == 'workflow_dispatch' }}
 
     steps:
       - name: Define environment variables for Live
@@ -40,6 +42,12 @@ jobs:
           echo "Repository_Name=F0-Games-Minesweeper-Development" >> $GITHUB_ENV
           echo "VersionSuffix=development" >> $GITHUB_ENV
           echo "SourceRevisionId=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+      - name: Define environment variables for Experimental
+        if: ${{ env.Is_Experimental == 'true' }}
+        run: |
+          echo "Repository_Name=F0-Games-Minesweeper-Experimental" >> $GITHUB_ENV
+          echo "VersionSuffix=experimental" >> $GITHUB_ENV
+          echo "SourceRevisionId=${{ github.sha }}" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v2.3.4
