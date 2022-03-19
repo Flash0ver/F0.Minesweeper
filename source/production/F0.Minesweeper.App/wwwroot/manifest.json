@@ -1,10 +1,10 @@
 {
-	"name": "F0.Minesweeper.App",
-	"short_name": "F0.Minesweeper.App",
+	"name": "F0.Minesweeper",
+	"short_name": "F0.Minesweeper",
 	"start_url": "./",
 	"display": "standalone",
-	"background_color": "#ffffff",
-	"theme_color": "#03173d",
+	"background_color": "#f0f0f0",
+	"theme_color": "#0f0f0f",
 	"prefer_related_applications": false,
 	"icons": [
 		{
