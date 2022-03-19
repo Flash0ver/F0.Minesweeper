@@ -1,0 +1,21 @@
+{
+	"name": "F0.Minesweeper",
+	"short_name": "F0.Minesweeper",
+	"start_url": "./",
+	"display": "standalone",
+	"background_color": "#f0f0f0",
+	"theme_color": "#0f0f0f",
+	"prefer_related_applications": false,
+	"icons": [
+		{
+			"src": "icon-512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		},
+		{
+			"src": "icon-192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		}
+	]
+}
