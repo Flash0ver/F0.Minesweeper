@@ -19,7 +19,7 @@ jobs:
 
     env:
       Project_Directory: ./source/production/F0.Minesweeper.App/
-      Project_File: ${{ Project_Directory }}F0.Minesweeper.App.csproj
+      Project_File: ./source/production/F0.Minesweeper.App/F0.Minesweeper.App.csproj
       Output_Directory: ./release/
       Is_Live: ${{ github.event_name == 'push' && github.ref == 'refs/heads/publish' }}
       Is_Preview: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
