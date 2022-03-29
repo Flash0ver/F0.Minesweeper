@@ -57,7 +57,9 @@ jobs:
       - name: Change base-tag in index.html
         run: sed -i 's/<base href="\/" \/>/<base href="\/${{ env.Repository_Name }}\/" \/>/g' ${{ env.Project_Directory }}wwwroot/index.html
       - name: Insert redirect.js into index.html
-        run: sed -i '/blazor.webassembly.js/i \    <script src="redirect.js"><\/script>' ${{ env.Project_Directory }}wwwroot/index.html
+        run: sed -i '/blazor.webassembly.js/i \\t<script src="redirect.js"><\/script>' ${{ env.Project_Directory }}wwwroot/index.html
+      - name: Insert redirect.js into index.html
+        run: sed -i '/<title>.*<\/title>/a \\t<link rel="icon" type="image/x-icon" href="./favicon.ico">' ${{ env.Project_Directory }}wwwroot/index.html
       - name: Publish
         run: dotnet publish ${{ env.Project_File }} --configuration Release --nologo --output ${{ env.Output_Directory }}
       - name: Create .nojekyll file
